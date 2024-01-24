@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Teg;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class TegSeeder  extends Seeder
+class TegSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -16,11 +15,11 @@ class TegSeeder  extends Seeder
 //         \App\Models\Teg::factory(10)->create();
 
         Teg::truncate();
-        $roles= ['new', 'hot', 'sell'];
-        foreach($roles as $role){
-            DB::table('tegs')->insert([
-                'title' =>$role,
-            ]);
+        $roles = ['new', 'hot', 'sell'];
+        foreach ($roles as $role) {
+            $teg = new Teg();
+            $teg->title = $role;
+            $teg->save();
         }
     }
 }

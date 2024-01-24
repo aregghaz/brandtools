@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AttributeCollection;
+use App\Http\Resources\SelectCollection;
 use App\Models\Attribute;
 use Illuminate\Http\Request;
 
@@ -10,23 +12,68 @@ class AttributeController extends Controller
     public function index()
     {
         $attributes = Attribute::all();
-        return view('attributes.index', compact('attributes'));
+        return response()->json(new AttributeCollection($attributes));
+    }
+
+    public function show(Attribute $attribute)
+    {
+        $data = [
+            (object)[
+                "id" => 1,
+                "title" => "select",
+                "label" => "select",
+                "name" => "select",
+                "value" => 1
+            ],
+            (object)[
+                "id" => 2,
+                "title" => "range",
+                "label" => "range",
+                "name" => "range",
+                "value" => 2
+            ]
+        ];
+        $keys = array_column($data, 'id');
+        $index = array_search((int)$attribute->type, $keys);
+        return response()->json([
+            "data" => [
+                "id" => $attribute->id,
+                "title" => $attribute->title,
+                "type" => $data[$index],
+                "updated_at" => $attribute->updated_at,
+
+            ],
+            "type" => new SelectCollection($data)
+        ]);
     }
 
     public function create()
     {
-        return view('attributes.create');
+        $data = [
+            (object)[
+                "id" => 1,
+                "title" => "select"
+            ],
+            (object)[
+                "id" => 2,
+                "title" => "range"
+            ]
+        ];
+        return response()->json(["types" => new SelectCollection($data)]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:attributes',
+            'value' => 'required',
+        ]);
+        $data = json_decode($request->value);
+        $attributes = Attribute::create([
+            "title" => $data->title,
+            "type" => $data->types->id
         ]);
 
-        Attribute::create($request->all());
-
-        return redirect()->route('attributes.index')->with('success', 'Attribute created successfully.');
+        return response()->json($attributes);
     }
 
     public function edit(Attribute $attribute)
@@ -37,18 +84,26 @@ class AttributeController extends Controller
     public function update(Request $request, Attribute $attribute)
     {
         $request->validate([
-            'name' => 'required|unique:attributes,name,' . $attribute->id,
+            'value' => 'required',
+        ]);
+        $data = json_decode($request->value);
+        $attribute->update([
+            "title" => $data->title,
+            "type" => $data->type->id
         ]);
 
-        $attribute->update($request->all());
-
-        return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
+        return response()->json([
+            'attribute' => $attribute,
+            'status' => 200
+        ]);
     }
 
     public function destroy(Attribute $attribute)
     {
         $attribute->delete();
 
-        return redirect()->route('attributes.index')->with('success', 'Attribute deleted successfully.');
+        return response()->json([
+            "status" => 200,
+        ]);
     }
 }

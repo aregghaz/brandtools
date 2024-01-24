@@ -5,6 +5,7 @@ use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryFilterController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,17 +20,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, "index"]);
 // routes/web.php
 
 Route::resource('categories', CategoryController::class);
 Route::resource('attributes', AttributeController::class);
-Route::resource('products', ProductController::class);
+////Route::resource('products', ProductController::class);
 Route::resource('attribute_values', AttributeValueController::class);
-Route::resource('cart', CartController::class);
+//Route::resource('cart', CartController::class);
 
+Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
 Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
 Route::get('update', [CartController::class, 'update'])->name('update');
 Route::get('categories/{category}/filter', [CategoryFilterController::class, 'filter'])->name('categories.filter');

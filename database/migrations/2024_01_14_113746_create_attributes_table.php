@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
+            $table->string('title');
+            $table->enum('type',[1,2])->default(1);
             $table->timestamps();
         });
     }

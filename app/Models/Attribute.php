@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 class Attribute extends Model
 {
     use HasFactory,HasApiTokens;
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['title', 'type'];
 
     public function products()
     {

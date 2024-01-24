@@ -18,16 +18,10 @@ class ProductsTableSeeder extends Seeder
             'name' => 'Product 1',
             'price' => 10,
             'description' => 'This is the first sample product.',
+            'teg_id' => 1,
+            'brand_id' => 1,
+            'condition_id' => 1,
         ]);
-        Product::create([
-            'name' => 'Product 2',
-            'price' => 20,
-            'description' => 'This is the second sample product.',
-        ]);
-        Product::create([
-            'name' => 'Product 3',
-            'price' => 15,
-            'description' => 'This is the third sample product.',
-        ]);
+
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string("slug", 150);
             $table->tinyInteger('condition_id');
             $table->unsignedBigInteger('teg_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->timestamps();
         });

@@ -7,12 +7,13 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
+    public int $user = 1;
     public function __construct()
     {
-        \Cart::session(3);
+        \Cart::session($this->user);
     }
 
-    public function index()
+    public function index($productId,$qty)
     {
          $Product = Product::find($productId); // assuming you have a Product model with id, name, description & price
         $rowId = 456; // generate a unique() row ID
@@ -21,10 +22,10 @@ class CartController extends Controller
 // add the product to cart
         $asd = \Cart::add(array(
             'id' => 18, // inique row ID
-            'name' => 'Sample Item 3',
-            'price' => 67.99,
-            'quantity' => 4,
-            'attributes' => array()
+            'name' => $Product->name,
+            'price' => $Product->price,
+            'quantity' => $qty,
+//            'attributes' => array()
         ));
 
         return $asd;

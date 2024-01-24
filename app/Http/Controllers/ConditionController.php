@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandCollection;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,10 @@ class ConditionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $conditions = Condition::all();
+        return response()->json(new BrandCollection($conditions));
     }
 
     /**
@@ -28,7 +30,15 @@ class ConditionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'value' => 'required',
+        ]);
+        $data = json_decode($request->value);
+        $condition = Condition::create([
+            "title" => $data->title,
+        ]);
+
+        return response()->json($condition);
     }
 
     /**
@@ -36,7 +46,12 @@ class ConditionController extends Controller
      */
     public function show(Condition $condition)
     {
-        //
+        return response()->json([
+            "data"=> [
+                'id' =>$condition->id,
+                'title' =>$condition->title,
+            ]
+        ]);
     }
 
     /**
@@ -52,7 +67,17 @@ class ConditionController extends Controller
      */
     public function update(Request $request, Condition $condition)
     {
-        //
+        $request->validate([
+            'value' => 'required',
+        ]);
+        $data = json_decode($request->value);
+        $condition->update([
+            'title'=>$data->title,
+        ]);
+        return response()->json([
+            "status" => 200,
+            'data'=>$condition
+        ]);
     }
 
     /**
@@ -60,6 +85,9 @@ class ConditionController extends Controller
      */
     public function destroy(Condition $condition)
     {
-        //
+        $condition->delete();
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

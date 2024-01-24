@@ -11,7 +11,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class Category extends Model
 {
     use HasApiTokens, HasFactory, Sluggable;
-    protected $fillable = ['title', 'slug'];
+    protected $fillable = ['title', 'slug', 'parent_id'];
     public function sluggable(): array
     {
         return [
@@ -30,7 +30,7 @@ class Category extends Model
         return $this->hasMany(Attribute::class);
     }
 
-    public function parentCategory()
+    public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }

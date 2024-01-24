@@ -12,12 +12,20 @@ class Product extends Model
     use HasFactory, HasApiTokens,Sluggable;
 
     protected $fillable = [
+        'id',
         'name',
         'description',
         'price',
+        'special_price',
+        'start',
+        'end',
+        'slug',
+        'created_at',
+        'updated_at',
         'teg_id',
         'brand_id',
-        'slug'
+        'condition_id',
+        'category_id'
     ];
     protected $casts = [
         'start' => 'datetime:Y-m-d H:i:s',
@@ -27,13 +35,13 @@ class Product extends Model
     {
         return [
             'slug' => [
-                'name' => 'title'
+                'source' => 'name'
             ]
         ];
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_product');
+        return $this->hasOne(Category::class, 'id','category_id');
     }
 
     public function attributes()
@@ -51,7 +59,7 @@ class Product extends Model
         return $this->hasOne(Teg::class, 'id', 'teg_id');
     }
 
-    public function conditions()
+    public function condition()
     {
         return $this->hasOne(Condition::class, 'id', 'condition_id');
     }

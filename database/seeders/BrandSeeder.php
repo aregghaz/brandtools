@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Brand;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class BrandSeeder extends Seeder
 {
@@ -15,11 +13,11 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         Brand::truncate();
-        $roles= ['Makita', 'Lg', 'Samsung', "Reco"];
-        foreach($roles as $role){
-            DB::table('brands')->insert([
-                'title' =>$role,
-            ]);
+        $roles = ['Makita', 'Lg', 'Samsung', "Reco"];
+        foreach ($roles as $role) {
+            $brand = new Brand();
+            $brand->title = $role;
+            $brand->save();
         }
 
     }

@@ -3,26 +3,48 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function authenticate(Request $request): \Illuminate\Http\RedirectResponse
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'remember_me' => 'boolean'
         ]);
+        $credentials = request(['email', 'password']);
+        if(!Auth::attempt($credentials))
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        $user = $request->user();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        if ($request->remember_me)
+            $token->expires_at = Carbon::now()->addWeeks(1);
+        $token->save();
+        return response()->json([
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
+        ]);
+    }
 
-            return redirect()->intended('dashboard');
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+    /**
+     * Get the authenticated User
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return [json] user object
+     */
+    public function user(Request $request): \Illuminate\Http\JsonResponse
+    {
+        return response()->json($request->user());
     }
 }
