@@ -98,33 +98,33 @@ class TestController extends Controller
                 $meta_key = 31;
 ///dd();
 
-//                $brandData = Brand::where('title', $data[$brand])->first();
-//                $brandType = 0;
-//                if (isset($brandData)) {
-//                    $brandType = $brandData->id;
-//                } else {
-//                    $dataCreate = Brand::create([
-//                        'title' => $data[$brand],
-//                        'slug' => $data[$brand],
-//                    ]);
-//                    $brandType = $dataCreate->id;
-//                }
-//
-//                $product = Product::create([
-//                    "name" => $data[$name],
-//                    "description" => $data[$description],
-//                    "price" => $data[$price],
-//                    "brand_id" => $brandType,
-//                    "condition_id" => 0,
-//                    'product_id' => $data[$product_id],
-//                    'sku' => $data[$sku],
-//                    'quantity' => $data[$quantity],
-//                    'status' => $data[$status] ? 1 : 0,
-//                    'image' => $data[$image],
-//                    'meta_title' => $data[$meta_title],
-//                    'meta_desc' => $data[$meta_desc],
-//                    'meta_key' => $data[$meta_key],
-//                ]);
+                $brandData = Brand::where('title', $data[$brand])->first();
+                $brandType = 0;
+                if (isset($brandData)) {
+                    $brandType = $brandData->id;
+                } else {
+                    $dataCreate = Brand::create([
+                        'title' => $data[$brand],
+                        'slug' => $data[$brand],
+                    ]);
+                    $brandType = $dataCreate->id;
+                }
+
+                $product = Product::create([
+                    "name" => $data[$name],
+                    "description" => $data[$description],
+                    "price" => $data[$price],
+                    "brand_id" => $brandType,
+                    "condition_id" => 0,
+                    'product_id' => $data[$product_id],
+                    'sku' => $data[$sku],
+                    'quantity' => $data[$quantity],
+                    'status' => $data[$status] ? 1 : 0,
+                    'image' => $data[$image],
+                    'meta_title' => $data[$meta_title],
+                    'meta_desc' => $data[$meta_desc],
+                    'meta_key' => $data[$meta_key],
+                ]);
                 $explodeData = explode(',',$data[$categoryIds]);
               Category::whereIn('category_id',$explodeData)->pluck('id');
             }
