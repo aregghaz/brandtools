@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->longtext('description')->nullable();
-            $table->string("meta_title", 150)->nullable();
+            $table->string("meta_title")->nullable();
             $table->mediumText("meta_desc")->nullable();
             $table->string("meta_key")->nullable();
             $table->string("image", 150)->nullable();
+            $table->string("sku", 150)->nullable();
+            $table->unsignedBigInteger("quantity")->nullable();
             $table->tinyInteger("status")->default(0);
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
         });
     }
 

@@ -11,7 +11,19 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class Category extends Model
 {
     use HasApiTokens, HasFactory, Sluggable;
-    protected $fillable = ['title', 'slug', 'parent_id'];
+    protected $fillable = [
+        'id',
+        'title',
+        'slug',
+        'parent_id',
+        'category_id',
+        'description',
+        'meta_title',
+        'meta_desc',
+        'meta_key',
+        'status',
+        'image',
+    ];
     public function sluggable(): array
     {
         return [

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test',[\App\Http\Controllers\TestController::class ,'index']);
+Route::get('/test1',[\App\Http\Controllers\TestController::class ,'product']);
 Route::group([
     'prefix' => 'auth'
 ], function () {

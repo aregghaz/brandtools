@@ -25,7 +25,14 @@ class Product extends Model
         'teg_id',
         'brand_id',
         'condition_id',
-        'category_id'
+        'product_id',
+        'sku',
+        'quantity',
+        'image',
+        'status',
+        'meta_title',
+        'meta_desc',
+        'meta_key',
     ];
     protected $casts = [
         'start' => 'datetime:Y-m-d H:i:s',
@@ -41,7 +48,7 @@ class Product extends Model
     }
     public function categories()
     {
-        return $this->hasOne(Category::class, 'id','category_id');
+        return $this->belongsToMany(Category::class, 'category_product');
     }
 
     public function attributes()
