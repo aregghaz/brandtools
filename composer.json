@@ -1,7 +1,5 @@
 {
-    "name": "brandtools",
     "type": "project",
-    "description": "brandtools",
     "keywords": ["brandtools"],
     "license": "MIT",
     "require": {
@@ -13,6 +11,8 @@
         "laravel/passport": "^11.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "phpoffice/phpspreadsheet": "*",
+        "shuchkin/simplexlsx": "^1.0",
         "ultrono/laravelshoppingcart-1": "^4.3"
     },
     "require-dev": {

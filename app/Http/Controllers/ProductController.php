@@ -13,9 +13,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('teg', 'brand', 'condition', 'categories')->get();
+        $showMore =  $request->get('showMore');
+        $products = Product::with('teg', 'brand', 'condition', 'categories')->take(15 * $showMore)->get();
         return response()->json(new ProductCollection($products));
     }
 
@@ -31,23 +32,11 @@ class ProductController extends Controller
             'attributes' => new SelectCollection($attributes),
             'conditions' => new SelectCollection($conditions)
         ]);
-        ///  return view('products.create', compact('categories', 'attributes'));
     }
 
     public function store(Request $request)
     {
-//        $data = json_decode($request->value);
-//        var_dump($data);
-//        $data->validate([
-//            'title' => 'required|string',
-//            'description' => 'nullable|string',
-//            'categories' => 'required|array',
-//            'attributes' => 'nullable|array',
-//            'attributes.*.id' => 'required|exists:attributes,id',
-//            'attributes.*.value' => 'required',
-//        ]);
         $data = json_decode($request->value);
-        var_dump($data->conditions->id);
         $product = Product::create([
             'name' => $data->title,
             'description' => $data->description,
@@ -56,11 +45,10 @@ class ProductController extends Controller
             'price' => $data->price,
             'category_id' => $data->categories->id,
         ]);
-
-        foreach ($data->attributes as $attribute) {
-            $product->attributes()->attach($attribute->id, ['value' => $attribute->value]);
+        $product->categories()->sync($data->categories->id);
+        foreach ($data['attributes'] as $attribute) {
+            $product->attributes()->attach($attribute['id'], ['value' => $attribute['value']]);
         }
-
         return response()->json($product);
     }
 
@@ -81,19 +69,15 @@ class ProductController extends Controller
             'attributes.*.id' => 'required|exists:attributes,id',
             'attributes.*.value' => 'required',
         ]);
-
         $product->update([
             'name' => $data['name'],
             'description' => $data['description'],
         ]);
-
         $product->categories()->sync($data['categories']);
-
         $product->attributes()->detach();
         foreach ($data['attributes'] as $attribute) {
             $product->attributes()->attach($attribute['id'], ['value' => $attribute['value']]);
         }
-
         return redirect()->route('products.index');
     }
 
