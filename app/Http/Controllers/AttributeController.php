@@ -11,7 +11,7 @@ class AttributeController extends Controller
 {
     public function index()
     {
-        $attributes = Attribute::all();
+        $attributes = Attribute::orderBy('id', 'DESC')->get();
         return response()->json(new AttributeCollection($attributes));
     }
 

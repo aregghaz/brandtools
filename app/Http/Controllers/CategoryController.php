@@ -13,7 +13,7 @@ class CategoryController extends Controller
     {
         $showMore = $request->get('showMore');
 
-        $categories = Category::with('parent')->take(15 * $showMore)->get();
+        $categories = Category::with('parent')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new CategoryCollection($categories));
 
     }
