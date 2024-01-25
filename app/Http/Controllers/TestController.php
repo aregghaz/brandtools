@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -75,25 +76,25 @@ class TestController extends Controller
         return true;
     }
 
-    public function product(Request $request)
+    public function product(Request $request, $file)
     {
         /* open this for local file testing purposes only*/
 
         /// DB::beginTransaction();
-        $xlsx = SimpleXLSX::parse(base_path() . '/public/uploads/product1.xlsx');
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
         foreach ($xlsx->rows() as $index => $data) {
             if ($index !== 0) {
                 $product_id = 0;
                 $name = 1;
                 $categoryIds = 2;
-                $sku =3;
-                $quantity =10;
-                $brand= 12;// searck
-                $image= 13;
-                $price= 15;
-                $status= 26;
-                $description= 28;
-                $meta_title= 29;
+                $sku = 3;
+                $quantity = 10;
+                $brand = 12;// searck
+                $image = 13;
+                $price = 15;
+                $status = 26;
+                $description = 28;
+                $meta_title = 29;
                 $meta_desc = 30;
                 $meta_key = 31;
 ///dd();
@@ -125,8 +126,53 @@ class TestController extends Controller
                     'meta_desc' => $data[$meta_desc],
                     'meta_key' => $data[$meta_key],
                 ]);
-                $explodeData = explode(',',$data[$categoryIds]);
-              Category::whereIn('category_id',$explodeData)->pluck('id');
+                $explodeData = explode(',', $data[$categoryIds]);
+                Category::whereIn('category_id', $explodeData)->pluck('id');
+            }
+        }
+        return true;
+    }
+
+    public function attributes(Request $request)
+    {
+        /* open this for local file testing purposes only*/
+
+        /// DB::beginTransaction();
+        $xlsx = SimpleXLSX::parse(base_path() . '/public/uploads/attributes.xlsx');
+        foreach ($xlsx->rows() as $index => $data) {
+            if ($index !== 0) {
+                $attribute_id = 0;
+                $type = 1;
+                $name = 2;
+
+
+                Attribute::create([
+                    "title" => $data[$name],
+                    "attribute_id" => $data[$attribute_id],
+                    "type" => $data[$type] === 0 ? 1 : 2,
+
+                ]);
+
+            }
+        }
+        return true;
+    }
+    public function prAttr(Request $request)
+    {
+        /* open this for local file testing purposes only*/
+
+        /// DB::beginTransaction();
+        $xlsx = SimpleXLSX::parse(base_path() . '/public/uploads/prattr1.xlsx');
+        foreach ($xlsx->rows() as $index => $data) {
+            if ($index !== 0) {
+                $product_id = 0;
+                $attribute_id = 2;
+                $value = 3;
+
+                $product = Product::where('product_id',$data[$product_id])->first();
+                $attr = Attribute::where('attribute_id',$data[$attribute_id])->first();
+                $product->attributes()->attach($attr, ['value' => $data[$value]]);
+
             }
         }
         return true;

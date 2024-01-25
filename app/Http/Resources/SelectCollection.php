@@ -13,12 +13,14 @@ class SelectCollection extends ResourceCollection
      */
     public function toArray(Request $request)
     {
+
         return $this->map(function ($data) {
+
             return [
                 'id' => $data->id,
                 'label' => $data->title,
                 'name' => $data->title,
-                "value"=> $data->id,
+                "value"=> $data->pivot->value ?? $data->id,
             ];
         });
     }
