@@ -121,18 +121,18 @@ class ProductController extends Controller
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
-            'condition_id' => isset($data->condition_id) ? $data->condition_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
 //            'image',
-            'status' => $data->status->id || null,
+            'status' => 1,
             'meta_title' => $data->special_price,
             'meta_desc' => $data->special_price,
             'meta_key' => $data->special_price,
         ]);
         // $product->categories()->sync($data->categories->id);
         foreach ($data->attributes as $attribute) {
-            $product->attributes()->attach($attribute->id, ['value' => $attribute->value]);
+            $idData = "$attribute->id";
+            $product->attributes()->attach($attribute->id, ['value' => $data->$idData]);
         }
         foreach ($data->categories as $categories) {
             $product->categories()->attach($categories->id);
@@ -168,7 +168,7 @@ class ProductController extends Controller
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
-            'condition_id' => isset($data->condition_id) ? $data->condition_id->id : null,
+           /// 'condition_id' => isset($data->condition_id) && isset($data->condition_id->id) ? $data->condition_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
 //            'image',
@@ -181,7 +181,8 @@ class ProductController extends Controller
 
         $product->attributes()->detach();
         foreach ($data->attributes as $attribute) {
-            $product->attributes()->attach($attribute->id, ['value' => $attribute->value]);
+            $idData = "$attribute->id";
+            $product->attributes()->attach($attribute->id, ['value' => $data->$idData]);
         }
         $product->categories()->detach();
         foreach ($data->categories as $categories) {

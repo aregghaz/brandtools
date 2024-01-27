@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('start')->nullable();
             $table->date('end')->nullable();
             $table->string("slug", 150);
-            $table->tinyInteger('condition_id');
             $table->unsignedBigInteger('teg_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->timestamps();

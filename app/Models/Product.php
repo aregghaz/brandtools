@@ -24,7 +24,6 @@ class Product extends Model
         'updated_at',
         'teg_id',
         'brand_id',
-        'condition_id',
         'product_id',
         'sku',
         'quantity',

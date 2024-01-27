@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'meta_title' => $data->meta_title,
             'meta_desc' => $data->meta_desc,
             'meta_key' => $data->meta_key,
-            'status' => $data->status ? (int)$data->status->id : 0,
+            'status' => 1,
         ]);
         return response()->json($categories);
         /// return redirect()->route('categories.index')->with('success', 'Category created successfully.');

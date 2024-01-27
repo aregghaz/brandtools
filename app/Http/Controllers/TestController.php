@@ -79,7 +79,7 @@ class TestController extends Controller
     public function product(Request $request, $file)
     {
         /* open this for local file testing purposes only*/
-
+        Product::truncate();
         /// DB::beginTransaction();
         $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
         foreach ($xlsx->rows() as $index => $data) {
@@ -116,7 +116,6 @@ class TestController extends Controller
                     "description" => $data[$description],
                     "price" => $data[$price],
                     "brand_id" => $brandType,
-                    "condition_id" => 0,
                     'product_id' => $data[$product_id],
                     'sku' => $data[$sku],
                     'quantity' => $data[$quantity],
@@ -156,6 +155,7 @@ class TestController extends Controller
         }
         return true;
     }
+
     public function prAttr(Request $request)
     {
         /* open this for local file testing purposes only*/
@@ -168,8 +168,8 @@ class TestController extends Controller
                 $attribute_id = 2;
                 $value = 3;
 
-                $product = Product::where('product_id',$data[$product_id])->first();
-                $attr = Attribute::where('attribute_id',$data[$attribute_id])->first();
+                $product = Product::where('product_id', $data[$product_id])->first();
+                $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
                 $product->attributes()->attach($attr, ['value' => $data[$value]]);
 
             }
