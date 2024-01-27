@@ -12,12 +12,14 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-
         $categories = Category::with('parent')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new CategoryCollection($categories));
-
     }
 
+    public function categoryTree () {
+      $data  = Category::with('tree')->get();
+      dd($data);
+    }
     public function create()
     {
         $categories = Category::all();

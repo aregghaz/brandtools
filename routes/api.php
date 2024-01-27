@@ -5,6 +5,7 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/singleProduct/{id}',[HomeController::class ,'singleProduct']);
+Route::get('/productsByTeg/{id}/{limit}',[HomeController::class ,'getByTeg']);
+
+
+Route::get('/category',[HomeController::class ,'category']);
+Route::get('/category/{id}',[HomeController::class ,'singleCategory']);
+Route::get('/singleCat/{id}',[HomeController::class ,'singleCat']);
+
+Route::get('/products-by-catId/{id}/{limit}',[HomeController::class ,'productsCategory']);
+
+
+
+
+
+Route::get('/categoryTree',[CategoryController::class ,'categoryTree']);
 Route::get('/test',[\App\Http\Controllers\TestController::class ,'index']);
 Route::get('/test1/{file}',[\App\Http\Controllers\TestController::class ,'product']);
 Route::get('/test2',[\App\Http\Controllers\TestController::class ,'attributes']);
@@ -42,7 +58,7 @@ Route::group([
 //        Route::post('editData', 'UserController@editdata');
 //        Route::get('logout', 'AuthController@logout');
         Route::get('user', [AuthController::class, 'user']);
-        Route::resource('products', ProductController::class);
+//        Route::resource('products', ProductController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
     });
 });

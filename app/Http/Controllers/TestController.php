@@ -144,8 +144,6 @@ class TestController extends Controller
                 $attribute_id = 0;
                 $type = 1;
                 $name = 2;
-
-
                 Attribute::create([
                     "title" => $data[$name],
                     "attribute_id" => $data[$attribute_id],
