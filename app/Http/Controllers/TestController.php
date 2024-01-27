@@ -177,4 +177,26 @@ class TestController extends Controller
         return true;
     }
 
+    public function removeOldImage(){
+        $image = Product::limit(1000)->get();
+
+        foreach ($image as $item){
+            $images = explode('.JPG' ,$item->image);
+            $imageUrl ='https://brendinstrument.ru/image/cache/'.$images[0].'-351x265.JPG';
+            @$rawImage = file_get_contents($imageUrl);
+            if($rawImage)
+            {
+               //// file_put_contents("images/".'dummy1.png',$rawImage);
+                echo 'Image Saved';
+            }
+            else
+            {
+                $item->delete();
+                echo 'Error Occured';
+            }
+
+        }
+        return true;
+    }
+
 }
