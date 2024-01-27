@@ -88,8 +88,12 @@ class HomeController extends Controller
         $tags = Teg::all();
         return response()->json(new SelectCollection($tags));
     }
-    public function getBrand () {
-        $brands = Brand::all();
+    public function getBrand ($limit) {
+        $brands = Brand::limit($limit)->get();
         return response()->json(new BrandsCollection($brands));
+    }
+    public function getSingleBrand ($id) {
+        $brands = Brand::find($id);
+        return response()->json($brands);
     }
 }

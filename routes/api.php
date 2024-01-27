@@ -31,7 +31,9 @@ Route::get('/singleCat/{id}',[HomeController::class ,'singleCat']);
 Route::get('/products-by-catId/{id}/{limit}',[HomeController::class ,'productsCategory']);
 
 Route::get('/getTags',[HomeController::class ,'getTags']);
-Route::get('/get-brands',[HomeController::class ,'getBrand']);
+
+Route::get('/get-brands/{limit}',[HomeController::class ,'getBrand']);
+Route::get('/get-single-brands/{id}',[HomeController::class ,'getSingleBrand']);
 
 
 
