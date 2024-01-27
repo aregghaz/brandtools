@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 //            BrandSeeder::class,
-//            TegSeeder::class,
+         TegSeeder::class,
 //            AttributeSeeder::class,
 //            ProductsTableSeeder::class,
             ConditionSeeder::class,
