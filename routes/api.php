@@ -29,6 +29,7 @@ Route::get('/category/{id}',[HomeController::class ,'singleCategory']);
 Route::get('/singleCat/{id}',[HomeController::class ,'singleCat']);
 
 Route::get('/products-by-catId/{id}/{limit}',[HomeController::class ,'productsCategory']);
+Route::get('/getTags',[HomeController::class ,'getTags']);
 
 
 

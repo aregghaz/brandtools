@@ -7,6 +7,7 @@ use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Teg;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -84,5 +85,8 @@ class HomeController extends Controller
         return response()->json($category);
     }
 
-
+    public function getTags () {
+        $tags = Teg::all();
+        return response()->json(new SelectCollection($tags));
+    }
 }

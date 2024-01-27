@@ -127,7 +127,8 @@ class TestController extends Controller
                     'meta_key' => $data[$meta_key],
                 ]);
                 $explodeData = explode(',', $data[$categoryIds]);
-                Category::whereIn('category_id', $explodeData)->pluck('id');
+                $categ = Category::whereIn('category_id', $explodeData)->pluck('id');
+                $product->categories()->sync($categ);
             }
         }
         return true;
