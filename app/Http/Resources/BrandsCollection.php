@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class BrandCollection extends ResourceCollection
+class BrandsCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -18,8 +18,12 @@ class BrandCollection extends ResourceCollection
                 'id' => $data->id,
                 'title' => $data->title,
                 'slug' => $data->slug,
-                'description' => $data->description,
-                "updated_at"=> $data->updated_at,
+                'meta_title'=>$data->meta_title?? '--',
+                'meta_desc'=>$data->meta_desc?? '--',
+                'meta_key'=>$data->meta_key?? '--',
+                'status'=>$data->status?? '--',
+                'image'=>$data->image?? '--',
+                "updated"=> $data->updated_at,
             ];
         });
     }

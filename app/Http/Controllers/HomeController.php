@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandCollection;
+use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Teg;
@@ -53,19 +56,16 @@ class HomeController extends Controller
                 'meta_key' => $product->meta_key,]
         );
     }
-
     public function getByTeg($getByTeg, $limit, Request $request)
     {
         $products = Product::where(['teg_id' => $getByTeg, 'status' => 1])->limit($limit)->get();
         return response()->json(new PorductShortCollection($products));
     }
-
     public function category(Request $request)
     {
         $category = Category::with('children')->select('id','title','parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
-
     public function productsCategory($id,$limit, Request $request) {
        $products = Product::whereHas('categories', function ($query) use ($id){
            $query->where('categories.id',$id);
@@ -84,9 +84,12 @@ class HomeController extends Controller
         $category = Category::find($id);
         return response()->json($category);
     }
-
     public function getTags () {
         $tags = Teg::all();
         return response()->json(new SelectCollection($tags));
+    }
+    public function getBrand () {
+        $brands = Brand::all();
+        return response()->json(new BrandsCollection($brands));
     }
 }
