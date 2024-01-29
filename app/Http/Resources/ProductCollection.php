@@ -26,7 +26,6 @@ class ProductCollection extends ResourceCollection
                 'price' => $data->price,
                 "special_price" => $data->special_price,
                 "slug" => $data->slug,
-                "conditions" => $data->condition ? $data->condition->title : '--',
                 "teg" => $data->teg ? $data->teg->title : '--',
                 "brand" => $data->brand->title ?? '--',
                 "categories" =>$categoryName,

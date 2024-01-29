@@ -16,7 +16,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-        $products = Product::with('teg', 'brand',  'categories')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $products = Product::with('teg', 'brand', 'categories')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new ProductCollection($products));
     }
 
@@ -160,7 +160,6 @@ class ProductController extends Controller
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
-            /// 'condition_id' => isset($data->condition_id) && isset($data->condition_id->id) ? $data->condition_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
 //            'image',
