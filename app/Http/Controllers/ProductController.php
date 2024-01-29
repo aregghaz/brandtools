@@ -7,7 +7,6 @@ use App\Http\Resources\SelectCollection;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Condition;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -17,7 +16,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-        $products = Product::with('teg', 'brand', 'condition', 'categories')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $products = Product::with('teg', 'brand',  'categories')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new ProductCollection($products));
     }
 
@@ -36,13 +35,11 @@ class ProductController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
-        $conditions = Condition::all();
         return response()->json([
             'status' => new SelectCollection($status),
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),
-            'condition_id' => new SelectCollection($conditions)
         ]);
     }
 
@@ -51,7 +48,6 @@ class ProductController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
-        $conditions = Condition::all();
         $status = [
             (object)[
                 "id" => 1,
@@ -81,12 +77,6 @@ class ProductController extends Controller
                     "value" => $product->brand->id,
                     "id" => $product->brand->id
                 ],
-                'condition_id' => $product->condition ? [
-                    "name" => $product->condition->title,
-                    "label" => $product->condition->title,
-                    "value" => $product->condition->id,
-                    "id" => $product->condition->id
-                ] : '',
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
@@ -104,7 +94,6 @@ class ProductController extends Controller
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),
-            'condition_id' => new SelectCollection($conditions)
         ]);
     }
 
