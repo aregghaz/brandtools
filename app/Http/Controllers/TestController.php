@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Shuchkin\SimpleXLSX;
 
@@ -177,20 +178,50 @@ class TestController extends Controller
         return true;
     }
 
-    public function removeOldImage(){
+    public function users(Request $request)
+    {
+        /* open this for local file testing purposes only*/
+
+        /// DB::beginTransaction();
+        $xlsx = SimpleXLSX::parse(base_path() . '/public/uploads/users.xlsx');
+        foreach ($xlsx->rows() as $index => $data) {
+
+            if ($index !== 0) {
+                $name = 3;
+                $lastName = 4;
+                $email = 5;
+                $phone = 6;
+                $password = 8;
+                $subscribed = 12;
+                $status = 15;
+
+                User::create([
+                    'name' => $data[$name],
+                    'lastName' => $data[$lastName],
+                    'email' => $data[$email],
+                    'phone' => $data[$phone],
+                    'password' => $data[$password],
+                    'subscribed' => $data[$subscribed] === 'yes' ? 1 : 0,
+                    'status' =>$data[$status] === 'true' ? 1 : 0
+                ]);
+
+            }
+        }
+        return true;
+    }
+
+    public function removeOldImage()
+    {
         $image = Product::limit(1000)->get();
 
-        foreach ($image as $item){
-            $images = explode('.JPG' ,$item->image);
-            $imageUrl ='https://brendinstrument.ru/image/cache/'.$images[0].'-351x265.JPG';
+        foreach ($image as $item) {
+            $images = explode('.JPG', $item->image);
+            $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
             @$rawImage = file_get_contents($imageUrl);
-            if($rawImage)
-            {
-               //// file_put_contents("images/".'dummy1.png',$rawImage);
+            if ($rawImage) {
+                //// file_put_contents("images/".'dummy1.png',$rawImage);
                 echo 'Image Saved';
-            }
-            else
-            {
+            } else {
                 $item->delete();
                 echo 'Error Occured';
             }

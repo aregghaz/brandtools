@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
          TegSeeder::class,
 //            AttributeSeeder::class,
 //            ProductsTableSeeder::class,
-            ConditionSeeder::class,
+           // ConditionSeeder::class,
         ]);
 
     }

@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BrandCollection;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brands = Brand::orderBy('id', 'DESC')->get();
+        $showMore = $request->get('showMore');
+        $brands = Brand::orderBy('id', 'DESC')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new BrandCollection($brands));
     }
 
@@ -32,14 +34,26 @@ class BrandController extends Controller
     {
         $request->validate([
             'value' => 'required',
+            'image' => 'file',
         ]);
         $data = json_decode($request->value);
+
+        $storageName = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/brands", $file);
+            $storageName = "/storage/images/brands/" . basename($storagePath);
+        }
         $brand = Brand::create([
-            "title" => $data->title
+            'title' => $data->title,
+            'image' => $storageName,
+            'description' => $data->description,
+            'meta_title' => $data->meta_title,
+            'meta_desc' => $data->meta_desc,
+            'meta_key' => $data->meta_key,
         ]);
         return response()->json([
             "status" => 200,
-            'data'=>$brand
         ]);
     }
 
@@ -49,9 +63,13 @@ class BrandController extends Controller
     public function show(Brand $brand)
     {
         return response()->json([
-            "data"=> [
-                'id' =>$brand->id,
-                'title' =>$brand->title,
+            "data" => [
+                'id' => $brand->id,
+                'title' => $brand->title,
+                'description' => $brand->description,
+                'meta_title' => $brand->meta_title,
+                'meta_desc' => $brand->meta_desc,
+                'meta_key' => $brand->meta_key,
             ]
         ]);
     }
@@ -73,12 +91,27 @@ class BrandController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
+        $storageName = null;
+        if ($request->hasFile('image')) {
+            $imageFile = explode('/', $brand->image);
+            Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/brands", $file);
+            $storageName = "/storage/images/brands/" . basename($storagePath);
+            $brand->update([
+                'image' => $storageName,
+            ]);
+        }
         $brand->update([
-            'title'=>$data->title,
+            'title' => $data->title,
+            'description' => $data->description,
+            'meta_title' => $data->meta_title,
+            'meta_desc' => $data->meta_desc,
+            'meta_key' => $data->meta_key,
         ]);
         return response()->json([
             "status" => 200,
-            'data'=>$brand
+            'data' => $brand
         ]);
     }
 

@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('conditions', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('lastName')->after('name');
+            $table->string('phone')->nullable()->after('lastName');
+            $table->boolean('subscribed')->default(0)->after('phone');
+            $table->boolean('status')->default(1)->after('subscribed');
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conditions');
+        //
     }
 };

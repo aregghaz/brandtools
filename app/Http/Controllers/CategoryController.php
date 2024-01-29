@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -16,10 +17,12 @@ class CategoryController extends Controller
         return response()->json(new CategoryCollection($categories));
     }
 
-    public function categoryTree () {
-      $data  = Category::with('tree')->get();
-      dd($data);
+    public function categoryTree()
+    {
+        $data = Category::with('tree')->get();
+        dd($data);
     }
+
     public function create()
     {
         $categories = Category::all();
@@ -45,8 +48,13 @@ class CategoryController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-
-        $categories = Category::create([
+        $storageName = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+        }
+        Category::create([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
             'description' => $data->description,
@@ -54,8 +62,11 @@ class CategoryController extends Controller
             'meta_desc' => $data->meta_desc,
             'meta_key' => $data->meta_key,
             'status' => 1,
+            'image' => $storageName
         ]);
-        return response()->json($categories);
+        return response()->json([
+            "status" => 200,
+        ]);
         /// return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -111,6 +122,16 @@ class CategoryController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
+        if ($request->hasFile('image')) {
+            $imageFile = explode('/', $category->image);
+            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+            $category->update([
+                'image' => $storageName,
+            ]);
+        }
         $categories = $category->update([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,

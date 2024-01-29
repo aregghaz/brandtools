@@ -16,10 +16,11 @@ class BrandCollection extends ResourceCollection
         return $this->map(function ($data) {
             return [
                 'id' => $data->id,
+                'image' => $data->image,
                 'title' => $data->title,
                 'slug' => $data->slug,
-                'description' => $data->description,
-                "updated_at"=> $data->updated_at,
+//                'description' => $data->description,
+                "updated"=> $data->updated_at,
             ];
         });
     }

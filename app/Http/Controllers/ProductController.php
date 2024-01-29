@@ -111,6 +111,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->value);
+
         $product = Product::create([
             'name' => $data->title,
             'description' => $data->description,
@@ -125,9 +126,9 @@ class ProductController extends Controller
             'quantity' => $data->quantity,
 //            'image',
             'status' => 1,
-            'meta_title' => $data->special_price,
-            'meta_desc' => $data->special_price,
-            'meta_key' => $data->special_price,
+            'meta_title' => $data->meta_title,
+            'meta_desc' => $data->meta_desc,
+            'meta_key' => $data->meta_key,
         ]);
         // $product->categories()->sync($data->categories->id);
         foreach ($data->attributes as $attribute) {
@@ -137,7 +138,9 @@ class ProductController extends Controller
         foreach ($data->categories as $categories) {
             $product->categories()->attach($categories->id);
         }
-        return response()->json($product);
+        return response()->json([
+            "status" => 200,
+        ]);
     }
 
     public function edit(Product $product)
@@ -168,14 +171,14 @@ class ProductController extends Controller
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
-           /// 'condition_id' => isset($data->condition_id) && isset($data->condition_id->id) ? $data->condition_id->id : null,
+            /// 'condition_id' => isset($data->condition_id) && isset($data->condition_id->id) ? $data->condition_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
 //            'image',
             'status' => $data->status->id || null,
-            'meta_title' => $data->special_price,
-            'meta_desc' => $data->special_price,
-            'meta_key' => $data->special_price,
+            'meta_title' => $data->meta_title,
+            'meta_desc' => $data->meta_desc,
+            'meta_key' => $data->meta_key,
         ]);
 
 
@@ -191,7 +194,6 @@ class ProductController extends Controller
 
 
         return response()->json([
-            'product' => $product,
             'status' => 200
         ]);
     }

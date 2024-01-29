@@ -44,6 +44,7 @@ Route::get('/test',[\App\Http\Controllers\TestController::class ,'index']);
 Route::get('/test1/{file}',[\App\Http\Controllers\TestController::class ,'product']);
 Route::get('/test2',[\App\Http\Controllers\TestController::class ,'attributes']);
 Route::get('/test3/{file}',[\App\Http\Controllers\TestController::class ,'prAttr']);
+Route::get('/test4',[\App\Http\Controllers\TestController::class ,'users']);
 Route::get('/removeOldImage',[\App\Http\Controllers\TestController::class ,'removeOldImage']);
 Route::group([
     'prefix' => 'auth'
