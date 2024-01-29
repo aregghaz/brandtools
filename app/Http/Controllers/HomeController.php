@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BrandCollection;
 use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\PorductShortCollection;
@@ -56,23 +55,29 @@ class HomeController extends Controller
                 'meta_key' => $product->meta_key,]
         );
     }
+
     public function getByTeg($getByTeg, $limit, Request $request)
     {
         $products = Product::where(['teg_id' => $getByTeg, 'status' => 1])->limit($limit)->get();
         return response()->json(new PorductShortCollection($products));
     }
+
     public function category(Request $request)
     {
-        $category = Category::with('children')->select('id','title','parent_id')->get();
+        $category = Category::with('children')->select('id', 'title', 'parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
-    public function productsCategory($id,$limit, Request $request) {
-       $products = Product::whereHas('categories', function ($query) use ($id){
-           $query->where('categories.id',$id);
-       })->limit($limit)->get();
+
+    public function productsCategory($id, $limit, Request $request)
+    {
+        $products = Product::whereHas('categories', function ($query) use ($id) {
+            $query->where('categories.id', $id);
+        })->limit($limit)->get();
         return response()->json(new PorductShortCollection($products));
     }
-    public function singleCategory($id) {
+
+    public function singleCategory($id)
+    {
         $category = Category::with('children')->find($id);
         return response()->json([
             'id' => $category->id,
@@ -80,20 +85,47 @@ class HomeController extends Controller
             'children' => new CategoryShortCollection($category->children)
         ]);
     }
-    public function singleCat($id) {
+
+    public function singleCat($id)
+    {
         $category = Category::find($id);
         return response()->json($category);
     }
-    public function getTags () {
+
+    public function getTags()
+    {
         $tags = Teg::all();
         return response()->json(new SelectCollection($tags));
     }
-    public function getBrand ($limit) {
+
+    public function getBrand($limit)
+    {
         $brands = Brand::limit($limit)->get();
         return response()->json(new BrandsCollection($brands));
     }
-    public function getSingleBrand ($id) {
+
+    public function getSingleBrand($id)
+    {
         $brands = Brand::find($id);
         return response()->json($brands);
+    }
+
+    public function brandProducts($id, $limit)
+    {
+        $data = Brand::with(['products' => function ($query) use ($limit) {
+            $query->limit($limit);
+        }])->find($id);
+        return response()->json([
+            'id' => $data->id,
+            'title' => $data->title,
+            'description' => $data->description,
+            'meta_title' => $data->meta_title ?? '--',
+            'meta_desc' => $data->meta_desc ?? '--',
+            'meta_key' => $data->meta_key ?? '--',
+            'status' => $data->status ?? '--',
+            'image' => $data->image ?? '--',
+            "updated" => $data->updated_at,
+            'products'=> new PorductShortCollection($data->products),
+        ]);
     }
 }

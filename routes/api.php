@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +24,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/singleProduct/{id}',[HomeController::class ,'singleProduct']);
 Route::get('/productsByTeg/{id}/{limit}',[HomeController::class ,'getByTeg']);
 
-
 Route::get('/category',[HomeController::class ,'category']);
 Route::get('/category/{id}',[HomeController::class ,'singleCategory']);
 Route::get('/singleCat/{id}',[HomeController::class ,'singleCat']);
 
 Route::get('/products-by-catId/{id}/{limit}',[HomeController::class ,'productsCategory']);
-
+Route::get('/products-by-brand-id/{id}/{limit}',[HomeController::class ,'brandProducts']);
 Route::get('/getTags',[HomeController::class ,'getTags']);
 
 Route::get('/get-brands/{limit}',[HomeController::class ,'getBrand']);
@@ -79,5 +79,7 @@ Route::group([
     Route::resource('attributes', AttributeController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('conditions', ConditionController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('banners', UserController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

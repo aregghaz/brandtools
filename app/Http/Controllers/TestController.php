@@ -181,7 +181,7 @@ class TestController extends Controller
     public function users(Request $request)
     {
         /* open this for local file testing purposes only*/
-
+        set_time_limit(0);
         /// DB::beginTransaction();
         $xlsx = SimpleXLSX::parse(base_path() . '/public/uploads/users.xlsx');
         foreach ($xlsx->rows() as $index => $data) {
