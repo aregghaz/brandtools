@@ -15,7 +15,12 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-        $brands = Brand::orderBy('id', 'DESC')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $brands = Brand::orderBy('id', 'DESC');
+        $queryData = $request->get('query');
+        if (isset($queryData)) {
+            $this->convertQuery($queryData, $brands, 2);
+        }
+        $brands = $brands->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new BrandCollection($brands));
     }
 

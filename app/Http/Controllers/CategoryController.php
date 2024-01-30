@@ -13,7 +13,12 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-        $categories = Category::with('parent')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $queryData = $request->get('query');
+        $categories = Category::with('parent');
+        if (isset($queryData)) {
+            $this->convertQuery($queryData, $categories, 2);
+        }
+        $categories = $categories->take(15 * $showMore)->orderBy('id', 'DESC')->get();
         return response()->json(new CategoryCollection($categories));
     }
 

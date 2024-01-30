@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
@@ -22,21 +23,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/singleProduct/{id}',[HomeController::class ,'singleProduct']);
-Route::get('/productsByTeg/{id}/{limit}',[HomeController::class ,'getByTeg']);
+Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
+Route::get('/productsByTeg/{id}/{limit}', [HomeController::class, 'getByTeg']);
 
-Route::get('/category',[HomeController::class ,'category']);
-Route::get('/category/{id}',[HomeController::class ,'singleCategory']);
-Route::get('/singleCat/{id}',[HomeController::class ,'singleCat']);
+Route::get('/category', [HomeController::class, 'category']);
+Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
+Route::get('/singleCat/{id}', [HomeController::class, 'singleCat']);
 
-Route::get('/products-by-catId/{id}/{limit}',[HomeController::class ,'productsCategory']);
-Route::get('/products-by-brand-id/{id}/{limit}',[HomeController::class ,'brandProducts']);
-Route::get('/getTags',[HomeController::class ,'getTags']);
+Route::get('/products-by-catId/{id}/{limit}', [HomeController::class, 'productsCategory']);
+Route::get('/products-by-brand-id/{id}/{limit}', [HomeController::class, 'brandProducts']);
+Route::get('/getTags', [HomeController::class, 'getTags']);
 
-Route::get('/get-brands/{limit}',[HomeController::class ,'getBrand']);
-Route::get('/get-single-brands/{id}',[HomeController::class ,'getSingleBrand']);
-
-
+Route::get('/get-brands/{limit}', [HomeController::class, 'getBrand']);
+Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand']);
 
 
 Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
@@ -45,16 +44,13 @@ Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->
 Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
 
 
-
-
-
-Route::get('/categoryTree',[CategoryController::class ,'categoryTree']);
-Route::get('/test',[\App\Http\Controllers\TestController::class ,'index']);
-Route::get('/test1/{file}',[\App\Http\Controllers\TestController::class ,'product']);
-Route::get('/test2',[\App\Http\Controllers\TestController::class ,'attributes']);
-Route::get('/test3/{file}',[\App\Http\Controllers\TestController::class ,'prAttr']);
-Route::get('/test4',[\App\Http\Controllers\TestController::class ,'users']);
-Route::get('/removeOldImage',[\App\Http\Controllers\TestController::class ,'removeOldImage']);
+Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
+Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
+Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
+Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
+Route::get('/test3/{file}', [\App\Http\Controllers\TestController::class, 'prAttr']);
+Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);
+Route::get('/removeOldImage', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -89,6 +85,6 @@ Route::group([
     Route::resource('brands', BrandController::class);
     Route::resource('conditions', ConditionController::class);
     Route::resource('users', UserController::class);
-    Route::resource('banners', UserController::class);
+    Route::resource('banners', BannerController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

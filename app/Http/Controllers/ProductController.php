@@ -16,7 +16,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $showMore = $request->get('showMore');
-        $products = Product::with('teg', 'brand', 'categories')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $queryData = $request->get('query');
+        $products = Product::with('teg', 'brand', 'categories');
+        if (isset($queryData)) {
+            $this->convertQuery($queryData, $products,1);
+        }
+        $products = $products->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+
         return response()->json(new ProductCollection($products));
     }
 

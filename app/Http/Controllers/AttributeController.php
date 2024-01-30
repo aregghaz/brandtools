@@ -9,9 +9,18 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $attributes = Attribute::orderBy('id', 'DESC')->get();
+        $showMore = $request->get('showMore');
+        $queryData = $request->get('query');
+        $attributes = Attribute::orderBy('id', 'DESC');
+
+        if (isset($queryData)) {
+            $this->convertQuery($queryData, $attributes, 3);
+        }
+        $attributes = $attributes->take(15 * $showMore)->get();
+
+
         return response()->json(new AttributeCollection($attributes));
     }
 

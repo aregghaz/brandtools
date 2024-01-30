@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
 
+    /////FIXME SHOUD FIX CART SESSSION PART
     public function __construct()
     {
         if (Auth::check()) {
