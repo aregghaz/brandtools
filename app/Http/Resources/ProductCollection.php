@@ -29,7 +29,7 @@ class ProductCollection extends ResourceCollection
                 "teg" => $data->teg ? $data->teg->title : '--',
                 "brand" => $data->brand->title ?? '--',
                 "categories" =>$categoryName,
-                'status'=>$data->status,
+               /// 'status'=>$data->status,
                /// 'description' => $data->description ,
                 "updated" => $data->updated_at,
             ];
