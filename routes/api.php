@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\HomeController;
@@ -34,6 +35,14 @@ Route::get('/getTags',[HomeController::class ,'getTags']);
 
 Route::get('/get-brands/{limit}',[HomeController::class ,'getBrand']);
 Route::get('/get-single-brands/{id}',[HomeController::class ,'getSingleBrand']);
+
+
+
+
+Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
+Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
+Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
+Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
 
 
 

@@ -29,7 +29,4 @@ Route::resource('attributes', AttributeController::class);
 Route::resource('attribute_values', AttributeValueController::class);
 //Route::resource('cart', CartController::class);
 
-Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
-Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
-Route::get('update', [CartController::class, 'update'])->name('update');
 Route::get('categories/{category}/filter', [CategoryFilterController::class, 'filter'])->name('categories.filter');

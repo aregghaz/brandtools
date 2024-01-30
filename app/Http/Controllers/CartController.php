@@ -4,51 +4,64 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public int $user = 1;
+
     public function __construct()
     {
-        \Cart::session($this->user);
+        if (Auth::check()) {
+            \Cart::session(Auth::user()->id);
+        }
     }
 
-    public function index($productId,$qty)
+    public function index($productId, $qty)
     {
-         $Product = Product::find($productId); // assuming you have a Product model with id, name, description & price
-        $rowId = 456; // generate a unique() row ID
-        $userID = 2; // the user ID to bind the cart contents
+        $Product = Product::find($productId); // assuming you have a Product model with id, name, description & price
 
-// add the product to cart
-        $asd = \Cart::add(array(
-            'id' => 18, // inique row ID
+        if (!isset($Product)) {
+            return response()->json([
+                "message" => 'product not found'
+            ]);
+        }
+        \Cart::add(array(
+            'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
             'quantity' => $qty,
-//            'attributes' => array()
         ));
+        $cart = \Cart::getContent();
+        return response()->json($cart);
 
-        return $asd;
     }
 
 //
     public function getCart()
     {
-        $asd = \Cart::getContent();
+        $cart = \Cart::getContent();
+        return response()->json($cart);
 
-        return $asd;
     }
-    public function update()
+
+    public function update($productId, $qty)
     {
-        \Cart::update(13, array(
-            'name' => 'New Item Name', // new item name
+        \Cart::update($productId, array(
             'quantity' => array(
                 'relative' => false,
-                'value' => 5
+                'value' => $qty
             ),
         ));
-        $asd = \Cart::getContent();
+        $cart = \Cart::getContent();
 
-        return $asd;
+        return response()->json($cart);
+    }
+
+    public function delete($productId)
+    {
+        \Cart::remove($productId);
+        $cart = \Cart::getContent();
+        return response()->json($cart);
+
     }
 }
