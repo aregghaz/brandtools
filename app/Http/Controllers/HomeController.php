@@ -6,6 +6,7 @@ use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -70,10 +71,30 @@ class HomeController extends Controller
 
     public function productsCategory($id, $limit, Request $request)
     {
-        $products = Product::whereHas('categories', function ($query) use ($id) {
-            $query->where('categories.id', $id);
-        })->limit($limit)->get();
-        return response()->json(new PorductShortCollection($products));
+
+        /////FIXME SHOULD COME FROM CATEGORY TO PRODUCT
+//        $products = Product::whereHas('categories', function ($query) use ($id) {
+//            $query->where('categories.id', $id)->select('categories.id as cat_id');
+//        })->limit($limit)->get();
+
+
+        $data = Category::with(['products' => function ($query) use ($limit) {
+            $query->limit($limit);
+        }])->find($id);
+
+
+        return response()->json([
+            'id' => $data->id,
+            'title' => $data->title,
+            'description' => $data->description,
+            'meta_title' => $data->meta_title ?? '--',
+            'meta_desc' => $data->meta_desc ?? '--',
+            'meta_key' => $data->meta_key ?? '--',
+            'status' => $data->status ?? '--',
+            'image' => $data->image ?? '--',
+            "updated" => $data->updated_at,
+            'products' => new PorductShortCollection($data->products),
+        ]);
     }
 
     public function singleCategory($id)
@@ -88,8 +109,16 @@ class HomeController extends Controller
 
     public function singleCat($id)
     {
-        $category = Category::find($id);
-        return response()->json($category);
+        $category = Category::with('attributes')->find($id);
+        $attributeIds = $category->attributes->pluck('id');
+//        $products = Product::whereHas('attributes', function ($q) use ($attributeIds) {
+//            $q->whereIn('attributes.id',$attributeIds);
+//        })->get();
+        ///  $attributeValue = AttributeValue::whereIn('attribute_id',$attributeIds)->orderBy('attribute_id', 'DESC')->get();
+        $attribute = Attribute::whereIn('id', $attributeIds)->with(['values' => function ($query) {
+            $query->groupBy('value');
+        }])->get();
+        return response()->json($attribute);
     }
 
     public function getTags()
@@ -125,7 +154,7 @@ class HomeController extends Controller
             'status' => $data->status ?? '--',
             'image' => $data->image ?? '--',
             "updated" => $data->updated_at,
-            'products'=> new PorductShortCollection($data->products),
+            'products' => new PorductShortCollection($data->products),
         ]);
     }
 }

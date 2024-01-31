@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\SelectCollection;
+use App\Models\Attribute;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -41,9 +42,11 @@ class CategoryController extends Controller
                 "title" => "disable"
             ]
         ];
+        $attributes = Attribute::all();
         return response()->json([
             "categories" => new SelectCollection($categories),
-            "status" => new SelectCollection($data)
+            "status" => new SelectCollection($data),
+            'attributes' => new SelectCollection($attributes),
         ]);
     }
 
@@ -59,16 +62,20 @@ class CategoryController extends Controller
             $storagePath = Storage::put("public/images/category", $file);
             $storageName = "/storage/images/category/" . basename($storagePath);
         }
-        Category::create([
+        $category = Category::create([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
-            'description' => $data->description,
-            'meta_title' => $data->meta_title,
-            'meta_desc' => $data->meta_desc,
-            'meta_key' => $data->meta_key,
+            'description' => $data->description ?? null,
+            'meta_title' => $data->meta_title ?? null,
+            'meta_desc' => $data->meta_desc ?? null,
+            'meta_key' => $data->meta_key ?? null,
             'status' => 1,
             'image' => $storageName
         ]);
+        foreach ($data->attributes as $attribute) {
+            $idData = "$attribute->id";
+            $category->attributes()->attach($attribute->id);
+        }
         return response()->json([
             "status" => 200,
         ]);
@@ -87,6 +94,7 @@ class CategoryController extends Controller
                 "title" => "disable"
             ]
         ];
+        $attributes = Attribute::all();
         $categories = Category::all();
         return response()->json([
             "data" => [
@@ -97,6 +105,7 @@ class CategoryController extends Controller
                 'meta_title' => $category->meta_title,
                 'meta_desc' => $category->meta_desc,
                 'meta_key' => $category->meta_key,
+                'attributes' => new SelectCollection($category->attributes),
                 'categories' => $category->parent ? [
                     "id" => $category->parent->id,
                     "value" => $category->parent->id,
@@ -112,7 +121,8 @@ class CategoryController extends Controller
                 "updated_at" => $category->updated_at,
             ],
             "categories" => new SelectCollection($categories),
-            "status" => new SelectCollection($data)
+            "status" => new SelectCollection($data),
+            'attributes' => new SelectCollection($attributes),
         ]);
     }
 
@@ -146,7 +156,10 @@ class CategoryController extends Controller
             'meta_key' => $data->meta_key,
             'status' => (int)$data->status->id,
         ]);
-
+        $category->attributes()->detach();
+        foreach ($data->attributes as $attribute) {
+            $category->attributes()->attach($attribute->id);
+        }
         return response()->json([
             'categories' => $categories,
             'status' => 200

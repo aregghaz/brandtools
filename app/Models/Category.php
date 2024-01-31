@@ -44,11 +44,11 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id','id')->with('children');;
     }
-
     public function attributes()
     {
-        return $this->hasMany(Attribute::class);
+        return $this->belongsToMany(Attribute::class, 'categories_attribute','categories_id','attribute_id');
     }
+
 
     public function parent()
     {

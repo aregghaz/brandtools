@@ -19,6 +19,7 @@ class UserCollection extends ResourceCollection
                 'id' => $data->id,
                 'name' => $data->name,
                 'lastName' => $data->lastName,
+                'fatherName' => $data->fatherName,
                 "phone" => $data->phone,
                 "email" => $data->email,
                 "subscribed" => $data->subscribed,
