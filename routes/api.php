@@ -42,6 +42,13 @@ Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name
 Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
 Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
 Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
+Route::get('get-banners', [HomeController::class, 'getBanners']);
+
+
+
+
+
+
 
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
@@ -51,6 +58,11 @@ Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']
 Route::get('/test3/{file}', [\App\Http\Controllers\TestController::class, 'prAttr']);
 Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);
 Route::get('/removeOldImage', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
+
+
+
+
+
 Route::group([
     'prefix' => 'auth'
 ], function () {

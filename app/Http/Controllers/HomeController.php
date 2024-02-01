@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BannersCollection;
 use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
+use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -56,47 +58,29 @@ class HomeController extends Controller
         );
     }
 
-    public function getByTeg($getByTeg, $limit, Request $request)
+    public function getByTeg($getByTeg, $limit, Request $request): \Illuminate\Http\JsonResponse
     {
         $products = Product::where(['teg_id' => $getByTeg, 'status' => 1])->limit($limit)->get();
         return response()->json(new PorductShortCollection($products));
     }
 
-    public function category(Request $request)
+    public function category(Request $request): \Illuminate\Http\JsonResponse
     {
         $category = Category::with('children')->select('id', 'title', 'parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
 
-    public function productsCategory($id, $limit, Request $request)
+    public function productsCategory($id, $limit, Request $request): \Illuminate\Http\JsonResponse
     {
-
-        /////FIXME SHOULD COME FROM CATEGORY TO PRODUCT
-//        $products = Product::whereHas('categories', function ($query) use ($id) {
-//            $query->where('categories.id', $id)->select('categories.id as cat_id');
-//        })->limit($limit)->get();
-
-
         $data = Category::with(['products' => function ($query) use ($limit) {
             $query->limit($limit);
         }])->find($id);
 
 
-        return response()->json([
-            'id' => $data->id,
-            'title' => $data->title,
-            'description' => $data->description,
-            'meta_title' => $data->meta_title ?? '--',
-            'meta_desc' => $data->meta_desc ?? '--',
-            'meta_key' => $data->meta_key ?? '--',
-            'status' => $data->status ?? '--',
-            'image' => $data->image ?? '--',
-            "updated" => $data->updated_at,
-            'products' => new PorductShortCollection($data->products),
-        ]);
+        return $this->getJsonResponse($data);
     }
 
-    public function singleCategory($id)
+    public function singleCategory($id): \Illuminate\Http\JsonResponse
     {
         $category = Category::with('children')->find($id);
         return response()->json([
@@ -106,43 +90,55 @@ class HomeController extends Controller
         ]);
     }
 
-    public function singleCat($id, $limit)
+    public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
         $category = Category::with([
             'attributes',
-            'products'=> function ($q) use ($limit){
+            'products' => function ($q) use ($limit) {
                 $q->limit($limit);
             },
             'attributes.values' => function ($q) {
-            $q->distinct('value');
-        }])->find($id);
+                $q->distinct('value');
+            }])->find($id);
 
         return response()->json($category);
     }
 
-    public function getTags()
+    public function getTags(): \Illuminate\Http\JsonResponse
     {
         $tags = Teg::all();
         return response()->json(new SelectCollection($tags));
     }
 
-    public function getBrand($limit)
+    public function getBrand($limit): \Illuminate\Http\JsonResponse
     {
         $brands = Brand::limit($limit)->get();
         return response()->json(new BrandsCollection($brands));
     }
 
-    public function getSingleBrand($id)
+    public function getSingleBrand($id): \Illuminate\Http\JsonResponse
     {
         $brands = Brand::find($id);
         return response()->json($brands);
     }
 
-    public function brandProducts($id, $limit)
+    public function brandProducts($id, $limit): \Illuminate\Http\JsonResponse
     {
         $data = Brand::with(['products' => function ($query) use ($limit) {
             $query->limit($limit);
         }])->find($id);
+        return $this->getJsonResponse($data);
+    }
+
+    public function getBanners(): \Illuminate\Http\JsonResponse
+    {
+        $data = Banner::all();
+        return response()->json(new BannersCollection($data));
+    }
+
+
+    public function getJsonResponse(\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null $data): \Illuminate\Http\JsonResponse
+    {
         return response()->json([
             'id' => $data->id,
             'title' => $data->title,
