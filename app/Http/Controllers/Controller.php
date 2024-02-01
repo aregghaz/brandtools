@@ -12,16 +12,25 @@ class Controller extends BaseController
 
     protected function convertQuery($queryData, $data, $type)
     {
-
-        $data = $data->where(function ($query) use ($queryData, $type) {
+        return $data->where(function ($query) use ($queryData, $type) {
             $query->where($type === 1 ? 'name' : "title", 'LIKE', '%' . $queryData . '%');
             if ($type !== 3) {
                 $query->orWhere('slug', 'LIKE', '%' . $queryData . '%');
             }
-
-//                ->orWhere('id', 'LIKE', '%' . $queryData . '%');
         });
+    }
 
-        return $data;
+    public function simpleSelect(): array
+    {
+        return [
+            (object)[
+                "id" => 1,
+                "title" => "enable"
+            ],
+            (object)[
+                "id" => 2,
+                "title" => "disable"
+            ]
+        ];
     }
 }

@@ -10,10 +10,16 @@ class BannersCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @return array<int|string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return parent::toArray($request);
+        return $this->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'image' => $data->image,
+                'position' => $data->position,
+                "updated"=> $data->updated_at,
+            ];
+        });
     }
 }

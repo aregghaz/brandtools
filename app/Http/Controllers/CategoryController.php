@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $showMore = $request->get('showMore');
         $queryData = $request->get('query');
@@ -29,7 +29,7 @@ class CategoryController extends Controller
         dd($data);
     }
 
-    public function create()
+    public function create(): \Illuminate\Http\JsonResponse
     {
         $categories = Category::all();
         $data = [
@@ -50,7 +50,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'value' => 'required',
@@ -79,10 +79,9 @@ class CategoryController extends Controller
         return response()->json([
             "status" => 200,
         ]);
-        /// return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
-    public function show(Category $category)
+    public function show(Category $category): \Illuminate\Http\JsonResponse
     {
         $data = [
             (object)[
@@ -147,7 +146,7 @@ class CategoryController extends Controller
                 'image' => $storageName,
             ]);
         }
-        $categories = $category->update([
+        $category->update([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
             'description' => $data->description,
@@ -161,7 +160,6 @@ class CategoryController extends Controller
             $category->attributes()->attach($attribute->id);
         }
         return response()->json([
-            'categories' => $categories,
             'status' => 200
         ]);
     }
