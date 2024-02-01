@@ -19,7 +19,7 @@ class ProductController extends Controller
         $queryData = $request->get('query');
         $products = Product::with('teg', 'brand', 'categories');
         if (isset($queryData)) {
-            $this->convertQuery($queryData, $products,1);
+            $this->convertQuery($queryData, $products, 1);
         }
         $products = $products->take(15 * $showMore)->orderBy('id', 'DESC')->get();
 
@@ -72,8 +72,10 @@ class ProductController extends Controller
                 'description' => $product->description,
                 'price' => $product->price,
                 'special_price' => $product->special_price,
-                'start' => $product->start,
-                'end' => $product->end,
+                'range' => [
+                    $product->start,
+                    $product->end,
+                ],
                 'teg_id' => $product->teg_id,
                 'categories' => new SelectCollection($product->categories),
                 'attributes' => new SelectCollection($product->attributes),
@@ -109,11 +111,11 @@ class ProductController extends Controller
 
         $product = Product::create([
             'name' => $data->title,
-            'description' => $data->description,
+            'description' => $data->description ?? null,
             'price' => $data->price,
-            'special_price' => $data->special_price,
-//            'start',
-//            'end',
+            'special_price' => $data->special_price ?? 0,
+            'start' => $data->range[0] ? date_create($data->range[0])->format('Y-m-d') : null,
+            'end' => $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
@@ -121,15 +123,18 @@ class ProductController extends Controller
             'quantity' => $data->quantity,
 //            'image',
             'status' => 1,
-            'meta_title' => $data->meta_title,
-            'meta_desc' => $data->meta_desc,
-            'meta_key' => $data->meta_key,
+            'meta_title' => $data->meta_title ?? '',
+            'meta_desc' => $data->meta_desc ?? '',
+            'meta_key' => $data->meta_key ?? "",
         ]);
         // $product->categories()->sync($data->categories->id);
-        foreach ($data->attributes as $attribute) {
-            $idData = "$attribute->id";
-            $product->attributes()->attach($attribute->id, ['value' => $data->$idData]);
+        if (isset($data->attributes)) {
+            foreach ($data->attributes as $attribute) {
+                $idData = "$attribute->id";
+                $product->attributes()->attach($attribute->id, ['value' => $data->$idData]);
+            }
         }
+
         foreach ($data->categories as $categories) {
             $product->categories()->attach($categories->id);
         }
@@ -138,12 +143,12 @@ class ProductController extends Controller
         ]);
     }
 
-    public function edit(Product $product)
-    {
-        $categories = Category::all();
-        $attributes = Attribute::all();
-        return view('products.edit', compact('product', 'categories', 'attributes'));
-    }
+//    public function edit(Product $product)
+//    {
+//        $categories = Category::all();
+//        $attributes = Attribute::all();
+//        return view('products.edit', compact('product', 'categories', 'attributes'));
+//    }
 
     public function update(Request $request, Product $product)
     {
@@ -161,9 +166,8 @@ class ProductController extends Controller
             'description' => $data->description,
             'price' => $data->price,
             'special_price' => $data->special_price,
-//            'start',
-//            'end',
-//            'slug',
+            'start' => $data->range[0] ? date_create($data->range[0])->format('Y-m-d') : null,
+            'end' => $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,
 //            'sku',
