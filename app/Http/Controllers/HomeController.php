@@ -6,7 +6,6 @@ use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
-use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -107,18 +106,18 @@ class HomeController extends Controller
         ]);
     }
 
-    public function singleCat($id)
+    public function singleCat($id, $limit)
     {
-        $category = Category::with('attributes')->find($id);
-        $attributeIds = $category->attributes->pluck('id');
-//        $products = Product::whereHas('attributes', function ($q) use ($attributeIds) {
-//            $q->whereIn('attributes.id',$attributeIds);
-//        })->get();
-        ///  $attributeValue = AttributeValue::whereIn('attribute_id',$attributeIds)->orderBy('attribute_id', 'DESC')->get();
-        $attribute = Attribute::whereIn('id', $attributeIds)->with(['values' => function ($query) {
-            $query->groupBy('value');
-        }])->get();
-        return response()->json($attribute);
+        $category = Category::with([
+            'attributes',
+            'products'=> function ($q) use ($limit){
+                $q->limit($limit);
+            },
+            'attributes.values' => function ($q) {
+            $q->distinct('value');
+        }])->find($id);
+
+        return response()->json($category);
     }
 
     public function getTags()

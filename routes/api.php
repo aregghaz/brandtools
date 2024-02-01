@@ -28,7 +28,7 @@ Route::get('/productsByTeg/{id}/{limit}', [HomeController::class, 'getByTeg']);
 
 Route::get('/category', [HomeController::class, 'category']);
 Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
-Route::get('/singleCat/{id}', [HomeController::class, 'singleCat']);
+Route::get('/singleCat/{id}/{limit}', [HomeController::class, 'singleCat']);
 
 Route::get('/products-by-catId/{id}/{limit}', [HomeController::class, 'productsCategory']);
 Route::get('/products-by-brand-id/{id}/{limit}', [HomeController::class, 'brandProducts']);

@@ -171,7 +171,10 @@ class TestController extends Controller
 
                 $product = Product::where('product_id', $data[$product_id])->first();
                 $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
-                $product->attributes()->attach($attr, ['value' => $data[$value]]);
+                if (isset($product)) {
+                    $product->attributes()->attach($attr, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
+
+                }
 
             }
         }
@@ -202,7 +205,7 @@ class TestController extends Controller
                     'phone' => $data[$phone],
                     'password' => $data[$password],
                     'subscribed' => $data[$subscribed] === 'yes' ? 1 : 0,
-                    'status' =>$data[$status] === 'true' ? 1 : 0
+                    'status' => $data[$status] === 'true' ? 1 : 0
                 ]);
 
             }
