@@ -14,7 +14,12 @@ class UserController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $showMore = $request->get('showMore');
-        $users = User::orderBy('id', 'DESC')->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $queryData = $request->get('query');
+        $users = User::orderBy('id', 'DESC');
+        if (isset($queryData)) {
+            $this->convertUserQuery($queryData, $users);
+        }
+        $users = $users->take(15 * $showMore)->get();
         return response()->json(new UserCollection($users));
     }
 

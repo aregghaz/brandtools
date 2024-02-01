@@ -19,6 +19,16 @@ class Controller extends BaseController
             }
         });
     }
+    protected function convertUserQuery($queryData, $data)
+    {
+        return $data->where(function ($query) use ($queryData) {
+            $query->where('name', 'LIKE', '%' . $queryData . '%')
+                ->orWhere('lastName', 'LIKE', '%' . $queryData . '%')
+                ->orWhere('email', 'LIKE', '%' . $queryData . '%')
+                ->orWhere('phone', 'LIKE', '%' . $queryData . '%');
+
+        });
+    }
 
     public function simpleSelect(): array
     {
