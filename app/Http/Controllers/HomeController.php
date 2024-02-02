@@ -8,12 +8,14 @@ use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\NewsCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
+use App\Http\Resources\VideoCollection;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\News;
 use App\Models\Product;
 use App\Models\Teg;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -140,14 +142,15 @@ class HomeController extends Controller
 
     public function getNews($limit)
     {
-            $news = News::where('status', 1)->limit($limit)->get();
+        $news = News::where('status', 1)->limit($limit)->get();
 
         return response()->json(new NewsCollection($news));
 
     }
 
-    public function getSingleNews($id){
-            $news = News::find($id);
+    public function getSingleNews($id)
+    {
+        $news = News::find($id);
         return response()->json([
             'id' => $news->id,
             'title' => $news->title,
@@ -158,8 +161,27 @@ class HomeController extends Controller
             'meta_key' => $news->meta_key,
             'updated' => $news->updated_at,
         ]);
+    }
+
+    public function getSingleVideos($id): \Illuminate\Http\JsonResponse
+    {
+        $news = Video::find($id);
+        return response()->json([
+            'id' => $news->id,
+            'title' => $news->title,
+            'slug' => $news->slug,
+            'video' => $news->video,
+        ]);
+    }
+
+    public function getVideos($limit): \Illuminate\Http\JsonResponse
+    {
+        $news = Video::where('status', 1)->limit($limit)->get();
+
+        return response()->json(new VideoCollection($news));
 
     }
+
     public function getJsonResponse(\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null $data): \Illuminate\Http\JsonResponse
     {
         return response()->json([
