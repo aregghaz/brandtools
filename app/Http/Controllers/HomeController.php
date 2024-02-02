@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BannersCollection;
 use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
+use App\Http\Resources\NewsCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\News;
 use App\Models\Product;
 use App\Models\Teg;
 use Illuminate\Http\Request;
@@ -136,13 +138,35 @@ class HomeController extends Controller
         return response()->json(new BannersCollection($data));
     }
 
+    public function getNews($limit)
+    {
+            $news = News::where('status', 1)->limit($limit)->get();
 
+        return response()->json(new NewsCollection($news));
+
+    }
+
+    public function getSingleNews($id){
+            $news = News::find($id);
+        return response()->json([
+            'id' => $news->id,
+            'title' => $news->title,
+            'content' => $news->content,
+            'video' => $news->video,
+            'meta_title' => $news->meta_title,
+            'meta_desc' => $news->meta_desc,
+            'meta_key' => $news->meta_key,
+            'updated' => $news->updated_at,
+        ]);
+
+    }
     public function getJsonResponse(\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null $data): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'id' => $data->id,
             'title' => $data->title,
             'description' => $data->description,
+            'banner' => isset($data->banner) ? $data->banner : '',
             'meta_title' => $data->meta_title ?? '--',
             'meta_desc' => $data->meta_desc ?? '--',
             'meta_key' => $data->meta_key ?? '--',

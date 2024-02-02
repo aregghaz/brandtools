@@ -62,6 +62,12 @@ class CategoryController extends Controller
             $storagePath = Storage::put("public/images/category", $file);
             $storageName = "/storage/images/category/" . basename($storagePath);
         }
+        $storageBanner = null;
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+        }
         $category = Category::create([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
@@ -70,10 +76,10 @@ class CategoryController extends Controller
             'meta_desc' => $data->meta_desc ?? null,
             'meta_key' => $data->meta_key ?? null,
             'status' => 1,
-            'image' => $storageName
+            'image' => $storageName,
+            'banner' => $storageBanner
         ]);
         foreach ($data->attributes as $attribute) {
-            $idData = "$attribute->id";
             $category->attributes()->attach($attribute->id);
         }
         return response()->json([
@@ -144,6 +150,16 @@ class CategoryController extends Controller
             $storageName = "/storage/images/category/" . basename($storagePath);
             $category->update([
                 'image' => $storageName,
+            ]);
+        }
+        if ($request->hasFile('banner')) {
+            $imageFile = explode('/', $category->banner);
+            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
+            $file = $request->file('banner');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+            $category->update([
+                'banner' => $storageName,
             ]);
         }
         $category->update([

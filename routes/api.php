@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,8 @@ Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
 Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
 Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
 Route::get('get-banners', [HomeController::class, 'getBanners']);
+Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
+Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
 
 
 
@@ -98,5 +101,6 @@ Route::group([
     Route::resource('conditions', ConditionController::class);
     Route::resource('users', UserController::class);
     Route::resource('banners', BannerController::class);
+    Route::resource('news', NewsController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

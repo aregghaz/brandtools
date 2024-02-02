@@ -23,6 +23,7 @@ class Category extends Model
         'meta_key',
         'status',
         'image',
+        'banner',
     ];
     public function sluggable(): array
     {
