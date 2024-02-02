@@ -114,6 +114,12 @@ class UserController extends Controller
             "status" => 200,
         ]);
     }
-
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
 
 }
