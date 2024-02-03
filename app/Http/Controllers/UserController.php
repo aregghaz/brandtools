@@ -44,14 +44,14 @@ class UserController extends Controller
                 "subscribed" => (object)[
                     "id" => $user->subscribed,
                     "value" => $user->subscribed,
-                    "name" => $user->subscribed === 0 ? "disable" : "enable",
-                    "label" => $user->subscribed === 0 ? "disable" : "enable"
+                    "name" => $user->subscribed === 0 ? "отключить" : "включено",
+                    "label" => $user->subscribed === 0 ? "отключить" : "включено"
                 ],
                 "status" => (object)[
                     "id" => $user->status,
                     "value" => $user->status,
-                    "name" => $user->status === 0 ? "disable" : "enable",
-                    "label" => $user->subscribed === 0 ? "disable" : "enable"
+                    "name" => $user->status === 0 ? "отключить" : "включено",
+                    "label" => $user->subscribed === 0 ? "отключить" : "включено"
                 ],
             ],
             'status' => new SelectCollection($this->simpleSelect()),

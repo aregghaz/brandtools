@@ -10,6 +10,7 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SliderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
@@ -100,5 +101,6 @@ Route::group([
     Route::resource('banners', BannerController::class);
     Route::resource('news', NewsController::class);
     Route::resource('video', VideoController::class);
+    Route::resource('sliders', SliderController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

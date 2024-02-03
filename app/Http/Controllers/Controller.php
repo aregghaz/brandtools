@@ -35,11 +35,11 @@ class Controller extends BaseController
         return [
             (object)[
                 "id" => 1,
-                "title" => "enable"
+                "title" => "включено"
             ],
             (object)[
                 "id" => 2,
-                "title" => "disable"
+                "title" => "отключить"
             ]
         ];
     }

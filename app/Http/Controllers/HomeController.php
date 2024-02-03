@@ -51,8 +51,8 @@ class HomeController extends Controller
                 'quantity' => $product->quantity,
                 'image' => $product->image,
                 'status' => [
-                    "name" => $product->status === 1 ? 'enable' : "disable",
-                    "label" => $product->status === 1 ? 'enable' : "disable",
+                    "name" => $product->status === 1 ? 'включено' : "отключить",
+                    "label" => $product->status === 1 ? 'включено' : "отключить",
                     "value" => $product->status,
                     "id" => $product->status
                 ],

@@ -28,21 +28,11 @@ class ProductController extends Controller
 
     public function create(): \Illuminate\Http\JsonResponse
     {
-        $status = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
         $brands = Brand::all();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
         return response()->json([
-            'status' => new SelectCollection($status),
+            'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),
@@ -54,16 +44,6 @@ class ProductController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
-        $status = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
 
         return response()->json([
             'data' => [
@@ -89,8 +69,8 @@ class ProductController extends Controller
                 'quantity' => $product->quantity,
                 'image' => $product->image,
                 'status' => [
-                    "name" => $product->status === 1 ? 'enable' : "disable",
-                    "label" => $product->status === 1 ? 'enable' : "disable",
+                    "name" => $product->status === 1 ? 'включено' : "отключить",
+                    "label" => $product->status === 1 ? 'включено' : "отключить",
                     "value" => $product->status,
                     "id" => $product->status
                 ],
@@ -98,7 +78,7 @@ class ProductController extends Controller
                 'meta_desc' => $product->meta_desc,
                 'meta_key' => $product->meta_key,
             ],
-            'status' => new SelectCollection($status),
+            'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),

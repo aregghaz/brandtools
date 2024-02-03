@@ -32,20 +32,10 @@ class CategoryController extends Controller
     public function create(): \Illuminate\Http\JsonResponse
     {
         $categories = Category::all();
-        $data = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
         $attributes = Attribute::all();
         return response()->json([
             "categories" => new SelectCollection($categories),
-            "status" => new SelectCollection($data),
+            'status' => new SelectCollection($this->simpleSelect()),
             'attributes' => new SelectCollection($attributes),
         ]);
     }
@@ -89,16 +79,6 @@ class CategoryController extends Controller
 
     public function show(Category $category): \Illuminate\Http\JsonResponse
     {
-        $data = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
         $attributes = Attribute::all();
         $categories = Category::all();
         return response()->json([
@@ -120,13 +100,13 @@ class CategoryController extends Controller
                 'status' => [
                     "id" => $category->status,
                     "value" => $category->status,
-                    "label" => $category->status === 1 ? 'enable' : 'disable',
-                    "name" => $category->status === 1 ? 'enable' : 'disable',
+                    "label" => $category->status === 1 ? 'включено' : 'отключить',
+                    "name" => $category->status === 1 ? 'включено' : 'отключить',
                 ],
                 "updated_at" => $category->updated_at,
             ],
             "categories" => new SelectCollection($categories),
-            "status" => new SelectCollection($data),
+            'status' => new SelectCollection($this->simpleSelect()),
             'attributes' => new SelectCollection($attributes),
         ]);
     }

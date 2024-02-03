@@ -61,27 +61,17 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        $status = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
 
         return response()->json([
-            'status' => new SelectCollection($status),
+            'status' => new SelectCollection($this->simpleSelect()),
             "data" => [
                 'id' => $video->id,
                 'title' => $video->title,
                 'status' => [
                     "id" => $video->status,
                     "value" => $video->status,
-                    "label" => $video->status === 1 ? 'enable' : 'disable',
-                    "name" => $video->status === 1 ? 'enable' : 'disable',
+                    "label" => $video->status === 1 ? 'включено' : 'отключить',
+                    "name" => $video->status === 1 ? 'включено' : 'отключить',
                 ],
                 'video' => $video->video,
             ]

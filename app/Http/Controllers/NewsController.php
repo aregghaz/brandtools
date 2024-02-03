@@ -71,19 +71,8 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        $status = [
-            (object)[
-                "id" => 1,
-                "title" => "enable"
-            ],
-            (object)[
-                "id" => 2,
-                "title" => "disable"
-            ]
-        ];
-
         return response()->json([
-            'status' => new SelectCollection($status),
+            'status' => new SelectCollection($this->simpleSelect()),
             "data" => [
                 'id' => $news->id,
                 'title' => $news->title,
@@ -91,8 +80,8 @@ class NewsController extends Controller
                 'status' => [
                     "id" => $news->status,
                     "value" => $news->status,
-                    "label" => $news->status === 1 ? 'enable' : 'disable',
-                    "name" => $news->status === 1 ? 'enable' : 'disable',
+                    "label" => $news->status === 1 ? 'включено' : 'отключить',
+                    "name" => $news->status === 1 ? 'включено' : 'отключить',
                 ],
                 'video' => $news->video,
                 'meta_title' => $news->meta_title,
@@ -120,7 +109,6 @@ class NewsController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        $storageName = null;
         if ($request->hasFile('image')) {
             $imageFile = explode('/', $news->image);
             Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
