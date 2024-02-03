@@ -54,8 +54,8 @@ class BrandController extends Controller
             'image' => $storageName,
             'description' => $data->description,
             'meta_title' => $data->meta_title,
-            'meta_desc' => $data->meta_desc,
-            'meta_key' => $data->meta_key,
+            'meta_desc' => $data->meta_desc ?? '',
+            'meta_key' => $data->meta_key ?? '',
         ]);
         return response()->json([
             "status" => 200,
