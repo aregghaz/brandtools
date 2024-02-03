@@ -59,7 +59,7 @@ class NewsController extends Controller
             'status' => 1,
             'meta_title' => $data->meta_title??'',
             'meta_desc' => $data->meta_desc??'',
-            'meta_key' => $data->meta_key?"",
+            'meta_key' => $data->meta_key??"",
         ]);
         return response()->json([
             "status" => 200,
