@@ -53,6 +53,7 @@ Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos'])
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
 Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
+Route::get('getSliders', [HomeController::class, 'getSliders']);
 
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);

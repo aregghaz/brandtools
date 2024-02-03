@@ -14,6 +14,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\News;
 use App\Models\Product;
+use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -179,6 +180,13 @@ class HomeController extends Controller
         $news = Video::where('status', 1)->limit($limit)->get();
 
         return response()->json(new VideoCollection($news));
+
+    }
+    public function getSliders(): \Illuminate\Http\JsonResponse
+    {
+        $slider = Slider::where('status', 1)->orderBy('position','asc')->get();
+
+        return response()->json($slider);
 
     }
 
