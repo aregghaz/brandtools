@@ -21,7 +21,7 @@ class ProductCollection extends ResourceCollection
             $images = explode('.JPG' ,$data->image);
             return [
                 'id' => $data->id,
-                "image" => 'https://brendinstrument.ru/image/cache/'.$images[0].'-351x265.JPG',
+                "prImage" => 'https://brendinstrument.ru/image/cache/'.$images[0].'-351x265.JPG',
                 'name' => $data->name,
                 'price' => $data->price,
                 "special_price" => $data->special_price,
