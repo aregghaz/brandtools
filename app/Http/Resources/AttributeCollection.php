@@ -17,8 +17,8 @@ class AttributeCollection extends ResourceCollection
             return [
                 'id' => $data->id,
                 'title' => $data->title,
-                'type' => (int)$data->type === 1 ? 'select' : 'range',
-                "updated_at" => $data->updated_at,
+                'type' => (int)$data->type === 1 ? 'выбор' : 'диапазон',
+                "updated" => $data->updated_at,
             ];
         });
     }
