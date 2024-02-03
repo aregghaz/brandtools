@@ -53,13 +53,13 @@ class NewsController extends Controller
         }
         News::create([
             'title' => $data->title,
-            'image' => $storageName ?? null,
-            'video' => $data->video ?? null,
+            'image' => $storageName ?? '',
+            'video' => $data->video ?? '',
             'content' => $data->content,
             'status' => 1,
-            'meta_title' => $data->meta_title,
-            'meta_desc' => $data->meta_desc,
-            'meta_key' => $data->meta_key,
+            'meta_title' => $data->meta_title??'',
+            'meta_desc' => $data->meta_desc??'',
+            'meta_key' => $data->meta_key?"",
         ]);
         return response()->json([
             "status" => 200,
