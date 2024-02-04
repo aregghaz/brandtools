@@ -86,6 +86,11 @@ class HomeController extends Controller
         $category = Category::with('children')->select('id', 'title', 'parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
+    public function topCategory(Request $request,$limit): \Illuminate\Http\JsonResponse
+    {
+        $category = Category::where('top', 1)->select('id', 'title', 'image')->limit($limit)->get();
+        return response()->json($category);
+    }
 
     public function productsCategory($id, $limit, Request $request): \Illuminate\Http\JsonResponse
     {

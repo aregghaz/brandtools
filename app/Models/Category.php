@@ -24,6 +24,7 @@ class Category extends Model
         'status',
         'image',
         'banner',
+        'top',
     ];
     public function sluggable(): array
     {

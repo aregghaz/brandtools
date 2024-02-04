@@ -30,6 +30,7 @@ Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
 Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);
 
 Route::get('/category', [HomeController::class, 'category']);
+Route::get('/top-category/{limit}', [HomeController::class, 'topCategory']);
 Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
 Route::get('/singleCat/{id}/{limit}', [HomeController::class, 'singleCat']);
 
@@ -57,6 +58,10 @@ Route::get('getSliders', [HomeController::class, 'getSliders']);
 
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
+
+
+
+
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
 Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
 Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
