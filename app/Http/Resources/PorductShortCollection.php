@@ -14,7 +14,7 @@ class PorductShortCollection extends ResourceCollection
     public function toArray(Request $request)
     {
         return $this->map(function ($product) {
-
+            $images = explode('.JPG', $product->image);
             return [
                 'id' => $product->id,
                 'title' => $product->name,
@@ -24,7 +24,7 @@ class PorductShortCollection extends ResourceCollection
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
-                'image' => $product->image,
+                'image' => 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG',
             ];
         });
     }

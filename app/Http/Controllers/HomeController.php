@@ -8,6 +8,7 @@ use App\Http\Resources\CategoryShortCollection;
 use App\Http\Resources\NewsCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
+use App\Http\Resources\TegsCollection;
 use App\Http\Resources\VideoCollection;
 use App\Models\Banner;
 use App\Models\Brand;
@@ -63,14 +64,21 @@ class HomeController extends Controller
         );
     }
 
-    public function getByTeg( $limit, Request $request): \Illuminate\Http\JsonResponse
+    public function getByTeg($limit, Request $request): \Illuminate\Http\JsonResponse
     {
 
-        $tegs = Teg::with(['product' => function($q) use ($limit){
-            $q->where(['status' => 1])->limit($limit);
+        $ids = $request->ids;
+        $tegs = Teg::with(['product' => function ($q) use ($limit) {
+            $q->where('status', 1)->limit($limit);
         }])->whereIn('id', $request->ids)->get();
+
+        $tegs->each(function ($product) use ($limit) {
+            $product->load(['product' => function ($q) use ($limit) {
+                return $q->limit($limit);
+            }]);
+        });
 //        $products = Product::whereIn('teg_id', $request->ids)->where(['status' => 1])->limit($limit)->get();
-        return response()->json($tegs);
+        return response()->json(new TegsCollection($tegs));
     }
 
     public function category(Request $request): \Illuminate\Http\JsonResponse
