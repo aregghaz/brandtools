@@ -67,9 +67,9 @@ class HomeController extends Controller
     {
 
         $tegs = Teg::with(['product' => function($q) use ($limit){
-            $q->limit($limit);
+            $q->where(['status' => 1])->limit($limit);
         }])->get();
-        $products = Product::whereIn('teg_id', $request->ids)->where(['status' => 1])->limit($limit)->get();
+//        $products = Product::whereIn('teg_id', $request->ids)->where(['status' => 1])->limit($limit)->get();
         return response()->json($tegs);
     }
 
