@@ -63,10 +63,11 @@ class HomeController extends Controller
         );
     }
 
-    public function getByTeg($getByTeg, $limit, Request $request): \Illuminate\Http\JsonResponse
+    public function getByTeg( $limit, Request $request): \Illuminate\Http\JsonResponse
     {
-        $products = Product::where(['teg_id' => $getByTeg, 'status' => 1])->limit($limit)->get();
-        return response()->json(new PorductShortCollection($products));
+
+        $products = Product::whereIn('teg_id', $request->ids)->where(['status' => 1])->limit($limit)->get();
+        return response()->json($products);
     }
 
     public function category(Request $request): \Illuminate\Http\JsonResponse
@@ -182,9 +183,10 @@ class HomeController extends Controller
         return response()->json(new VideoCollection($news));
 
     }
+
     public function getSliders(): \Illuminate\Http\JsonResponse
     {
-        $slider = Slider::where('status', 1)->orderBy('position','asc')->get();
+        $slider = Slider::where('status', 1)->orderBy('position', 'asc')->get();
 
         return response()->json($slider);
 

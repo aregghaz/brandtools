@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
-Route::get('/productsByTeg/{id}/{limit}', [HomeController::class, 'getByTeg']);
+Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);
 
 Route::get('/category', [HomeController::class, 'category']);
 Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
