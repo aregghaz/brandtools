@@ -20,4 +20,9 @@ class Teg extends Model
             ]
         ];
     }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'teg_id', 'id');
+    }
 }

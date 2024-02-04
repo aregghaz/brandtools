@@ -66,8 +66,11 @@ class HomeController extends Controller
     public function getByTeg( $limit, Request $request): \Illuminate\Http\JsonResponse
     {
 
+        $tegs = Teg::with(['product' => function($q) use ($limit){
+            $q->limit($limit);
+        }])->get();
         $products = Product::whereIn('teg_id', $request->ids)->where(['status' => 1])->limit($limit)->get();
-        return response()->json($products);
+        return response()->json($tegs);
     }
 
     public function category(Request $request): \Illuminate\Http\JsonResponse
