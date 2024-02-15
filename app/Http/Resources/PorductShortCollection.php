@@ -18,6 +18,7 @@ class PorductShortCollection extends ResourceCollection
             return [
                 'id' => $product->id,
                 'title' => $product->name,
+                'slug' => $product->slug,
                 'description' => $product->description,
                 'price' => $product->price,
                 'special_price' => $product->special_price,
