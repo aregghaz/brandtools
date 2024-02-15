@@ -102,7 +102,7 @@ class AuthController extends Controller
 
     public function forgotPassword(Request $request){
         $request->validate(['email' => 'required|email']);
-        $user = User::where('email', $request->email)->limit(1)->get();
+        $user = User::where('email', $request->email)->first();
         if(!empty($user)){
             return response()->json([
                 'email' => 'success'
