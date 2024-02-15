@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
 Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);
+Route::get('/top-products/{limit}', [\App\Http\Controllers\home\ProductController::class, 'getTopProducts']);
 
 Route::get('/category', [HomeController::class, 'category']);
 Route::get('/top-category/{limit}', [HomeController::class, 'topCategory']);
@@ -74,6 +75,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('registration', [AuthController::class, 'registration']);
 //    Route::group([
 //        'namespace' => 'Auth',
 //        'prefix' => 'password',
