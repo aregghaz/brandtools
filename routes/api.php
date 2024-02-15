@@ -6,7 +6,6 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
@@ -77,6 +76,7 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('registration', [AuthController::class, 'registration']);
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 //    Route::group([
 //        'namespace' => 'Auth',
 //        'prefix' => 'password',
@@ -105,7 +105,6 @@ Route::group([
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);
     Route::resource('brands', BrandController::class);
-    Route::resource('conditions', ConditionController::class);
     Route::resource('users', UserController::class);
     Route::resource('banners', BannerController::class);
     Route::resource('news', NewsController::class);

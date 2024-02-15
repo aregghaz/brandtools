@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -97,5 +98,20 @@ class AuthController extends Controller
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
         ]);
+    }
+
+    public function forgotPassword(Request $request){
+        $request->validate(['email' => 'required|email']);
+        $user = User::where('email', $request->email)->limit(1)->get();
+        if(!empty($user)){
+            return response()->json([
+                'email' => 'success'
+            ]);
+        }else{
+            return response()->json([
+                'email' => 'false'
+            ]);
+        }
+
     }
 }

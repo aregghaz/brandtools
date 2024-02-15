@@ -43,12 +43,6 @@ class HomeController extends Controller
                     "value" => $product->brand->id,
                     "id" => $product->brand->id
                 ],
-                'condition_id' => $product->condition ? [
-                    "name" => $product->condition->title,
-                    "label" => $product->condition->title,
-                    "value" => $product->condition->id,
-                    "id" => $product->condition->id
-                ] : '',
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
