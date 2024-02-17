@@ -12,6 +12,7 @@ class CartController extends Controller
     /////FIXME SHOUD FIX CART SESSSION PART
     public function __construct()
     {
+
         if (Auth::check()) {
             \Cart::session(Auth::user()->id);
         }
@@ -26,7 +27,7 @@ class CartController extends Controller
                 "message" => 'product not found'
             ]);
         }
-        \Cart::add(array(
+        \Cart::session(Auth::user()->id)->add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
@@ -40,7 +41,7 @@ class CartController extends Controller
 //
     public function getCart()
     {
-        $cart = \Cart::getContent();
+        $cart = \Cart::session(Auth::user()->id)->getContent();
         return response()->json($cart);
 
     }
