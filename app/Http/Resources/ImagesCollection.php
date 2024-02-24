@@ -16,7 +16,7 @@ class ImagesCollection extends ResourceCollection
         return $this->map(function ($data) {
             return [
                 'id' => $data->id,
-                'path' => "http://brand.speedshop.am/".$data->path,
+                'path' => "http://brand.speedshop.am".$data->path,
             ];
         });
     }
