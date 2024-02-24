@@ -11,6 +11,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\TegController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,7 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
+
         Route::post('/create-order', [OrderController::class, 'createOrder']);
         Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
         Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
@@ -99,6 +101,7 @@ Route::group([
 ], function () {
 //        Route::post('editData', 'UserController@editdata');
 //        Route::get('logout', 'AuthController@logout');
+    Route::post('/upload-images', [ProductController::class, 'upload']);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);
@@ -109,5 +112,6 @@ Route::group([
     Route::resource('video', VideoController::class);
     Route::resource('sliders', SliderController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('tags', TegController::class);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

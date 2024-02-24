@@ -10,7 +10,7 @@ class Teg extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['title', 'slug'];
+    protected $fillable = ['title', 'slug','position'];
 
     public function sluggable(): array
     {

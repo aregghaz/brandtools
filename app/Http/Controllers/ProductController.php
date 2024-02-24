@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ImagesCollection;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -78,6 +81,7 @@ class ProductController extends Controller
                 'meta_desc' => $product->meta_desc,
                 'meta_key' => $product->meta_key,
             ],
+            'images' => new ImagesCollection($product->images),
             'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
@@ -179,6 +183,25 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        return response()->json([
+            'status' => 200
+        ]);
+    }
+
+    public function upload(Request $request)
+    {
+        $id = $request->id;
+        foreach ($request->images as $index => $image) {
+            $file = $image['img'];
+            $storagePath = Storage::put("public/images/products/$id", $file);
+            $storageName = "/storage/images/products/$id/" . basename($storagePath);
+            ProductImage::create([
+                "path" => $storageName,
+                "product_id" => (int)$id,
+                "sort" => $index,
+            ]);
+        }
+
         return response()->json([
             'status' => 200
         ]);

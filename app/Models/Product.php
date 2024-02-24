@@ -58,6 +58,10 @@ class Product extends Model
     {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
+    public function Images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    }
 
     public function teg()
     {
