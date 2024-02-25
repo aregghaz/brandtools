@@ -102,6 +102,8 @@ Route::group([
 //        Route::post('editData', 'UserController@editdata');
 //        Route::get('logout', 'AuthController@logout');
     Route::post('/upload-images', [ProductController::class, 'upload']);
+    Route::get('/delete-image/{id}', [ProductController::class, 'deleteImage']);
+    Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);

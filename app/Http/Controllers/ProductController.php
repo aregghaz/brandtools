@@ -206,4 +206,19 @@ class ProductController extends Controller
             'status' => 200
         ]);
     }
+
+    public function deleteImage($id,Request $request){
+        ProductImage::find($id)->delete();
+
+        return response()->json([
+            'status' => 200
+        ]);
+    }
+    public function getImages($id,Request $request){
+       $images = ProductImage::where('product_id',$id)->get();
+        return response()->json([
+            'status' => 200,
+            "data" => new ImagesCollection($images)
+        ]);
+    }
 }
