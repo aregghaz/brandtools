@@ -139,6 +139,8 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        $imageFile = explode('/', $news->image);
+        Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
         $news->delete();
         return response()->json([
             "status" => 200,

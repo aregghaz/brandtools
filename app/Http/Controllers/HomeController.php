@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BannersCollection;
 use App\Http\Resources\BrandsCollection;
 use App\Http\Resources\CategoryShortCollection;
+use App\Http\Resources\ImagesCollection;
 use App\Http\Resources\NewsCollection;
 use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
@@ -46,6 +47,7 @@ class HomeController extends Controller
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
+                'images' => new ImagesCollection($product->images),
                 'status' => [
                     "name" => $product->status === 1 ? 'включено' : "отключить",
                     "label" => $product->status === 1 ? 'включено' : "отключить",

@@ -104,6 +104,8 @@ Route::group([
     Route::post('/upload-images', [ProductController::class, 'upload']);
     Route::get('/delete-image/{id}', [ProductController::class, 'deleteImage']);
     Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
+    Route::post('/products/groupDelete', [ProductController::class,'groupDelete']);
+    Route::post('/categories/groupDelete', [CategoryController::class,'groupDelete']);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);

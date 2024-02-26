@@ -125,6 +125,8 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        $imageFile = explode('/', $brand->image);
+        Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
         $brand->delete();
         return response()->json([
             "status" => 200,

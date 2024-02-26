@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -160,11 +161,31 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
-        $category->delete();
+        $this->deleteCategory($category);
         return response()->json([
             'status' => 200
         ]);
+    }
+    public function groupDelete(Request $request)
+    {
+        $categories = Category::whereIn('id', $request->ids)->with('images')->get();
+        foreach ($categories as $category) {
+            $this->deleteCategory($category);
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+    public function deleteCategory(Category $category): void
+    {
+        $imageFile = explode('/', $category->image);
+        Storage::delete("/public/images/category/" . $imageFile[count($imageFile) - 1]);
+        $imageFile = explode('/', $category->banner);
+        Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
+        $category->attributes()->detach();
+        $category->delete();
     }
 }

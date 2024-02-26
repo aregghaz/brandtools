@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -182,7 +183,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $product->delete();
+
+        $this->deleteProduct($product);
         return response()->json([
             'status' => 200
         ]);
@@ -193,8 +195,8 @@ class ProductController extends Controller
         $id = $request->id;
         foreach ($request->images as $index => $image) {
             $file = $image['img'];
-            $storagePath = Storage::put("public/images/products/$id", $file);
-            $storageName = "/storage/images/products/$id/" . basename($storagePath);
+            $storagePath = Storage::put("public/images/products", $file);
+            $storageName = "/storage/images/products/" . basename($storagePath);
             ProductImage::create([
                 "path" => $storageName,
                 "product_id" => (int)$id,
@@ -207,18 +209,54 @@ class ProductController extends Controller
         ]);
     }
 
-    public function deleteImage($id,Request $request){
-        ProductImage::find($id)->delete();
-
+    public function deleteImage($id, Request $request)
+    {
+        $productImage = ProductImage::find($id);
+        $imageFile = explode('/', $productImage->path);
+        Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+        $productImage->delete();
         return response()->json([
             'status' => 200
         ]);
     }
-    public function getImages($id,Request $request){
-       $images = ProductImage::where('product_id',$id)->get();
+
+    public function getImages($id, Request $request)
+    {
+        $images = ProductImage::where('product_id', $id)->get();
         return response()->json([
             'status' => 200,
             "data" => new ImagesCollection($images)
         ]);
+    }
+
+    public function groupDelete(Request $request)
+    {
+        $products = Product::whereIn('id', $request->ids)->with('images')->get();
+        foreach ($products as $product) {
+            $this->deleteProduct($product);
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @return void
+     */
+    public function deleteProduct(Product $product): void
+    {
+        $imageFile = explode('/', $product->image);
+        Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+        if (count($product->images) > 0) {
+            foreach ($product->images as $images) {
+                $imageFile = explode('/', $images->path);
+                Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+            }
+        }
+        $product->categories()->detach();
+        $product->attributes()->detach();
+        $product->delete();
     }
 }

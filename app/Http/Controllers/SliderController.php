@@ -114,6 +114,8 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
+        $imageFile = explode('/', $slider->image);
+        Storage::delete("public/images/sliders/" . $imageFile[count($imageFile) - 1]);
         $slider->delete();
         return response()->json([
             "status" => 200,
