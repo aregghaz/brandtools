@@ -19,6 +19,7 @@ class TegSeeder extends Seeder
         foreach ($roles as $role) {
             $teg = new Teg();
             $teg->title = $role;
+            $teg->position = 1;
             $teg->save();
         }
     }
