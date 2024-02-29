@@ -15,7 +15,7 @@ return new class extends Migration
             $table->longtext('description')->nullable();
             $table->string("meta_title")->nullable();
             $table->mediumText("meta_desc")->nullable();
-            $table->string("meta_key")->nullable();
+            $table->mediumText("meta_key")->nullable();
             $table->string("image", 150)->nullable();
             $table->string("sku", 150)->nullable();
             $table->unsignedBigInteger("quantity")->nullable();
