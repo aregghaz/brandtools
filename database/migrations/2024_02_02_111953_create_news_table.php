@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('image');
             $table->string('video');
             $table->mediumText('meta_key');
-            $table->string('meta_title');
+            $table->mediumText('meta_title');
             $table->string('meta_desc');
             $table->text('content');
             $table->timestamps();

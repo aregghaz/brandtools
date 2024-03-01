@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('brands', function (Blueprint $table) {
             $table->longtext('description')->nullable();
-            $table->string("meta_title")->nullable();
+            $table->mediumText("meta_title")->nullable();
             $table->mediumText("meta_desc")->nullable();
             $table->mediumText("meta_key")->nullable();
             $table->string("image", 150)->nullable();

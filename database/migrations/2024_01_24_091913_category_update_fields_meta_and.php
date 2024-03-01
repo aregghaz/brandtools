@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
             $table->longtext('description')->nullable();
-            $table->string("meta_title", 150)->nullable();
+            $table->mediumText("meta_title", 150)->nullable();
             $table->mediumText("meta_desc")->nullable();
             $table->mediumText("meta_key")->nullable();
             $table->string("image", 150)->nullable();
