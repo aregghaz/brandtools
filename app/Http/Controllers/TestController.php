@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -83,8 +84,8 @@ class TestController extends Controller
         /* open this for local file testing purposes only*/
         Product::truncate();
         /// DB::beginTransaction();
-        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-        foreach ($xlsx->rows() as $index => $data) {
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
+        foreach ($xlsx->rows(0) as $index => $data) {
             if ($index !== 0) {
                 $product_id = 0;
                 $name = 1;
@@ -113,23 +114,84 @@ class TestController extends Controller
                     $brandType = $dataCreate->id;
                 }
 
-                $product = Product::create([
-                    "name" => $data[$name],
-                    "description" => $data[$description],
-                    "price" => $data[$price],
-                    "brand_id" => $brandType,
-                    'product_id' => $data[$product_id],
-                    'sku' => $data[$sku],
-                    'quantity' => $data[$quantity],
-                    'status' => $data[$status] ? 1 : 0,
-                    'image' => $data[$image],
-                    'meta_title' => $data[$meta_title],
-                    'meta_desc' => $data[$meta_desc],
-                    'meta_key' => $data[$meta_key],
-                ]);
+
+                $images = explode('.JPG', $data[$image]);
+                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
+                @$rawImage = file_get_contents($imageUrl);
+                if ($rawImage) {
+                    Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+                    $storageName = "/storage/images/products/" . basename($imageUrl);
+                    $product = Product::create([
+                        "name" => $data[$name],
+                        "description" => $data[$description],
+                        "price" => $data[$price],
+                        "brand_id" => $brandType,
+                        'product_id' => $data[$product_id],
+                        'sku' => $data[$sku],
+                        'quantity' => $data[$quantity],
+                        'status' => 1,
+                        'image' => $storageName,
+                        'meta_title' => $data[$meta_title],
+                        'meta_desc' => $data[$meta_desc],
+                        'meta_key' => $data[$meta_key],
+                    ]);
+                } else {
+                    $product = Product::create([
+                        "name" => $data[$name],
+                        "description" => $data[$description],
+                        "price" => $data[$price],
+                        "brand_id" => $brandType,
+                        'product_id' => $data[$product_id],
+                        'sku' => $data[$sku],
+                        'quantity' => $data[$quantity],
+                        'status' => 0,
+                        'image' => null,
+                        'meta_title' => $data[$meta_title],
+                        'meta_desc' => $data[$meta_desc],
+                        'meta_key' => $data[$meta_key],
+                    ]);
+                }
                 $explodeData = explode(',', $data[$categoryIds]);
                 $categ = Category::whereIn('category_id', $explodeData)->pluck('id');
                 $product->categories()->sync($categ);
+            }
+        }
+        foreach ($xlsx->rows(7) as $index => $data) {
+            if ($index !== 0) {
+                $product_id = 0;
+                $attribute_id = 2;
+                $value = 3;
+
+                $product = Product::where('product_id', $data[$product_id])->first();
+                $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
+                if (isset($product) and isset($attr)) {
+                    $product->attributes()->attach($attr, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
+
+                }
+
+            }
+        }
+        foreach ($xlsx->rows(1) as $index => $data) {
+            if ($index !== 0) {
+                $product_id = 0;
+                $attribute_id = 1;
+                $value = 3;
+                $product = Product::where('product_id', $data[$product_id])->first();
+                if (isset($product)) {
+                    $images = explode('.JPG', $data[$attribute_id]);
+                    $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-640x480.JPG';
+                    @$rawImage = file_get_contents($imageUrl);
+                    if ($rawImage) {
+                        Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+                        $storageName = "/storage/images/products/" . basename($imageUrl);
+                        ProductImage::create([
+                            "path" => $storageName,
+                            "product_id" => $product->id,
+                            "sort" => 1,
+                        ]);
+                    }
+
+                }
             }
         }
         return true;
@@ -216,7 +278,7 @@ class TestController extends Controller
 
     public function removeOldImage($qty)
     {
-        $image = Product::limit(1000*$qty)->orderBy('id', 'DESC')->get();
+        $image = Product::limit(1000 * $qty)->orderBy('id', 'DESC')->get();
         foreach ($image as $item) {
             $images = explode('.JPG', $item->image);
             $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
