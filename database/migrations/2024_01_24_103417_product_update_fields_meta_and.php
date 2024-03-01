@@ -16,7 +16,7 @@ return new class extends Migration
             $table->mediumText("meta_title")->nullable();
             $table->mediumText("meta_desc")->nullable();
             $table->mediumText("meta_key")->nullable();
-            $table->string("image", 150)->nullable();
+            $table->string("image", 200)->nullable();
             $table->string("sku", 150)->nullable();
             $table->unsignedBigInteger("quantity")->nullable();
             $table->tinyInteger("status")->default(0);
