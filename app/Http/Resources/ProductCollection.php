@@ -18,10 +18,10 @@ class ProductCollection extends ResourceCollection
             foreach ($data->categories as $item){
                 $categoryName .= $item->title .", " . $categoryName;
             }
-            $images = explode('.JPG' ,$data->image);
+           // $images = explode('.JPG' ,$data->image);
             return [
                 'id' => $data->id,
-                "prImage" => 'https://brendinstrument.ru/image/cache/'.$images[0].'-351x265.JPG',
+                "image" => $data->image,
                 'name' => $data->name,
                 'price' => $data->price,
                 "special_price" => $data->special_price,

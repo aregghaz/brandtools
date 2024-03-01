@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Shuchkin\SimpleXLSX;
 
 class TestController extends Controller
@@ -215,20 +216,24 @@ class TestController extends Controller
 
     public function removeOldImage()
     {
-        $image = Product::limit(1000)->get();
-
+        $image = Product::limit(1000)->orderBy('id', 'DESC')->get();
         foreach ($image as $item) {
             $images = explode('.JPG', $item->image);
             $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
             @$rawImage = file_get_contents($imageUrl);
             if ($rawImage) {
-                //// file_put_contents("images/".'dummy1.png',$rawImage);
+                Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+                $storageName = "/storage/images/products/" . basename($imageUrl);
+                $item->update([
+                    'image' => $storageName,
+                ]);
                 echo 'Image Saved';
             } else {
-                $item->delete();
+                $item->update([
+                    'status' => 0,
+                ]);
                 echo 'Error Occured';
             }
-
         }
         return true;
     }
