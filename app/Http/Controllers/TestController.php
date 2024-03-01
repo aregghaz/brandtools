@@ -82,7 +82,7 @@ class TestController extends Controller
     public function product(Request $request, $file)
     {
         /* open this for local file testing purposes only*/
-        Product::truncate();
+        ///Product::truncate();
         /// DB::beginTransaction();
          $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
        // $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
