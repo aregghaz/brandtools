@@ -85,7 +85,7 @@ class TestController extends Controller
         Product::truncate();
         /// DB::beginTransaction();
         // $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr2.xlsx");
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
         foreach ($xlsx->rows(0) as $index => $data) {
             if ($index !== 0) {
                 $product_id = 0;
