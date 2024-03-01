@@ -214,9 +214,9 @@ class TestController extends Controller
         return true;
     }
 
-    public function removeOldImage()
+    public function removeOldImage($qty)
     {
-        $image = Product::limit(1000)->orderBy('id', 'DESC')->get();
+        $image = Product::limit(1000*$qty)->orderBy('id', 'DESC')->get();
         foreach ($image as $item) {
             $images = explode('.JPG', $item->image);
             $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';

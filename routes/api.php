@@ -68,7 +68,7 @@ Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'produ
 Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
 Route::get('/test3/{file}', [\App\Http\Controllers\TestController::class, 'prAttr']);
 Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);
-Route::get('/removeOldImage', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
+Route::get('/removeOldImage/{qty}', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
 Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
 
 Route::group([
