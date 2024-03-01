@@ -84,8 +84,8 @@ class TestController extends Controller
         /* open this for local file testing purposes only*/
         Product::truncate();
         /// DB::beginTransaction();
-        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-
+        // $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr2.xlsx");
         foreach ($xlsx->rows(0) as $index => $data) {
             if ($index !== 0) {
                 $product_id = 0;
@@ -117,11 +117,14 @@ class TestController extends Controller
 
 
                 $images = explode('.JPG', $data[$image]);
+
                 $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
                 @$rawImage = file_get_contents($imageUrl);
                 if ($rawImage) {
-                    Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
                     $storageName = "/storage/images/products/" . basename($imageUrl);
+                    if (!Storage::exists($storageName)) {
+                        Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+                    }
                     $product = Product::create([
                         "name" => $data[$name],
                         "description" => $data[$description],
@@ -166,7 +169,7 @@ class TestController extends Controller
                 $product = Product::where('product_id', $data[$product_id])->first();
                 $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
                 if (isset($product) and isset($attr)) {
-                    $product->attributes()->attach($attr, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
+                    $product->attributes()->attach($attr->id, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
 
                 }
 
@@ -181,16 +184,26 @@ class TestController extends Controller
                 if (isset($product)) {
                     $images = explode('.JPG', $data[$attribute_id]);
                     $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-640x480.JPG';
-                    @$rawImage = file_get_contents($imageUrl);
-                    if ($rawImage) {
-                        Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
-                        $storageName = "/storage/images/products/" . basename($imageUrl);
+                    $storageName = "/storage/images/products/" . basename($imageUrl);
+                    if (!Storage::exists($storageName)) {
+                        @$rawImage = file_get_contents($imageUrl);
+                        if ($rawImage) {
+                            Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+
+                            ProductImage::create([
+                                "path" => $storageName,
+                                "product_id" => $product->id,
+                                "sort" => 1,
+                            ]);
+                        }
+                    } else {
                         ProductImage::create([
                             "path" => $storageName,
                             "product_id" => $product->id,
                             "sort" => 1,
                         ]);
                     }
+
 
                 }
             }
