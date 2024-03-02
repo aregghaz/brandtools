@@ -56,6 +56,7 @@ class ProductController extends Controller
                 'description' => $product->description,
                 'price' => $product->price,
                 'special_price' => $product->special_price,
+
                 'range' => [
                     $product->start,
                     $product->end,
@@ -71,7 +72,7 @@ class ProductController extends Controller
                 ],
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
-                'image' => $product->image,
+                'image' =>url($product->image),
                 'status' => [
                     "name" => $product->status === 1 ? 'включено' : "отключить",
                     "label" => $product->status === 1 ? 'включено' : "отключить",
@@ -93,7 +94,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->value);
-
+        $storageName = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/products", $file);
+            $storageName = "/storage/images/products/" . basename($storagePath);
+        }
         $product = Product::create([
             'name' => $data->title,
             'description' => $data->description ?? null,
@@ -106,7 +112,7 @@ class ProductController extends Controller
             'brand_id' => $data->brand_id->id || null,
 //            'sku',
             'quantity' => $data->quantity,
-//            'image',
+            'image' => $storageName,
             'status' => 1,
             'meta_title' => $data->meta_title ?? '',
             'meta_desc' => $data->meta_desc ?? '',
@@ -146,6 +152,17 @@ class ProductController extends Controller
 //            'attributes.*.value' => 'required',
 //        ]);
         $data = json_decode($request->value);
+
+        if ($request->hasFile('image')) {
+            $imageFile = explode('/', $product->image);
+            Storage::delete("public/images/products/" . $imageFile[count($imageFile) - 1]);
+            $file = $request->file('image');
+            $storagePath = Storage::put("public/images/products", $file);
+            $storageName = "/storage/images/products/" . basename($storagePath);
+            $product->update([
+                'image' => $storageName,
+            ]);
+        }
         $product->update([
             'name' => $data->title,
             'description' => $data->description,
@@ -157,7 +174,6 @@ class ProductController extends Controller
             'brand_id' => $data->brand_id->id || null,
 //            'sku',
             'quantity' => $data->quantity,
-//            'image',
             'status' => $data->status->id || null,
             'meta_title' => $data->meta_title,
             'meta_desc' => $data->meta_desc,

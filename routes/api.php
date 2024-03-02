@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NoAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
@@ -45,8 +46,7 @@ Route::get('/get-brands/{limit}', [HomeController::class, 'getBrand']);
 Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand']);
 
 
-Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
-Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
+
 Route::get('get-banners', [HomeController::class, 'getBanners']);
 
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
@@ -62,14 +62,18 @@ Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 
 
 
+//
+//Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
+//Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
+//Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
+//;
+//Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);
+//Route::get('/removeOldImage/{qty}', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
 
-Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
-Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
-Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
-;
-Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);
-Route::get('/removeOldImage/{qty}', [\App\Http\Controllers\TestController::class, 'removeOldImage']);
-Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
+Route::get('add-cart/{productId}/{qty}', [NoAuthController::class, 'index'])->name('add-cart');
+Route::get('get-cart', [NoAuthController::class, 'getCart'])->name('getCart');
+Route::get('cart-update/{productId}/{qty}', [NoAuthController::class, 'update'])->name('update');
+Route::get('delete-cart/{productId}', [NoAuthController::class, 'delete']);
 
 Route::group([
     'prefix' => 'auth'
@@ -93,7 +97,10 @@ Route::group([
         Route::post('/create-order', [OrderController::class, 'createOrder']);
         Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
         Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
+        Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
+        Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
         Route::get('user', [AuthController::class, 'user']);
+
     });
 });
 Route::group([

@@ -3,20 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends Controller
+class NoAuthController extends Controller
 {
-
-    /////FIXME SHOUD FIX CART SESSSION PART
-    public function __construct()
-    {
-
-        if (Auth::check()) {
-            \Cart::session(Auth::user()->id);
-        }
-    }
 
     public function index($productId, $qty)
     {
@@ -27,7 +18,7 @@ class CartController extends Controller
                 "message" => 'product not found'
             ]);
         }
-        \Cart::session(Auth::user()->id)->add(array(
+        \Cart::add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
@@ -41,14 +32,14 @@ class CartController extends Controller
 //
     public function getCart()
     {
-        $cart = \Cart::session(Auth::user()->id)->getContent();
+        $cart = \Cart::getContent();
         return response()->json($cart);
 
     }
 
     public function update($productId, $qty)
     {
-        \Cart::session(Auth::user()->id)->update($productId, array(
+        \Cart::update($productId, array(
             'quantity' => array(
                 'relative' => false,
                 'value' => $qty
@@ -61,7 +52,7 @@ class CartController extends Controller
 
     public function delete($productId)
     {
-        \Cart::session(Auth::user()->id)->remove($productId);
+        \Cart::remove($productId);
         $cart = \Cart::getContent();
         return response()->json($cart);
 

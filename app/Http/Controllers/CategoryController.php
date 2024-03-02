@@ -91,6 +91,7 @@ class CategoryController extends Controller
                 'meta_title' => $category->meta_title,
                 'meta_desc' => $category->meta_desc,
                 'meta_key' => $category->meta_key,
+                'image' => url($category->image),
                 'attributes' => new SelectCollection($category->attributes),
                 'categories' => $category->parent ? [
                     "id" => $category->parent->id,
