@@ -4,6 +4,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CallBackController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FiltrationController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TegController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\WishListController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,10 +48,14 @@ Route::get('/getTags', [HomeController::class, 'getTags']);
 
 Route::get('/get-brands/{limit}', [HomeController::class, 'getBrand']);
 Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand']);
+Route::get('/get-single-brands-name', [HomeController::class, 'getSingleBrandByName']);
 
 Route::get('get-banners', [HomeController::class, 'getBanners']);
+
+
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
 Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos']);
+Route::post('call-back/add', [CallBackController::class, 'store']);
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
 Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
@@ -57,7 +63,13 @@ Route::get('getSliders', [HomeController::class, 'getSliders']);
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
-
+Route::group(['prefix' => 'wishlist'],function()
+{
+    Route::get('/',[WishListController::class, "index"])->name('wishlist.index');
+    Route::post('/',[WishListController::class, "add"])->name('wishlist.add');
+    Route::get('/details',[WishListController::class, "details"])->name('wishlist.details');
+    Route::delete('/{id}',[WishListController::class, "delete"])->name('wishlist.delete');
+});
 
 
 //
@@ -115,5 +127,6 @@ Route::group([
     Route::resource('sliders', SliderController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('tags', TegController::class);
+    Route::get('call-back', [CallBackController::class, 'index']);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

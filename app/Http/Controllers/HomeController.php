@@ -161,6 +161,11 @@ class HomeController extends Controller
         $brands = Brand::find($id);
         return response()->json($brands);
     }
+    public function getSingleBrandByName(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $brands = Brand::where('title', "LIKE", $request->name."%")->get();
+        return response()->json($brands);
+    }
 
     public function brandProducts($id, $limit): \Illuminate\Http\JsonResponse
     {

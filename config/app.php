@@ -169,6 +169,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Darryldecode\Cart\CartServiceProvider::class,
+        \App\Providers\WishListProvider::class,
+
     ])->toArray(),
 
     /*
