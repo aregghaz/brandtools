@@ -77,6 +77,7 @@ class NewsController extends Controller
                 'id' => $news->id,
                 'title' => $news->title,
                 'content' => $news->content,
+                'image' => $news->image,
                 'status' => [
                     "id" => $news->status,
                     "value" => $news->status,

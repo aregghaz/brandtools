@@ -17,6 +17,13 @@ class Order extends Model
         'address_id',
         'note',
         'status',
-
     ];
+    public function address()
+    {
+        return $this->hasOne(Address::class, 'id', 'address_id');
+    }
+    public function products()
+    {
+        return $this->hasMany(ProductsOrder::class, 'order_id', 'id');
+    }
 }

@@ -7,7 +7,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -100,18 +99,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function forgotPassword(Request $request){
+    public function forgotPassword(Request $request)
+    {
         $request->validate(['email' => 'required|email']);
         $user = User::where('email', $request->email)->first();
-        if(!empty($user)){
+        if (!empty($user)) {
             return response()->json([
                 'email' => 'success'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'email' => 'false'
             ]);
         }
 
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $id = $request->user()->id;
+        $user = User::find($id);
+        $user->update([
+            'password' => $request->password
+        ]);
+        return response()->json([
+            'user' => $user,
+        ]);
     }
 }

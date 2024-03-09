@@ -68,10 +68,6 @@ class Product extends Model
         return $this->hasOne(Teg::class, 'id', 'teg_id');
     }
 
-    public function condition()
-    {
-        return $this->hasOne(Condition::class, 'id', 'condition_id');
-    }
 
 
     public function attachAttribute($attribute, $value)

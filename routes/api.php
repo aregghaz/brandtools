@@ -6,6 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FiltrationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NoAuthController;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/subscription/{email}', [\App\Http\Controllers\SubscriptionController::class, 'create']);
 Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
 Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);
 Route::get('/top-products/{limit}', [\App\Http\Controllers\home\ProductController::class, 'getTopProducts']);
@@ -45,20 +47,16 @@ Route::get('/getTags', [HomeController::class, 'getTags']);
 Route::get('/get-brands/{limit}', [HomeController::class, 'getBrand']);
 Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand']);
 
-
-
 Route::get('get-banners', [HomeController::class, 'getBanners']);
-
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
 Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos']);
-
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
 Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
 Route::get('getSliders', [HomeController::class, 'getSliders']);
 
-
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
+Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
 
 
 
@@ -81,25 +79,18 @@ Route::group([
     Route::post('login', [AuthController::class, 'login']);
     Route::post('registration', [AuthController::class, 'registration']);
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-//    Route::group([
-//        'namespace' => 'Auth',
-//        'prefix' => 'password',
-//    ], function () {
-//        Route::post('create', 'PasswordResetController@create');
-//        Route::get('find/{token}', 'PasswordResetController@find');
-//        Route::post('reset', 'PasswordResetController@reset');
-//    });
-
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
-
         Route::post('/create-order', [OrderController::class, 'createOrder']);
         Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
         Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
         Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');
         Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
         Route::get('user', [AuthController::class, 'user']);
+        Route::get('reset', [AuthController::class, 'resetPassword']);
+        Route::get('/get-orders/{limit}', [\App\Http\Controllers\home\OrderController::class, 'getOrders']);
+        Route::get('/single-orders/{id}', [\App\Http\Controllers\home\OrderController::class, 'getSingleOrder']);
 
     });
 });

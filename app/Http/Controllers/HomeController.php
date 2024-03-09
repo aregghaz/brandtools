@@ -11,6 +11,7 @@ use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
 use App\Http\Resources\TegsCollection;
 use App\Http\Resources\VideoCollection;
+use App\Models\Attribute;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
@@ -20,6 +21,7 @@ use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -82,7 +84,8 @@ class HomeController extends Controller
         $category = Category::with('children')->select('id', 'title', 'parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
-    public function topCategory(Request $request,$limit): \Illuminate\Http\JsonResponse
+
+    public function topCategory(Request $request, $limit): \Illuminate\Http\JsonResponse
     {
         $category = Category::where('top', 1)->select('id', 'title', 'image')->limit($limit)->get();
         return response()->json($category);
@@ -110,14 +113,33 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
+        $productIds = DB::table('category_product')
+            ->where('category_id', $id)
+            ->pluck('product_id')
+            ->toArray();
+        $attrIds = DB::table('categories_attribute')
+            ->where('categories_id', $id)
+            ->pluck('attribute_id')
+            ->toArray();
+
+        $attrIds2 = DB::table('product_attribute')
+            ->whereIn('product_id', $productIds)
+            ->whereIn('attribute_id', $attrIds)
+            ->distinct()
+            ->get('value');
+
+        $attr = Attribute::with(['values' => function ($q) use ($productIds, $attrIds) {
+            $q->whereIn('product_id', $productIds)->whereIn('attribute_id', $attrIds)->distinct('value');
+        }])->get();
         $category = Category::with([
             'attributes',
             'products' => function ($q) use ($limit) {
                 $q->limit($limit);
             },
-            'attributes.values' => function ($q) {
-                $q->distinct('value');
-            }])->find($id);
+            'attributes.values' => function ($q) use ($productIds, $attrIds) {
+                $q->whereIn('product_id', $productIds)
+                    ->whereIn('attribute_id', $attrIds);
+            }])->distinct('value')->find($id);
 
         return response()->json($category);
     }
@@ -134,7 +156,7 @@ class HomeController extends Controller
         return response()->json(new BrandsCollection($brands));
     }
 
-    public function getSingleBrand($id): \Illuminate\Http\JsonResponse
+    public function getSingleBrand($id, $limit): \Illuminate\Http\JsonResponse
     {
         $brands = Brand::find($id);
         return response()->json($brands);
@@ -215,7 +237,7 @@ class HomeController extends Controller
             'meta_desc' => $data->meta_desc ?? '--',
             'meta_key' => $data->meta_key ?? '--',
             'status' => $data->status ?? '--',
-            'image' => $data->image ?? '--',
+            'image' => $data->image ?? null,
             "updated" => $data->updated_at,
             'products' => new PorductShortCollection($data->products),
         ]);

@@ -22,7 +22,7 @@ class BrandsCollection extends ResourceCollection
                 'meta_desc'=>$data->meta_desc?? '--',
                 'meta_key'=>$data->meta_key?? '--',
                 'status'=>$data->status?? '--',
-                'image'=>$data->image?? '--',
+                'image'=>$data->image?? null,
                 "updated"=> $data->updated_at,
             ];
         });

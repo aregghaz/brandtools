@@ -18,8 +18,11 @@ class OrderController extends Controller
         \Cart::session($userId);
         $carts = \Cart::getContent();
         $total = 0;
-        if(!count($carts)){
-            return "asdasd";
+        if (!count($carts)) {
+            return response()->json([
+                'message' => 'no item in cart',
+                'success' => 0
+            ]);
         }
         foreach ($carts as $cart) {
             $total = $total + $cart->price;
