@@ -192,6 +192,7 @@ class HomeController extends Controller
             'title' => $news->title,
             'content' => $news->content,
             'video' => $news->video,
+            'image' => $news->image,
             'meta_title' => $news->meta_title,
             'meta_desc' => $news->meta_desc,
             'meta_key' => $news->meta_key,
