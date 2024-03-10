@@ -163,7 +163,7 @@ class HomeController extends Controller
         return response()->json(new BrandsCollection($brands));
     }
 
-    public function getSingleBrand($id, $limit): \Illuminate\Http\JsonResponse
+    public function getSingleBrand($id): \Illuminate\Http\JsonResponse
     {
         $brands = Brand::find($id);
         return response()->json($brands);
