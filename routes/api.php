@@ -65,10 +65,12 @@ Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
 Route::group(['prefix' => 'wishlist'],function()
 {
-    Route::get('/',[WishListController::class, "index"])->name('wishlist.index');
-    Route::post('/',[WishListController::class, "add"])->name('wishlist.add');
-    Route::get('/details',[WishListController::class, "details"])->name('wishlist.details');
-    Route::delete('/{id}',[WishListController::class, "delete"])->name('wishlist.delete');
+
+    Route::get('add-wishlist/{productId}/{qty}', [WishListController::class, 'index'])->name('add-cart');
+    Route::get('get-wishlist', [WishListController::class, 'getCart'])->name('getCart');
+    Route::get('wishlist-update/{productId}/{qty}', [WishListController::class, 'update'])->name('update');
+    Route::get('delete-wishlist/{productId}', [WishListController::class, 'delete']);
+
 });
 
 
