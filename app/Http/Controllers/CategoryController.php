@@ -180,7 +180,7 @@ class CategoryController extends Controller
             'status' => 200,
         ]);
     }
-    public function deleteCategory(Category $category): void
+    public function deleteCategory(Category $category): \Illuminate\Http\JsonResponse
     {
         $imageFile = explode('/', $category->image);
         Storage::delete("/public/images/category/" . $imageFile[count($imageFile) - 1]);
@@ -188,5 +188,8 @@ class CategoryController extends Controller
         Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
         $category->attributes()->detach();
         $category->delete();
+        return response()->json([
+            "status" => 200,
+        ]);
     }
 }

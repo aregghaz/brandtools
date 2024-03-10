@@ -128,5 +128,6 @@ Route::group([
     Route::resource('orders', OrderController::class);
     Route::resource('tags', TegController::class);
     Route::get('call-back', [CallBackController::class, 'index']);
+    Route::delete('call-back/{id}', [CallBackController::class, 'destroy']);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

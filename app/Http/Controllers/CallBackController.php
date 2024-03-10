@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CallBackCollection;
 use App\Models\CallBack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,7 @@ class CallBackController extends Controller
     public function index()
     {
         $data = CallBack::orderBy('id', 'DESC')->get();
-        return response()->json($data);
+        return response()->json(new CallBackCollection($data));
     }
 
     /**
@@ -74,8 +75,11 @@ class CallBackController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CallBack $callBack)
+    public function destroy(CallBack $callBack, $id)
     {
-        //
+        CallBack::find($id)->delete();
+        return response()->json([
+            "status" => 200,
+        ]);
     }
 }

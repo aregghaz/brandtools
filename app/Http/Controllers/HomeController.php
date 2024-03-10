@@ -113,34 +113,41 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-        $productIds = DB::table('category_product')
-            ->where('category_id', $id)
-            ->pluck('product_id')
-            ->toArray();
-        $attrIds = DB::table('categories_attribute')
-            ->where('categories_id', $id)
-            ->pluck('attribute_id')
-            ->toArray();
-
-        $attrIds2 = DB::table('product_attribute')
-            ->whereIn('product_id', $productIds)
-            ->whereIn('attribute_id', $attrIds)
-            ->distinct()
-            ->get('value');
-
-        $attr = Attribute::with(['values' => function ($q) use ($productIds, $attrIds) {
-            $q->whereIn('product_id', $productIds)->whereIn('attribute_id', $attrIds)->distinct('value');
-        }])->get();
+//        $productIds = DB::table('category_product')
+//            ->where('category_id', $id)
+//            ->pluck('product_id')
+//            ->toArray();
+//        $attrIds = DB::table('categories_attribute')
+//            ->where('categories_id', $id)
+//            ->pluck('attribute_id')
+//            ->toArray();
+//
+//        $attrIds2 = DB::table('product_attribute')
+//            ->whereIn('product_id', $productIds)
+//            ->whereIn('attribute_id', $attrIds)
+//            ->distinct()
+//            ->get('value');
+//
+//        $attr = Attribute::with(['values' => function ($q) use ($productIds, $attrIds) {
+//            $q->whereIn('product_id', $productIds)->whereIn('attribute_id', $attrIds)->distinct('value');
+//        }])->get();
+//        $category = Category::with([
+//            'attributes',
+//            'products' => function ($q) use ($limit) {
+//                $q->limit($limit);
+//            },
+//            'attributes.values' => function ($q) use ($productIds, $attrIds) {
+//                $q->whereIn('product_id', $productIds)
+//                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
+//            }])->distinct('value')->find($id);
         $category = Category::with([
             'attributes',
             'products' => function ($q) use ($limit) {
                 $q->limit($limit);
             },
-            'attributes.values' => function ($q) use ($productIds, $attrIds) {
-                $q->whereIn('product_id', $productIds)
-                    ->whereIn('attribute_id', $attrIds);
-            }])->distinct('value')->find($id);
-
+            'attributes.values' => function ($q) {
+                $q->select(['value','attribute_id'])->distinct('value');
+            }])->find($id);
         return response()->json($category);
     }
 
