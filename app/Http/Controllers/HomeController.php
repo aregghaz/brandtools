@@ -121,10 +121,10 @@ class HomeController extends Controller
 //            ->toArray();
         //$products = Category::findOrFail($id)->products->where('status',1);
 
-        $products = Product::whereHas('categories', function ($q) use ($id) {
-            $q->where('categories.id', $id);
-        })->where('status', 1)->pluck('id');
-
+//        $products = Product::whereHas('categories', function ($q) use ($id) {
+//            $q->where('categories.id', $id);
+//        })->where('status',1)->pluck('id');
+//        dd($products);
 
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
@@ -149,11 +149,10 @@ class HomeController extends Controller
             'products' => function ($q) use ($limit) {
                 $q->limit($limit);
             },
-            'attributes.values' => function ($q) use ($products) {
-                $q->whereIn('product_id', $products);
-                $q->select('value','attribute_id')->distinct();
+            'attributes.values' => function ($q)  {
+                $q->select(['value','attribute_id'])->where('value', '!=', '')->orderBy('value')->distinct('value');
             }])->find($id);
-        return response()->json($category);
+          return response()->json($category);
 
     }
 
