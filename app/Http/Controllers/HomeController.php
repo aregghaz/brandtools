@@ -143,10 +143,10 @@ class HomeController extends Controller
 
 
        Product::whereHas(['categories' => function ($q) use ($id) {
-        $q->where('id',$id);
+        $q->find($id);
         },'attributes' => function ($q) {
            $q->select(['value','attribute_id'])->distinct('value');
-       }])->get();
+       }])->where('status',1)->get();
 
 //        $category = Category::find($id)->whereHas([
 //            'attributes',
