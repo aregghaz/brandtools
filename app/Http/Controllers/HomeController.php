@@ -113,10 +113,10 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-        $productIds = DB::table('category_product')
-            ->where('category_id', $id)
-            ->pluck('product_id')
-            ->toArray();
+//        $productIds = DB::table('category_product')
+//            ->where('category_id', $id)
+//            ->pluck('product_id')
+//            ->toArray();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
 //            ->pluck('attribute_id')
@@ -141,10 +141,12 @@ class HomeController extends Controller
 //                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
 //            }])->distinct('value')->find($id);
 
-        $category= DB::table('products')->where('status',1)->whereIn('id',$productIds)->whereHas(['attributes' => function ($q) {
-            $q->select(['value','attribute_id'])->distinct('value');
-        }])->limit($limit)->get();
-      //  $category= Product::where('status',1)-
+
+        $category= Product::where('status',1)->whereHas(['categories' => function ($q) use ($id) {
+        $q->find($id);
+        },'attributes' => function ($q) {
+           $q->select(['value','attribute_id'])->distinct('value');
+       }])->get();
 
 //        $category = Category::find($id)->whereHas([
 //            'attributes',

@@ -13,12 +13,12 @@ class FiltrationController extends Controller
     {
 
         $filt = $request->criteria;
-        $attrIds = array_keys((array)$filt);
-        $ids = [];
-        foreach ($filt as $key => $attribute) {
-            $ids[] = key((array)$attribute);
-            /// var_dump(key((array)$attribute));
-        }
+//        $attrIds = array_keys((array)$filt);
+//        $ids = [];
+//        foreach ($filt as $key => $attribute) {
+//            $ids[] = key((array)$attribute);
+//            /// var_dump(key((array)$attribute));
+//        }
         ///  $attrIds2 = DB::table('products');
         //   ->where('status', 1);
 
@@ -49,7 +49,7 @@ class FiltrationController extends Controller
 
         // Filter products based on selected attribute values
         if (true) {
-            $products->whereHas('categories', function($q)use ($id){
+            $products->where('status',1)->whereHas('categories', function($q)use ($id){
                 $q->where('categories.id', $id);
             });
             foreach ($filt as $attributeId) {
