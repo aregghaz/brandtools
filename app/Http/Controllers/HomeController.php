@@ -141,10 +141,10 @@ class HomeController extends Controller
 //                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
 //            }])->distinct('value')->find($id);
 
-
-        $category= Product::where('status',1)->whereIn('id',$productIds)->whereHas(['attributes' => function ($q) {
-           $q->select(['value','attribute_id'])->distinct('value');
-       }])->get();
+        $category= DB::table('products')->where('status',1)->whereIn('id',$productIds)->whereHas(['attributes' => function ($q) {
+            $q->select(['value','attribute_id'])->distinct('value');
+        }])->limit($limit)->get();
+      //  $category= Product::where('status',1)-
 
 //        $category = Category::find($id)->whereHas([
 //            'attributes',
