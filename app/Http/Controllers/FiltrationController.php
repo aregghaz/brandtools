@@ -94,7 +94,7 @@ class FiltrationController extends Controller
                     $query->where('attributes.id', $attrid)->where('value', $atttrValue);
                 }
             }
-        }])->get();
+        }])->limit($limit)->get();
 
        return response()->json(new PorductShortCollection($products));
     }
