@@ -91,7 +91,7 @@ class FiltrationController extends Controller
                 foreach ($filt as $attributeId) {
                     $attrid = key((array)$attributeId);
                   $atttrValue = $attributeId[key((array)$attributeId)];
-                    $query->where('attribute_id', $attrid)->where('value', $atttrValue);
+                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
                 }
             }
         }])->get();
