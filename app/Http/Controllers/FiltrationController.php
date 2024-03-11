@@ -68,24 +68,33 @@ class FiltrationController extends Controller
 
 
 
-        $products = Product::whereHas('attributes');
-        $products =  $products->where('status',1)->whereHas('categories', function($q)use ($id){
-                $q->where('categories.id', $id);
-            });
-        // Filter products based on selected attribute values
-        if (true) {
-            foreach ($filt as $attributeId) {
-
-                $attrid = key((array)$attributeId);
-                $atttrValue = $attributeId[key((array)$attributeId)];
-                $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
-                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
-                });
+//        $products = Product::whereHas('attributes');
+//        $products =  $products->where('status',1)->whereHas('categories', function($q)use ($id){
+//                $q->where('categories.id', $id);
+//            });
+//        // Filter products based on selected attribute values
+//        if (true) {
+//            foreach ($filt as $attributeId) {
+//
+//                $attrid = key((array)$attributeId);
+//                $atttrValue = $attributeId[key((array)$attributeId)];
+//                $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
+//                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
+//                });
+//            }
+//        }
+//
+//        $products = $products->limit($limit)->get();
+        $products = Product::with(['attributes' => function ($query) use ($request, $filt) {
+            // Filter attributes based on selected values
+            if (true) {
+                foreach ($filt as $attributeId) {
+                    $attrid = key((array)$attributeId);
+                  $atttrValue = $attributeId[key((array)$attributeId)];
+                    $query->where('attribute_id', $attrid)->whereIn('value', $atttrValue);
+                }
             }
-        }
-
-        $products = $products->limit($limit)->get();
-
+        }])->get();
 
        return response()->json(new PorductShortCollection($products));
     }
