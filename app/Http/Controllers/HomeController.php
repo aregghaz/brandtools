@@ -113,10 +113,10 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-//        $productIds = DB::table('category_product')
-//            ->where('category_id', $id)
-//            ->pluck('product_id')
-//            ->toArray();
+        $productIds = DB::table('category_product')
+            ->where('category_id', $id)
+            ->pluck('product_id')
+            ->toArray();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
 //            ->pluck('attribute_id')
@@ -142,20 +142,20 @@ class HomeController extends Controller
 //            }])->distinct('value')->find($id);
 
 
-        $category= Product::whereHas(['categories' => function ($q) use ($id) {
-        $q->find($id);
-        },'attributes' => function ($q) {
-           $q->select(['value','attribute_id'])->distinct('value');
-       }])->get();
+//        $category= Product::whereHas(['categories' => function ($q) use ($id) {
+//        $q->find($id);
+//        },'attributes' => function ($q) {
+//           $q->select(['value','attribute_id'])->distinct('value');
+//       }])->get();
 
-//        $category = Category::find($id)->whereHas([
-//            'attributes',
-//            'products' => function ($q) use ($limit) {
-//                $q->where('status',1)->limit($limit);
-//            },
-//            'attributes.values' => function ($q) {
-//                $q->select(['value','attribute_id'])->distinct('value');
-//            }])->get();
+        $category = Category::find($id)->whereHas([
+            'attributes',
+            'products' => function ($q) use ($limit) {
+                $q->where('status',1)->limit($limit);
+            },
+            'attributes.values' => function ($q) use ($productIds) {
+                $q->select(['value','attribute_id'])->whereIn('product_id',$productIds)->distinct('value');
+            }])->get();
 
         return response()->json($category);
     }
