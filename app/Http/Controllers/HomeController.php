@@ -113,10 +113,10 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-//        $productIds = DB::table('category_product')
-//            ->where('category_id', $id)
-//            ->pluck('product_id')
-//            ->toArray();
+        $productIds = DB::table('category_product')
+            ->where('category_id', $id)
+            ->pluck('product_id')
+            ->toArray();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
 //            ->pluck('attribute_id')
@@ -142,7 +142,7 @@ class HomeController extends Controller
 //            }])->distinct('value')->find($id);
 
 
-        $category= Product::where('status',1)->whereHas(['categories' => function ($q) use ($id) {
+        $category= Product::whereIn('id',$productIds)->whereHas(['categories' => function ($q) use ($id) {
         $q->find($id);
         },'attributes' => function ($q) {
            $q->select(['value','attribute_id'])->distinct('value');
