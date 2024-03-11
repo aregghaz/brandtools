@@ -82,7 +82,7 @@ class FiltrationController extends Controller
             }
         }
 
-        $products = $products->get();
+        $products = $products->limit($limit)->get();
 
 
        return response()->json(new PorductShortCollection($products));
