@@ -140,14 +140,14 @@ class HomeController extends Controller
 //                $q->whereIn('product_id', $productIds)
 //                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
 //            }])->distinct('value')->find($id);
-        $category = Category::with([
+        $category = Category::find($id)->with([
             'attributes',
             'products' => function ($q) use ($limit) {
                 $q->where('status',1)->limit($limit);
             },
             'attributes.values' => function ($q) {
                 $q->select(['value','attribute_id'])->distinct('value');
-            }])->find($id);
+            }]);
         return response()->json($category);
     }
 
