@@ -81,7 +81,7 @@ class FiltrationController extends Controller
             }
         }
 
-        $products = $products->get();
+        $products = $products->limit($limit)->get();
 
 
 
