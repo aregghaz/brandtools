@@ -142,16 +142,20 @@ class HomeController extends Controller
 //            }])->distinct('value')->find($id);
 
 
-       /// Product::whereHas('categories')
+       Product::whereHas(['categories' => function ($q) use ($id) {
+        $q->where('id',$id);
+        },'attributes' => function ($q) {
+           $q->select(['value','attribute_id'])->distinct('value');
+       }])->get();
 
-        $category = Category::find($id)->whereHas([
-            'attributes',
-            'products' => function ($q) use ($limit) {
-                $q->where('status',1)->limit($limit);
-            },
-            'attributes.values' => function ($q) {
-                $q->select(['value','attribute_id'])->distinct('value');
-            }])->get();
+//        $category = Category::find($id)->whereHas([
+//            'attributes',
+//            'products' => function ($q) use ($limit) {
+//                $q->where('status',1)->limit($limit);
+//            },
+//            'attributes.values' => function ($q) {
+//                $q->select(['value','attribute_id'])->distinct('value');
+//            }])->get();
 
         return response()->json($category);
     }
