@@ -153,8 +153,8 @@ class HomeController extends Controller
             'products' => function ($q) use ($limit) {
                 $q->where('status',1)->limit($limit);
             },
-            'attributes.values' => function ($q) use ($productIds) {
-                $q->select(['value','attribute_id','product_id'])->whereIn('product_id',$productIds)->distinct('value');
+            'products.attributes' => function ($q) use ($productIds) {
+                $q->select(['value','attribute_id','product_id'])->distinct('value');
             }])->get();
 
         return response()->json($category);
