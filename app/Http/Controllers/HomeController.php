@@ -11,7 +11,6 @@ use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
 use App\Http\Resources\TegsCollection;
 use App\Http\Resources\VideoCollection;
-use App\Models\Attribute;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
@@ -21,7 +20,6 @@ use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -140,23 +138,14 @@ class HomeController extends Controller
 //                $q->whereIn('product_id', $productIds)
 //                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
 //            }])->distinct('value')->find($id);
-
-
-        $category= Product::where('status',1)->whereHas(['categories' => function ($q) use ($id) {
-        $q->find($id);
-        },'attributes' => function ($q) {
-           $q->select(['value','attribute_id'])->distinct('value');
-       }])->get();
-
-//        $category = Category::find($id)->whereHas([
-//            'attributes',
-//            'products' => function ($q) use ($limit) {
-//                $q->where('status',1)->limit($limit);
-//            },
-//            'attributes.values' => function ($q) {
-//                $q->select(['value','attribute_id'])->distinct('value');
-//            }])->get();
-
+        $category = Category::with([
+            'attributes',
+            'products' => function ($q) use ($limit) {
+                $q->where('status',1)->limit($limit);
+            },
+            'attributes.values' => function ($q) {
+                $q->distinct('value');
+            }])->find($id);
         return response()->json($category);
     }
 
@@ -177,9 +166,10 @@ class HomeController extends Controller
         $brands = Brand::find($id);
         return response()->json($brands);
     }
+
     public function getSingleBrandByName(Request $request): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('title', "LIKE", $request->name."%")->get();
+        $brands = Brand::where('title', "LIKE", $request->name . "%")->get();
         return response()->json($brands);
     }
 
