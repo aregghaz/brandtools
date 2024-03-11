@@ -82,14 +82,12 @@ class FiltrationController extends Controller
 //        }
 //
 //        $products = $products->limit($limit)->get();
-        $products = Product::with(['attributes' => function ($query) use ($request, $filt) {
+        $products = Product::whereHas(['attributes' => function ($query) use ($request, $filt) {
             // Filter attributes based on selected values
             foreach ($filt as $attributeId) {
                 $attrid = key((array)$attributeId);
                 $atttrValue = $attributeId[key((array)$attributeId)];
-                $query->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
-                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
-                });
+                $query->where('attributes.id', $attrid)->where('value', $atttrValue);
             }
         }])->limit($limit)->get();
 
