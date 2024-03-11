@@ -61,9 +61,9 @@ class FiltrationController extends Controller
                 });
             }
         //}      die;
-        die;
-        $products = $products->limit($limit)->get();
 
+        $products = $products->limit($limit)->get();
+        die;
        return response()->json(new PorductShortCollection($products));
     }
 }
