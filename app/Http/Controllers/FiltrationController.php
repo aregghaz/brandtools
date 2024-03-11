@@ -48,19 +48,20 @@ class FiltrationController extends Controller
         $products = Product::query();
 
         // Filter products based on selected attribute values
-        if (true) {
+       // if (true) {
             $products->where('status',1)->whereHas('categories', function($q)use ($id){
                 $q->where('categories.id', $id);
             });
             foreach ($filt as $attributeId) {
+
                 $attrid = key((array)$attributeId);
                 $atttrValue = $attributeId[key((array)$attributeId)];
                 $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
                     $query->where('attributes.id', $attrid)->where('value', $atttrValue);
                 });
             }
-        }
-
+        //}      die;
+        die;
         $products = $products->limit($limit)->get();
 
        return response()->json(new PorductShortCollection($products));
