@@ -45,32 +45,13 @@ class FiltrationController extends Controller
 //
 //        $products = $products->limit(2)->get();
 //        dd($products);
-//        $products = Product::query();
-//
-//        // Filter products based on selected attribute values
-//       // if (true) {
-//            $products->where('status',1)->whereHas('categories', function($q)use ($id){
-//                $q->where('categories.id', $id);
-//            });
-//            foreach ($filt as $attributeId) {
-//
-//                $attrid = key((array)$attributeId);
-//                $atttrValue = $attributeId[key((array)$attributeId)];
-//                $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
-//                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
-//                });
-//            }
-//        //}      die;
+        $products = Product::query();
 
-        ///   $products = $products->limit($limit)->get();
-
-
-        $products = Product::whereHas('attributes');
-        $products =  $products->where('status',1)->whereHas('categories', function($q)use ($id){
+        // Filter products based on selected attribute values
+       // if (true) {
+            $products->where('status',1)->whereHas('categories', function($q)use ($id){
                 $q->where('categories.id', $id);
             });
-        // Filter products based on selected attribute values
-        if (true) {
             foreach ($filt as $attributeId) {
 
                 $attrid = key((array)$attributeId);
@@ -79,9 +60,28 @@ class FiltrationController extends Controller
                     $query->where('attributes.id', $attrid)->where('value', $atttrValue);
                 });
             }
-        }
+        //}      die;
 
-        $products = $products->limit($limit)->get();
+         $products = $products->limit($limit)->get();
+
+
+//        $products = Product::whereHas('attributes');
+//        $products =  $products->where('status',1)->whereHas('categories', function($q)use ($id){
+//                $q->where('categories.id', $id);
+//            });
+//        // Filter products based on selected attribute values
+//        if (true) {
+//            foreach ($filt as $attributeId) {
+//
+//                $attrid = key((array)$attributeId);
+//                $atttrValue = $attributeId[key((array)$attributeId)];
+//                $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
+//                    $query->where('attributes.id', $attrid)->where('value', $atttrValue);
+//                });
+//            }
+//        }
+//
+//        $products = $products->limit($limit)->get();
 //        $products = Product::with(['attributes' => function ($query) use ($request, $filt) {
 //            // Filter attributes based on selected values
 //            foreach ($filt as $attributeId) {
