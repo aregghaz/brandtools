@@ -117,10 +117,10 @@ class HomeController extends Controller
             ->where('category_id', $id)
             ->pluck('product_id')
             ->toArray();
-//        $attrIds = DB::table('categories_attribute')
-//            ->where('categories_id', $id)
-//            ->pluck('attribute_id')
-//            ->toArray();
+        $attrIds = DB::table('categories_attribute')
+            ->where('categories_id', $id)
+            ->pluck('attribute_id')
+            ->toArray();
 //
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
@@ -140,23 +140,14 @@ class HomeController extends Controller
 //                $q->whereIn('product_id', $productIds)
 //                    ->whereIn('attribute_id', $attrIds)->select(['value','attribute_id'])->distinct('value');
 //            }])->distinct('value')->find($id);
-
-
-//        $category= Product::whereHas(['categories' => function ($q) use ($id) {
-//        $q->find($id);
-//        },'attributes' => function ($q) {
-//           $q->select(['value','attribute_id'])->distinct('value');
-//       }])->get();
-
-        $category = Category::find($id)->whereHas([
+        $category = Category::with([
             'attributes',
             'products' => function ($q) use ($limit) {
-                $q->where('status',1)->limit($limit);
+                $q->limit($limit);
             },
-            'products.attributes' => function ($q) use ($productIds) {
-                $q->select(['value','attribute_id','product_id'])->distinct('value');
-            }])->get();
-
+            'attributes.values' => function ($q) use ($productIds) {
+                $q->select(['value','attribute_id'])->where('value', '!=', '')->whereIn('product_id', $productIds)->orderBy('value')->distinct('value');
+            }])->find($id);
         return response()->json($category);
     }
 
