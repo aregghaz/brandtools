@@ -79,7 +79,7 @@ class FiltrationController extends Controller
                 $attrid = key((array)$attributeId);
                 $atttrValue = $attributeId[key((array)$attributeId)];
                 $products->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
-                    $query->where('attribute_id', $attrid)->whereIn('value', $atttrValue);
+                    $query->where('attribute_id', $attrid)->where('value', $atttrValue);
                 });
             }
         }
