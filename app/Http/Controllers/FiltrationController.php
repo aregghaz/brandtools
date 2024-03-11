@@ -89,7 +89,7 @@ class FiltrationController extends Controller
                 $atttrValue = $attributeId[key((array)$attributeId)];
                 $query->where('attributes.id', $attrid)->where('value', $atttrValue);
             }
-        },'categories', function($q)use ($id){
+        },'categories'=> function($q)use ($id){
                 $q->where('categories.id', $id);
            }])->limit($limit)->get();
 
