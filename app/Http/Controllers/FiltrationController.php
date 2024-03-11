@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class FiltrationController extends Controller
 {
-    public function index($id,$limit, Request $request)
+    public function index($id, $limit, Request $request)
     {
 
         $filt = $request->criteria;
@@ -62,10 +62,7 @@ class FiltrationController extends Controller
 //            }
 //        //}      die;
 
-     ///   $products = $products->limit($limit)->get();
-
-
-
+        ///   $products = $products->limit($limit)->get();
 
 
 //        $products = Product::whereHas('attributes');
@@ -87,15 +84,15 @@ class FiltrationController extends Controller
 //        $products = $products->limit($limit)->get();
         $products = Product::with(['attributes' => function ($query) use ($request, $filt) {
             // Filter attributes based on selected values
-            if (true) {
-                foreach ($filt as $attributeId) {
-                    $attrid = key((array)$attributeId);
-                  $atttrValue = $attributeId[key((array)$attributeId)];
+            foreach ($filt as $attributeId) {
+                $attrid = key((array)$attributeId);
+                $atttrValue = $attributeId[key((array)$attributeId)];
+                $query->whereHas('attributes', function ($query) use ($attrid, $atttrValue) {
                     $query->where('attributes.id', $attrid)->where('value', $atttrValue);
-                }
+                });
             }
         }])->limit($limit)->get();
 
-       return response()->json(new PorductShortCollection($products));
+        return response()->json(new PorductShortCollection($products));
     }
 }
