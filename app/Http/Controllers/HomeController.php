@@ -142,7 +142,9 @@ class HomeController extends Controller
 //            }])->distinct('value')->find($id);
 
 
-        $category = Category::find($id)->with([
+       /// Product::whereHas('categories')
+
+        $category = Category::find($id)->whereHas([
             'attributes',
             'products' => function ($q) use ($limit) {
                 $q->where('status',1)->limit($limit);
