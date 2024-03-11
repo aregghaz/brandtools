@@ -144,7 +144,7 @@ class HomeController extends Controller
                 $q->where('status',1)->limit($limit);
             },
             'attributes.values' => function ($q) {
-                $q->select(['value', 'attribute_id'])->distinct('value');
+                $q->select(['value', 'attribute_id'])->orderBy('value')->distinct('value');
             }])->find($id);
         return response()->json($category);
     }
