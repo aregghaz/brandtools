@@ -68,7 +68,7 @@ class FiltrationController extends Controller
 
 
 
-        $products = Product::with('attributes');
+        $products = Product::whereHas('attributes');
         $products =  $products->where('status',1)->whereHas('categories', function($q)use ($id){
                 $q->where('categories.id', $id);
             });
