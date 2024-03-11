@@ -11,7 +11,6 @@ use App\Http\Resources\PorductShortCollection;
 use App\Http\Resources\SelectCollection;
 use App\Http\Resources\TegsCollection;
 use App\Http\Resources\VideoCollection;
-use App\Models\Attribute;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
@@ -21,7 +20,6 @@ use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -113,15 +111,21 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-        $productIds = DB::table('category_product')
-            ->where('category_id', $id)
-            ->pluck('product_id')
-            ->toArray();
-        $attrIds = DB::table('categories_attribute')
-            ->where('categories_id', $id)
-            ->pluck('attribute_id')
-            ->toArray();
-//
+//        $productIds = DB::table('category_product')
+//            ->where('category_id', $id)
+//            ->pluck('product_id')
+//            ->toArray();
+//        $attrIds = DB::table('categories_attribute')
+//            ->where('categories_id', $id)
+//            ->pluck('attribute_id')
+//            ->toArray();
+        //$products = Category::findOrFail($id)->products->where('status',1);
+
+        $products = Product::whereHas('categories', function ($q) use ($id) {
+            $q->where('categories.id', $id);
+        })->where('status', 1)->pluck('id');
+
+
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
 //            ->whereIn('attribute_id', $attrIds)
@@ -145,10 +149,12 @@ class HomeController extends Controller
             'products' => function ($q) use ($limit) {
                 $q->limit($limit);
             },
-            'attributes.values' => function ($q) use ($productIds) {
-                $q->select(['value','attribute_id'])->where('value', '!=', '')->whereIn('product_id', $productIds)->orderBy('value')->distinct('value');
+            'attributes.values' => function ($q) use ($products) {
+                $q->whereIn('product_id', $products);
+                $q->select('value','attribute_id')->distinct();
             }])->find($id);
         return response()->json($category);
+
     }
 
     public function getTags(): \Illuminate\Http\JsonResponse
@@ -168,9 +174,10 @@ class HomeController extends Controller
         $brands = Brand::find($id);
         return response()->json($brands);
     }
+
     public function getSingleBrandByName(Request $request): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('title', "LIKE", $request->name."%")->get();
+        $brands = Brand::where('title', "LIKE", $request->name . "%")->get();
         return response()->json($brands);
     }
 
