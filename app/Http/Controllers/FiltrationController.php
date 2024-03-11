@@ -71,7 +71,7 @@ class FiltrationController extends Controller
         $products = Product::with('attributes');
 
         // Filter products based on selected attribute values
-        if ($request->has('attributes')) {
+        if (true) {
             foreach ($filt as $attributeId) {
 
                 $attrid = key((array)$attributeId);
