@@ -114,6 +114,30 @@ class AuthController extends Controller
         }
 
     }
+    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'phone' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
+        }
+
+        User::find($id)->update([
+            'name' => $request->name,
+            'lastName' => $request->lastName,
+            'fatherName' => $request->fatherName,
+            "phone" => $request->phone,
+            "email" => $request->email,
+            "dob" => $request->dob,
+            "company" => $request->company,
+        ]);
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
 
     public function resetPassword(Request $request)
     {

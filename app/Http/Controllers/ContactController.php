@@ -12,7 +12,10 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        $data = Contact::find(1);
+        return response()->json([
+            'data'=>$data
+        ]);
     }
 
     /**
@@ -36,7 +39,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        //
+       $data = Contact::find(1);
+        return response()->json($data);
     }
 
     /**
@@ -52,7 +56,35 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        //
+        $request->validate([
+            'value' => 'required',
+        ]);
+        $data = json_decode($request->value);
+        Contact::find(1)->update([
+            'address' => $data->address,
+            'phone_1' => $data->phone_1,
+            'phone_2' => $data->phone_2,
+            'phone_3' => $data->phone_3,
+            'whats_up' => $data->whats_up,
+            'email_1' => $data->email_1,
+            'email_2' => $data->email_2,
+            'contact_telegram' => $data->contact_telegram,
+            'contact_skype' => $data->contact_skype,
+            'contact_viber' => $data->contact_viber,
+            'contact_whats_up' => $data->contact_whats_up,
+            'sub_tiktok' => $data->sub_tiktok,
+            'sub_youtube' => $data->sub_youtube,
+            'sub_vk' => $data->sub_vk,
+            'sub_od' => $data->sub_od,
+            'sub_x' => $data->sub_x,
+            'lang' => $data->lang,
+            'long' => $data->long
+        ]);
+        return response()->json([
+            "status" => 200,
+
+        ]);
+
     }
 
     /**

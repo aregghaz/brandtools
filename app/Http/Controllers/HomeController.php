@@ -143,7 +143,7 @@ class HomeController extends Controller
         $category = Category::with([
             'attributes',
             'products' => function ($q) use ($limit) {
-                $q->limit($limit);
+                $q->where('status',1)->limit($limit);
             },
             'attributes.values' => function ($q) {
                 $q->select(['value','attribute_id'])->distinct('value');

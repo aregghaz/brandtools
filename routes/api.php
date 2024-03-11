@@ -51,6 +51,7 @@ Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand'])
 Route::get('/get-single-brands-name', [HomeController::class, 'getSingleBrandByName']);
 
 Route::get('get-banners', [HomeController::class, 'getBanners']);
+Route::get('contacts-us', [\App\Http\Controllers\ContactController::class, 'index']);
 
 
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
@@ -65,7 +66,6 @@ Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
 Route::group(['prefix' => 'wishlist'],function()
 {
-
     Route::get('add-wishlist/{productId}/{qty}', [WishListController::class, 'index'])->name('add-cart');
     Route::get('get-wishlist', [WishListController::class, 'getCart'])->name('getCart');
     Route::get('wishlist-update/{productId}/{qty}', [WishListController::class, 'update'])->name('update');
@@ -130,6 +130,8 @@ Route::group([
     Route::resource('orders', OrderController::class);
     Route::resource('tags', TegController::class);
     Route::get('call-back', [CallBackController::class, 'index']);
+    Route::get('contacts', [\App\Http\Controllers\ContactController::class, 'index']);
+    Route::put('contacts/{id}', [\App\Http\Controllers\ContactController::class, 'update']);
     Route::delete('call-back/{id}', [CallBackController::class, 'destroy']);
 //        Route::get('user_orders', 'AuthController@userOrders');
 });
