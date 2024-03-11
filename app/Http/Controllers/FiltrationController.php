@@ -15,10 +15,10 @@ class FiltrationController extends Controller
         $filt = $request->criteria;
 //        $attrIds = array_keys((array)$filt);
 //        $ids = [];
-//        foreach ($filt as $key => $attribute) {
-//            $ids[] = key((array)$attribute);
-//            /// var_dump(key((array)$attribute));
-//        }
+        foreach ($filt as $key => $attribute) {
+            $ids[] = key((array)$attribute);
+            /// var_dump(key((array)$attribute));
+        }
         ///  $attrIds2 = DB::table('products');
         //   ->where('status', 1);
 
@@ -91,7 +91,7 @@ class FiltrationController extends Controller
                 foreach ($filt as $attributeId) {
                     $attrid = key((array)$attributeId);
                   $atttrValue = $attributeId[key((array)$attributeId)];
-                    $query->where('attribute_id', $attrid)->whereIn('value', $atttrValue);
+                    $query->where('attribute_id', $attrid)->where('value', $atttrValue);
                 }
             }
         }])->get();
