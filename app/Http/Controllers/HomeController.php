@@ -124,7 +124,7 @@ class HomeController extends Controller
         $products = Product::whereHas('categories', function ($q) use ($id) {
             $q->where('categories.id', $id);
         })->where('status',1)->pluck('id');
-        dd($products);
+       // dd($products);
 
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
@@ -150,7 +150,7 @@ class HomeController extends Controller
                 $q->where('status',1)->limit($limit);
             },
             'attributes.values' => function ($q)  {
-                $q->select(['value','attribute_id'])->where('value', '!=', '')->orderBy('value')->distinct('value');
+                $q->select(['value','attribute_id'])->whereIn("product_id",$products)->where('value', '!=', '')->orderBy('value')->distinct('value');
             }])->find($id);
           return response()->json($category);
 
