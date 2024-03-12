@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Teg;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -34,12 +35,14 @@ class ProductController extends Controller
     {
         $brands = Brand::all();
         $categories = Category::all();
+        $tags = Teg::all();
         $attributes = Attribute::with('values')->get();
         return response()->json([
             'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),
+            'teg_id' => new SelectCollection($tags),
         ]);
     }
 
@@ -48,6 +51,7 @@ class ProductController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
+        $tags = Teg::all();
 
         return response()->json([
             'data' => [
@@ -61,7 +65,6 @@ class ProductController extends Controller
                     $product->start,
                     $product->end,
                 ],
-                'teg_id' => $product->teg_id,
                 'categories' => new SelectCollection($product->categories),
                 'attributes' => new SelectCollection($product->attributes),
                 'brand_id' => [
@@ -70,9 +73,15 @@ class ProductController extends Controller
                     "value" => $product->brand->id,
                     "id" => $product->brand->id
                 ],
+                'teg_id' => [
+                    "name" => $product->teg ? $product->teg->title : null,
+                    "label" => $product->teg ? $product->teg->title : null,
+                    "value" => $product->teg ? $product->teg->id : null,
+                    "id" => $product->teg ? $product->teg->id : null
+                ],
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
-                'image' =>url($product->image),
+                'image' => url($product->image),
                 'status' => [
                     "name" => $product->status === 1 ? 'включено' : "отключить",
                     "label" => $product->status === 1 ? 'включено' : "отключить",
@@ -88,6 +97,7 @@ class ProductController extends Controller
             'brand_id' => new SelectCollection($brands),
             'categories' => new SelectCollection($categories),
             'attributes' => new SelectCollection($attributes),
+            'teg_id' => new SelectCollection($tags),
         ]);
     }
 
@@ -104,9 +114,9 @@ class ProductController extends Controller
             'name' => $data->title,
             'description' => $data->description ?? null,
             'price' => $data->price,
-            'special_price' => $data->special_price ?? 0,
-            'start' => $data->range[0] ? date_create($data->range[0])->format('Y-m-d') : null,
-            'end' => $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
+            'special_price' => isset($data->range) ? $data->special_price : 0,
+            'start' => isset($data->range) && $data->range[0] ? date_create($data->range[0])->format('Y-m-d') : null,
+            'end' => isset($data->range) && $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => $data->brand_id->id || null,

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RequestPriceCollection;
 use App\Models\Contact;
+use App\Models\RequestPrice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -14,7 +17,7 @@ class ContactController extends Controller
     {
         $data = Contact::find(1);
         return response()->json([
-            'data'=>$data
+            'data' => $data
         ]);
     }
 
@@ -39,7 +42,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-       $data = Contact::find(1);
+        $data = Contact::find(1);
         return response()->json($data);
     }
 
@@ -85,6 +88,77 @@ class ContactController extends Controller
 
         ]);
 
+    }
+
+    public function getSingleRequestPrice($id)
+    {
+        $data = RequestPrice::find($id);
+        return response()->json($data);
+
+
+    }
+
+    public function requestPrice(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'lastName' => 'required|string',
+            'company' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|string',
+            'ihh' => 'required|string',
+            'kpp' => 'required|string',
+            'bik' => 'required|string',
+            'pc' => 'required|string',
+            'address' => 'required|string',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
+        }
+        RequestPrice::create([
+            'name' => $request->name,
+            'lastName' => $request->lastName,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'company' => $request->company,
+            'ihh' => $request->ihh,
+            'kpp' => $request->kpp,
+            'bik' => $request->bik,
+            'pc' => $request->pc,
+            'address' => $request->address,
+            'notes' => $request->notes ?? null
+        ]);
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
+
+
+    public function getAllRequest()
+    {
+        $data = RequestPrice::all();
+        return response()->json(new RequestPriceCollection($data));
+    }
+
+
+    public function priceGroupDelete(Request $request)
+    {
+        $products = RequestPrice::whereIn('id', $request->ids)->get();
+        foreach ($products as $product) {
+            $product->delete();
+        }
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
+    public function deleteRequestPrice($id)
+    {
+        RequestPrice::find($id)->delete();
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
     /**

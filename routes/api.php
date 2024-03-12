@@ -13,6 +13,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NoAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TegController;
 use App\Http\Controllers\UserController;
@@ -51,12 +52,17 @@ Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand'])
 Route::get('/get-single-brands-name', [HomeController::class, 'getSingleBrandByName']);
 
 Route::get('get-banners', [HomeController::class, 'getBanners']);
+
+
 Route::get('contacts-us', [\App\Http\Controllers\ContactController::class, 'index']);
+Route::post('request-price', [\App\Http\Controllers\ContactController::class, 'requestPrice']);
+Route::post('call-back/add', [CallBackController::class, 'store']);
+Route::post('questions', [QuestionController::class, 'store']);
 
 
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
 Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos']);
-Route::post('call-back/add', [CallBackController::class, 'store']);
+
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
 Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
@@ -64,8 +70,7 @@ Route::get('getSliders', [HomeController::class, 'getSliders']);
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
-Route::group(['prefix' => 'wishlist'],function()
-{
+Route::group(['prefix' => 'wishlist'], function () {
     Route::get('add-wishlist/{productId}/{qty}', [WishListController::class, 'index'])->name('add-cart');
     Route::get('get-wishlist', [WishListController::class, 'getCart'])->name('getCart');
     Route::get('wishlist-update/{productId}/{qty}', [WishListController::class, 'update'])->name('update');
@@ -103,6 +108,7 @@ Route::group([
         Route::get('delete-cart/{productId}', [CartController::class, 'delete']);
         Route::get('user', [AuthController::class, 'user']);
         Route::get('reset', [AuthController::class, 'resetPassword']);
+        Route::post('/update/{id}', [AuthController::class, 'update']);
         Route::get('/get-orders/{limit}', [\App\Http\Controllers\home\OrderController::class, 'getOrders']);
         Route::get('/single-orders/{id}', [\App\Http\Controllers\home\OrderController::class, 'getSingleOrder']);
 
@@ -116,8 +122,8 @@ Route::group([
     Route::post('/upload-images', [ProductController::class, 'upload']);
     Route::get('/delete-image/{id}', [ProductController::class, 'deleteImage']);
     Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
-    Route::post('/products/groupDelete', [ProductController::class,'groupDelete']);
-    Route::post('/categories/groupDelete', [CategoryController::class,'groupDelete']);
+    Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
+    Route::post('/categories/groupDelete', [CategoryController::class, 'groupDelete']);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);
@@ -131,7 +137,16 @@ Route::group([
     Route::resource('tags', TegController::class);
     Route::get('call-back', [CallBackController::class, 'index']);
     Route::get('contacts', [\App\Http\Controllers\ContactController::class, 'index']);
+    Route::get('/request-price/{id}', [\App\Http\Controllers\ContactController::class, 'getSingleRequestPrice']);
     Route::put('contacts/{id}', [\App\Http\Controllers\ContactController::class, 'update']);
     Route::delete('call-back/{id}', [CallBackController::class, 'destroy']);
+    Route::get('request-price', [\App\Http\Controllers\ContactController::class, 'getAllRequest']);
+    Route::get('questions', [QuestionController::class, 'index']);
+    Route::post('/questions/groupDelete', [QuestionController::class, 'groupDelete']);
+
+    Route::delete('request-price/{id}', [\App\Http\Controllers\ContactController::class, 'deleteRequestPrice']);
+    Route::post('/request-price/groupDelete', [\App\Http\Controllers\ContactController::class, 'priceGroupDelete']);
+
+
 //        Route::get('user_orders', 'AuthController@userOrders');
 });

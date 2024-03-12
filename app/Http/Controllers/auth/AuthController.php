@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -116,9 +117,17 @@ class AuthController extends Controller
     }
     public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
+        ///dd($id);
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'phone' => 'required|string',
+            'fatherName' => 'required|string',
+            'address_1' => 'required|string',
+            'address_2' => 'required|string',
+            'city' => 'required|string',
+            'country' => 'required|string',
+            'region' => 'required|string',
+            'post' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -132,8 +141,45 @@ class AuthController extends Controller
             "phone" => $request->phone,
             "email" => $request->email,
             "dob" => $request->dob,
-            "company" => $request->company,
+            "company" => $request->company ?? null,
         ]);
+        $check = Address::where('user_id', $id)->get();
+
+        if(count($check)> 0){
+            $check[0]->update([
+                'name' => $request->name,
+                'lastName' => $request->lastName,
+                'fatherName' => $request->fatherName ,
+                "phone" => $request->phone,
+                "email" => $request->email,
+                'user_id'=>$id,
+                "company" => $request->company ?? null,
+                "address_1" => $request->address_1,
+                "address_2" => $request->address_2,
+                "city" => $request->city,
+                "country" => $request->country,
+                "region" => $request->region,
+                "post" => $request->post,
+            ]);
+        }else{
+           Address::create([
+                'name' => $request->name,
+                'lastName' => $request->lastName,
+                'fatherName' => $request->fatherName,
+                "phone" => $request->phone,
+                "email" => $request->email,
+                'user_id'=>$id,
+                "company" => $request->company ?? null,
+                "address_1" => $request->address_1,
+                "address_2" => $request->address_2,
+                "city" => $request->city,
+                "country" => $request->country,
+                "region" => $request->region,
+                "post" => $request->post,
+            ]);
+
+        }
+
         return response()->json([
             "status" => 200,
         ]);

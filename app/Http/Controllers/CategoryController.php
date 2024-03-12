@@ -6,7 +6,6 @@ use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\SelectCollection;
 use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -70,9 +69,12 @@ class CategoryController extends Controller
             'image' => $storageName,
             'banner' => $storageBanner
         ]);
-        foreach ($data->attributes as $attribute) {
-            $category->attributes()->attach($attribute->id);
+        if (isset($data->attributes)) {
+            foreach ($data->attributes as $attribute) {
+                $category->attributes()->attach($attribute->id);
+            }
         }
+
         return response()->json([
             "status" => 200,
         ]);
@@ -169,6 +171,7 @@ class CategoryController extends Controller
             'status' => 200
         ]);
     }
+
     public function groupDelete(Request $request)
     {
         $categories = Category::whereIn('id', $request->ids)->with('images')->get();
@@ -180,6 +183,7 @@ class CategoryController extends Controller
             'status' => 200,
         ]);
     }
+
     public function deleteCategory(Category $category): \Illuminate\Http\JsonResponse
     {
         $imageFile = explode('/', $category->image);

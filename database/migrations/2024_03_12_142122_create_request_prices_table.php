@@ -11,18 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create('request_prices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('lastName');
-            $table->string('fatherName');
-            $table->string('company')->nullable();
-            $table->string('address_1');
-            $table->string('address_2');
-            $table->string('city');
-            $table->string('country');
-            $table->string('region');
-            $table->string('post');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('company');
+            $table->string('ihh');
+            $table->string('kpp');
+            $table->string('bik');
+            $table->string('pc');
+            $table->string('address');
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('request_prices');
     }
 };
