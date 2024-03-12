@@ -121,10 +121,10 @@ class HomeController extends Controller
 //            ->toArray();
         //$products = Category::findOrFail($id)->products->where('status',1);
 
-//        $products = Product::whereHas('categories', function ($q) use ($id) {
-//            $q->where('categories.id', $id);
-//        })->where('status',1)->pluck('id');
-//        dd($products);
+        $products = Product::whereHas('categories', function ($q) use ($id) {
+            $q->where('categories.id', $id);
+        })->where('status',1)->pluck('id');
+        dd($products);
 
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
