@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PorductShortCollection;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Session;
@@ -41,7 +42,7 @@ class WishListController extends Controller
     }
 
 //
-    public function getCart(Request $request)
+    public function getCart(Request $request, $limit)
     {
         if(!$request->session()->has('_uuid')){
             $uniqid = Str::random(9);
@@ -51,7 +52,18 @@ class WishListController extends Controller
             $this->uuid = $request->session()->get('_uuid');
         }
         $cart = \Cart::session($this->uuid)->getContent();
-        return response()->json($cart);
+        $count = count($cart);
+        //($cart);
+        $page = $request->page;
+//
+        dd($cart->paginate());
+        return response()->json([
+            'perPage' => $limit,
+            "data" => $cart,
+            //"lastPage" => $products->lastPage(),
+            "total" => ceil($count/ $limit),
+        ]);
+
 
     }
 

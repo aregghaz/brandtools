@@ -24,6 +24,7 @@ class NewsController extends Controller
             $this->convertQuery($queryData, $news, 2);
         }
         $news = $news->take(15 * $showMore)->get();
+
         return response()->json(new NewsCollection($news));
 
     }

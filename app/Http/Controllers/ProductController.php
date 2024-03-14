@@ -229,8 +229,9 @@ class ProductController extends Controller
                 "sort" => $index,
             ]);
         }
-
+        $images = ProductImage::where('product_id', $id)->get();
         return response()->json([
+            "data" => new ImagesCollection($images),
             'status' => 200
         ]);
     }

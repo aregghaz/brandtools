@@ -12,9 +12,13 @@ class OrderController extends Controller
     public function getOrders(Request $request, $limit)
     {
         $id = $request->user()->id;
-        $orders = Order::where('user_id', $id)->with('products')->orderBy('id', 'DESC')->limit($limit)->get();
+        $orders = Order::where('user_id', $id)->with('products')->orderBy('id', 'DESC')->limit($limit)->paginate($limit);
+//        dd($orders->total());
         return response()->json([
-            new OrdersListCollection($orders)
+            'perPage' => $limit,
+            "data" => new OrdersListCollection($orders),
+            "lastPage" => $orders->lastPage(),
+            "total" => $orders->total(),
         ]);
     }
 

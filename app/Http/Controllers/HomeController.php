@@ -123,8 +123,8 @@ class HomeController extends Controller
 
         $products = Product::whereHas('categories', function ($q) use ($id) {
             $q->where('categories.id', $id);
-        })->where('status',1)->pluck('id');
-       // dd($products);
+        })->where('status', 1)->pluck('id');
+        // dd($products);
 
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
@@ -147,12 +147,12 @@ class HomeController extends Controller
         $category = Category::with([
             'attributes',
             'products' => function ($q) use ($limit) {
-                $q->where('status',1)->limit($limit);
+                $q->where('status', 1)->limit($limit);
             },
-            'attributes.values' => function ($q) use($products)  {
-                $q->select(['value','attribute_id'])->whereIn("product_id",$products)->where('value', '!=', '')->orderBy('value')->distinct('value');
+            'attributes.values' => function ($q) use ($products) {
+                $q->select(['value', 'attribute_id'])->whereIn("product_id", $products)->where('value', '!=', '')->orderBy('value')->distinct('value');
             }])->find($id);
-          return response()->json($category);
+        return response()->json($category);
 
     }
 
@@ -182,10 +182,17 @@ class HomeController extends Controller
 
     public function brandProducts($id, $limit): \Illuminate\Http\JsonResponse
     {
-        $data = Brand::with(['products' => function ($query) use ($limit) {
-            $query->limit($limit);
-        }])->find($id);
-        return $this->getJsonResponse($data);
+        $data = Brand::find($id);
+
+        $products = $data->products()->where('status', 1)->paginate($limit);
+        return response()->json([
+            'perPage' => $limit,
+            "brand" => $data,
+            "products" => new PorductShortCollection($products),
+            "lastPage" => $products->lastPage(),
+            "total" => $products->total(),
+        ]);
+        /// return $this->getJsonResponse($data);
     }
 
     public function getBanners(): \Illuminate\Http\JsonResponse
@@ -196,9 +203,14 @@ class HomeController extends Controller
 
     public function getNews($limit)
     {
-        $news = News::where('status', 1)->limit($limit)->get();
-
-        return response()->json(new NewsCollection($news));
+        $news = News::where('status', 1)->paginate($limit);
+        return response()->json([
+            'perPage' => $limit,
+            "data" => new NewsCollection($news),
+            "lastPage" => $news->lastPage(),
+            "total" => $news->total(),
+        ]);
+        ///  return response()->json(new NewsCollection($news));
 
     }
 
@@ -231,9 +243,14 @@ class HomeController extends Controller
 
     public function getVideos($limit): \Illuminate\Http\JsonResponse
     {
-        $news = Video::where('status', 1)->limit($limit)->get();
-
-        return response()->json(new VideoCollection($news));
+        $news = Video::where('status', 1)->paginate($limit);
+        return response()->json([
+            'perPage' => $limit,
+            "data" => new VideoCollection($news),
+            "lastPage" => $news->lastPage(),
+            "total" => $news->total(),
+        ]);
+        ///return response()->json(new VideoCollection($news));
 
     }
 
