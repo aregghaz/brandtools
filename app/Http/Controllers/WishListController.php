@@ -52,17 +52,8 @@ class WishListController extends Controller
             $this->uuid = $request->session()->get('_uuid');
         }
         $cart = \Cart::session($this->uuid)->getContent();
-        $count = count($cart);
-        //($cart);
-        $page = $request->page;
-//
-        dd($cart->paginate());
-        return response()->json([
-            'perPage' => $limit,
-            "data" => $cart,
-            //"lastPage" => $products->lastPage(),
-            "total" => ceil($count/ $limit),
-        ]);
+       /// $cart = \Cart::getContent();
+        return response()->json($cart);
 
 
     }
