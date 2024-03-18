@@ -79,7 +79,7 @@ class HomeController extends Controller
 
     public function category(Request $request): \Illuminate\Http\JsonResponse
     {
-        $category = Category::with('children')->select('id', 'title', 'parent_id')->get();
+        $category = Category::with('children')->select('id', 'title', 'image','parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
 

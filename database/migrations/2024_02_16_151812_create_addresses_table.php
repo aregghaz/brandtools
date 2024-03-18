@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('fatherName');
             $table->string('company')->nullable();
             $table->string('address_1');
-            $table->string('address_2');
+            $table->string('address_2')->nullable();
             $table->string('city');
             $table->string('country');
             $table->string('region');
