@@ -267,6 +267,18 @@ class ProductController extends Controller
             'status' => 200,
         ]);
     }
+    public function groupAddTag(Request $request)
+    {
+        $tagId = $request->tagId;
+        $products = Product::whereIn('id', $request->ids)->with('images')->get();
+        foreach ($products as $product) {
+            $product->update('teg_id', $tagId);
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
 
     /**
      * @param Product $product

@@ -122,6 +122,7 @@ Route::group([
     Route::post('/upload-images', [ProductController::class, 'upload']);
     Route::get('/delete-image/{id}', [ProductController::class, 'deleteImage']);
     Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
+    Route::post('/products/groupAddTeg', [ProductController::class, 'groupAddTag']);
     Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
     Route::post('/categories/groupDelete', [CategoryController::class, 'groupDelete']);
     Route::resource('products', ProductController::class);
@@ -141,6 +142,7 @@ Route::group([
     Route::put('contacts/{id}', [\App\Http\Controllers\ContactController::class, 'update']);
     Route::delete('call-back/{id}', [CallBackController::class, 'destroy']);
     Route::get('request-price', [\App\Http\Controllers\ContactController::class, 'getAllRequest']);
+
     Route::get('questions', [QuestionController::class, 'index']);
     Route::post('/questions/groupDelete', [QuestionController::class, 'groupDelete']);
 
