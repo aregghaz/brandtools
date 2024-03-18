@@ -48,7 +48,7 @@ class AuthController extends Controller
      */
     public function user(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json($request->user());
+        return response()->json($request->user()->with('address'));
     }
 
     public function registration(Request $request): \Illuminate\Http\JsonResponse
