@@ -20,7 +20,7 @@ use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
 use Illuminate\Http\Request;
-
+use DB;
 class HomeController extends Controller
 {
     public function singleProduct($id): \Illuminate\Http\JsonResponse
@@ -111,20 +111,20 @@ class HomeController extends Controller
 
     public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
     {
-//        $productIds = DB::table('category_product')
-//            ->where('category_id', $id)
-//            ->pluck('product_id')
-//            ->toArray();
+        $productIds = DB::table('category_product')
+            ->where('category_id', $id)
+            ->pluck('product_id')
+            ->toArray();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
 //            ->pluck('attribute_id')
 //            ->toArray();
         //$products = Category::findOrFail($id)->products->where('status',1);
 
-        $products = Product::whereHas('categories', function ($q) use ($id) {
-            $q->where('categories.id', $id);
-        })->where('status', 1)->pluck('id');
-        // dd($products);
+        // $products = Product::whereHas('categories', function ($q) use ($id) {
+        //     $q->where('categories.id', $id)->limit(1);
+        // })->where('status', 1)->pluck('id');
+        // // dd($products);
 
 //        $attrIds2 = DB::table('product_attribute')
 //            ->whereIn('product_id', $productIds)
@@ -149,8 +149,8 @@ class HomeController extends Controller
             'products' => function ($q) use ($limit) {
                 $q->where('status', 1)->limit($limit);
             },
-            'attributes.values' => function ($q) use ($products) {
-                $q->select(['value', 'attribute_id'])->whereIn("product_id", $products)->where('value', '!=', '')->orderBy('value')->distinct('value');
+            'attributes.values' => function ($q) use ($productIds) {
+                $q->select(['value', 'attribute_id'])->whereIn("product_id", $productIds)->where('value', '!=', '')->orderBy('value')->distinct('value');
             }])->find($id);
         return response()->json($category);
 

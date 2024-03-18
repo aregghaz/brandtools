@@ -14,13 +14,15 @@ class CategoryCollection extends ResourceCollection
      */
     public function toArray(Request $request)
     {
+       
         return $this->map(function ($data) {
+       
             return [
                 'id' => $data->id,
                 'image' => $data->image,
                 'title' => $data->title,
                 'slug' => $data->slug,
-                'parent' => $data->parent_id ? $data->parent->title : '--',
+                'parent' => $data->parent_id and $data->parent_id!==0 ? $data->parent->title : '--',
                 "updated"=> $data->updated_at,
               ///  'description'=>$data->description?? '--',
                 'meta_title'=>$data->meta_title?? '--',

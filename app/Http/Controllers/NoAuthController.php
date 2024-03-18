@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Session;
 
 class NoAuthController extends Controller
 {
@@ -33,22 +34,30 @@ class NoAuthController extends Controller
             'price' => $Product->price,
             'quantity' => $qty,
         ));
+    
         $cart = \Cart::getContent();
-        return response()->json($cart);
+        return response()->json([
+            'cart'=>$cart,
+             'uuid'=>$this->uuid
+        ]);
 
     }
 
 //
     public function getCart(Request $request)
     {
-        if(!$request->session()->has('_uuid')){
+       
+        if(!$request->session()->get("_uuid")){
             $uniqid = Str::random(9);
-            $request->session()->put('_uuid', $uniqid);
+           $request->session()->put("_uuid", $uniqid);
+
             $this->uuid = $uniqid;
+
         }else{
             $this->uuid = $request->session()->get('_uuid');
         }
-        $cart = \Cart::session($this->uuid)->getContent();
+         
+        $cart = \Cart::session($request->uuid ?? "asd")->getContent();
         return response()->json($cart);
 
     }
