@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SelectCollection;
 use App\Models\Address;
 use App\Models\User;
 use Carbon\Carbon;
@@ -48,7 +49,18 @@ class AuthController extends Controller
      */
     public function user(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json($request->user()->with('address'));
+        return response()->json([
+            "data" => [
+                'id' => $request->user()->id,
+                'name' => $request->user()->name,
+                'lastName' => $request->user()->lastName,
+                'fatherName' => $request->user()->fatherName,
+                "phone" => $request->user()->phone,
+                "email" => $request->user()->email,
+                "subscribed" => $request->user()->subscribed === 0 ? "отключить" : "включено",
+                'address'=> $request->user()->address
+            ],
+        ]);
     }
 
     public function registration(Request $request): \Illuminate\Http\JsonResponse
