@@ -21,7 +21,8 @@ class FiltrationController extends Controller
         }
 
 
-        $products = Product::where('status',1)->with(['attributes', 'categories' => function ($q) use ($id) {
+        $products = Product::where('status',1)
+            ->with(['attributes', 'categories' => function ($q) use ($id) {
             $q->where('categories.id', $id);
         }]);
 
