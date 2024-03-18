@@ -51,13 +51,13 @@ class AuthController extends Controller
     {
         return response()->json([
             "data" => [
-                'id' => $request->user->id,
-                'name' => $request->user->name,
-                'lastName' => $request->user->lastName,
-                'fatherName' => $request->user->fatherName,
-                "phone" => $request->user->phone,
-                "email" => $request->user->email,
-                "subscribed" => $request->user->subscribed === 0 ? "отключить" : "включено",
+                'id' => $request->user()->id,
+                'name' => $request->user()->name,
+                'lastName' => $request->user()->lastName,
+                'fatherName' => $request->user()->fatherName,
+                "phone" => $request->user()->phone,
+                "email" => $request->user()->email,
+                "subscribed" => $request->user()->subscribed === 0 ? "отключить" : "включено",
                 'address'=> $request->user()->address
             ],
         ]);
