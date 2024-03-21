@@ -20,7 +20,7 @@ class CategoryController extends Controller
             $this->convertQuery($queryData, $categories, 2);
         }
         $categories = $categories->take(15 * $showMore)->orderBy('id', 'DESC')->get();
-       
+
         return response()->json(new CategoryCollection($categories));
     }
 
@@ -95,7 +95,7 @@ class CategoryController extends Controller
                 'meta_desc' => $category->meta_desc,
                 'meta_key' => $category->meta_key,
                 'image' => url($category->image),
-                 'banner' => url($category->banner),
+                'banner' => url($category->banner),
                 'attributes' => new SelectCollection($category->attributes),
                 'categories' => $category->parent ? [
                     "id" => $category->parent->id,
@@ -168,7 +168,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
-        $this->deleteCategory($category);
+        //$this->deleteCategory($category);
+        return response()->json($category->children);
         return response()->json([
             'status' => 200
         ]);
@@ -186,7 +187,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function deleteCategory(Category $category): \Illuminate\Http\JsonResponse
+    public function deleteCategory(Category $category): bool
     {
         $imageFile = explode('/', $category->image);
         Storage::delete("/public/images/category/" . $imageFile[count($imageFile) - 1]);
@@ -194,8 +195,6 @@ class CategoryController extends Controller
         Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
         $category->attributes()->detach();
         $category->delete();
-        return response()->json([
-            "status" => 200,
-        ]);
+        return true;
     }
 }

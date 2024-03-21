@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SelectCollection;
 use App\Http\Resources\TagsCollection;
 use App\Models\Teg;
 use Illuminate\Http\Request;
@@ -93,6 +94,17 @@ class TegController extends Controller
     {
         Teg::find($id)->delete();
         return response()->json([
+            "status" => 200,
+        ]);
+    }
+
+
+    public function getTagsSelect()
+    {
+        $tags = Teg::all();
+
+        return response()->json([
+            "data" => new SelectCollection($tags),
             "status" => 200,
         ]);
     }

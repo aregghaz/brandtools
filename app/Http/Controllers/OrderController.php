@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\ProductsOrder;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -33,9 +34,27 @@ class OrderController extends Controller
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
         $order->note = $request->note ?? '';
-        $order->address_id = $request->address_id ?? 1;
+        if(typeOf($request->address_id) === 'number'){
+            $order->address_id = $request->address_id ?? 1;
+        }
+
         $order->status = 1;
         $order->save();
+        Address::create([
+            'name' => $request->name,
+            'lastName' => $request->lastName,
+            'fatherName' => $request->fatherName,
+            "phone" => $request->phone,
+            "email" => $request->email,
+            'user_id'=>$order->id,
+            "company" => $request->company ?? null,
+            "address_1" => $request->address_1,
+            "address_2" => $request->address_2,
+            "city" => $request->city,
+            "country" => $request->country,
+            "region" => $request->region,
+            "post" => $request->post,
+        ]);
         foreach ($carts as $cart) {
             $productsOrder = new ProductsOrder();
             $productsOrder->product_id = $cart->id;
