@@ -42,19 +42,19 @@ class OrderController extends Controller
         $order->status = 1;
         $order->save();
         Address::create([
-            'name' => $request->name,
-            'lastName' => $request->lastName,
-            'fatherName' => $request->fatherName,
-            "phone" => $request->phone,
-            "email" => $request->email,
-            'user_id'=>$order->id,
-            "company" => $request->company ?? null,
-            "address_1" => $request->address_1,
-            "address_2" => $request->address_2,
-            "city" => $request->city,
-            "country" => $request->country,
-            "region" => $request->region,
-            "post" => $request->post,
+            'name' => $request->address_id->name,
+            'lastName' => $request->address_id->lastName,
+            'fatherName' => $request->address_id->fatherName,
+            "phone" => $request->address_id->phone,
+            "email" => $request->address_id->email,
+            'user_id'=>$order->address_id->id,
+            "company" => $request->address_id->company ?? null,
+            "address_1" => $request->address_id->address_1,
+            "address_2" => $request->address_id->address_2,
+            "city" => $request->address_id->city,
+            "country" => $request->address_id->country,
+            "region" => $request->address_id->region,
+            "post" => $request->address_id->post,
         ]);
         foreach ($carts as $cart) {
             $productsOrder = new ProductsOrder();
