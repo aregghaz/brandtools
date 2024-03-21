@@ -8,6 +8,7 @@ use App\Models\ProductsOrder;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use phpseclib3\Math\PrimeField\Integer;
 
 class OrderController extends Controller
 {
@@ -34,7 +35,7 @@ class OrderController extends Controller
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
         $order->note = $request->note ?? '';
-        if(typeOf($request->address_id) === 'number'){
+        if(gettype($request->address_id) === "Integer"){
             $order->address_id = $request->address_id ?? 1;
         }
 
