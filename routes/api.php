@@ -102,6 +102,7 @@ Route::group([
         'middleware' => 'auth:api'
     ], function () {
         Route::post('/create-order', [OrderController::class, 'createOrder']);
+        Route::get('/pre-order/{id}', [OrderController::class, 'preOrder']);
         Route::get('add-cart/{productId}/{qty}', [CartController::class, 'index'])->name('add-cart');
         Route::get('get-cart', [CartController::class, 'getCart'])->name('getCart');
         Route::get('cart-update/{productId}/{qty}', [CartController::class, 'update'])->name('update');

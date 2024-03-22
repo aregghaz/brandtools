@@ -19,8 +19,6 @@ class Product extends Model
         'start',
         'end',
         'slug',
-        'created_at',
-        'updated_at',
         'teg_id',
         'brand_id',
         'product_id',
@@ -31,6 +29,8 @@ class Product extends Model
         'meta_title',
         'meta_desc',
         'meta_key',
+        'created_at',
+        'updated_at',
     ];
     protected $casts = [
         'start' => 'datetime:Y-m-d H:i:s',

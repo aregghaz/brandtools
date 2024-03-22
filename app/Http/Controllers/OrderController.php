@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\ProductsOrder;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use phpseclib3\Math\PrimeField\Integer;
 
 class OrderController extends Controller
 {
@@ -35,21 +35,21 @@ class OrderController extends Controller
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
         $order->note = $request->note ?? '';
-        if(gettype($request->address_id) === "Integer"){
+        if (gettype($request->address_id) === "Integer") {
             $order->address_id = $request->address_id ?? 1;
         }
 
         $order->status = 1;
         $order->save();
-    //    var_dump($request->address_id["name"]);
-    //    die;
-      $address=  Address::create([
+        //    var_dump($request->address_id["name"]);
+        //    die;
+        $address = Address::create([
             'name' => $request->address_id['name'],
             'lastName' => $request->address_id['lastName'],
             'fatherName' => $request->address_id['fatherName'],
             "phone" => $request->address_id['phone'],
             "email" => $request->address_id['email'],
-            'user_id'=>$userId,
+            'user_id' => $userId,
             "company" => $request->address_id['company'] ?? null,
             "address_1" => $request->address_id['address_1'],
             "address_2" => $request->address_id['address_2'],
@@ -58,7 +58,7 @@ class OrderController extends Controller
             "region" => $request->address_id['region'],
             "post" => $request->address_id['post'],
         ]);
-           $order->address_id = $address->id;
+        $order->address_id = $address->id;
         $order->update();
         foreach ($carts as $cart) {
             $productsOrder = new ProductsOrder();
@@ -69,9 +69,70 @@ class OrderController extends Controller
             $productsOrder->save();
             \Cart::session($userId)->remove($cart->id);
         }
-      return response()->json([
+        return response()->json([
             "status" => 200,
         ]);
+    }
+
+
+    public function preOrder($id, Request $request)
+    {
+        $userId = Auth::user()->id;
+        $product = Product::find($id);
+        $price = 0;
+        if (isset($product)) {
+            return response()->json([
+                'message' => 'not found',
+                'success' => 0
+            ]);
+        }
+
+        if ($product->end < date('Y-m-d')) {
+            $price = $product->price;
+        } else {
+            $price= $product->special_price;
+        }
+
+        $order = new Order();
+        $order->total = $price;
+        $order->user_id = $userId;
+        $order->delivery = 0;
+        $order->grant_total = $price;
+        $order->note = $request->note ?? '';
+        if (gettype($request->address_id) === "Integer") {
+            $order->address_id = $request->address_id ?? 1;
+        }
+
+        $order->status = 2;
+        $order->save();
+        $address = Address::create([
+            'name' => $request->address_id['name'],
+            'lastName' => $request->address_id['lastName'],
+            'fatherName' => $request->address_id['fatherName'],
+            "phone" => $request->address_id['phone'],
+            "email" => $request->address_id['email'],
+            'user_id' => $userId,
+            "company" => $request->address_id['company'] ?? null,
+            "address_1" => $request->address_id['address_1'],
+            "address_2" => $request->address_id['address_2'],
+            "city" => $request->address_id['city'],
+            "country" => $request->address_id['country'],
+            "region" => $request->address_id['region'],
+            "post" => $request->address_id['post'],
+        ]);
+        $order->address_id = $address->id;
+        $order->update();
+        $productsOrder = new ProductsOrder();
+        $productsOrder->product_id = $product->id;
+        $productsOrder->order_id = $order->id;
+        $productsOrder->quantity = 1;
+        $productsOrder->price = $price;
+        $productsOrder->save();
+
+        return response()->json([
+            "status" => 200,
+        ]);
+
     }
 
     /**
