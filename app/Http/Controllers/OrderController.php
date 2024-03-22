@@ -20,6 +20,7 @@ class OrderController extends Controller
         \Cart::session($userId);
         $carts = \Cart::getContent();
         $total = 0;
+        $addressId = 0;
         if (!count($carts)) {
             return response()->json([
                 'message' => 'no item in cart',
@@ -37,28 +38,32 @@ class OrderController extends Controller
         $order->note = $request->note ?? '';
         if (gettype($request->address_id) === "Integer") {
             $order->address_id = $request->address_id ?? 1;
+            $addressId = $request->address_id ?? 1;
+        } else {
+            $address = Address::create([
+                'name' => $request->address_id['name'],
+                'lastName' => $request->address_id['lastName'],
+                'fatherName' => $request->address_id['fatherName'],
+                "phone" => $request->address_id['phone'],
+                "email" => $request->address_id['email'],
+                'user_id' => $userId,
+                "company" => $request->address_id['company'] ?? null,
+                "address_1" => $request->address_id['address_1'],
+                "address_2" => $request->address_id['address_2'],
+                "city" => $request->address_id['city'],
+                "country" => $request->address_id['country'],
+                "region" => $request->address_id['region'],
+                "post" => $request->address_id['post'],
+            ]);
+            $addressId = $address->id;
         }
 
         $order->status = 1;
         $order->save();
         //    var_dump($request->address_id["name"]);
         //    die;
-        $address = Address::create([
-            'name' => $request->address_id['name'],
-            'lastName' => $request->address_id['lastName'],
-            'fatherName' => $request->address_id['fatherName'],
-            "phone" => $request->address_id['phone'],
-            "email" => $request->address_id['email'],
-            'user_id' => $userId,
-            "company" => $request->address_id['company'] ?? null,
-            "address_1" => $request->address_id['address_1'],
-            "address_2" => $request->address_id['address_2'],
-            "city" => $request->address_id['city'],
-            "country" => $request->address_id['country'],
-            "region" => $request->address_id['region'],
-            "post" => $request->address_id['post'],
-        ]);
-        $order->address_id = $address->id;
+
+        $order->address_id = $addressId;
         $order->update();
         foreach ($carts as $cart) {
             $productsOrder = new ProductsOrder();
@@ -80,7 +85,8 @@ class OrderController extends Controller
         $userId = Auth::user()->id;
         $product = Product::find($id);
         $price = 0;
-        if (isset($product)) {
+        $addressId = 1;
+        if (!isset($product)) {
             return response()->json([
                 'message' => 'not found',
                 'success' => 0
@@ -88,9 +94,9 @@ class OrderController extends Controller
         }
 
         if ($product->end < date('Y-m-d')) {
-            $price = $product->price;
+            $price =round(($product->price* 10)/100);
         } else {
-            $price= $product->special_price;
+            $price = round(($product->special_price * 10)/100);
         }
 
         $order = new Order();
@@ -99,29 +105,34 @@ class OrderController extends Controller
         $order->delivery = 0;
         $order->grant_total = $price;
         $order->note = $request->note ?? '';
-        if (gettype($request->address_id) === "Integer") {
+//        dd(gettype($request->address_id));
+        if (gettype($request->address_id) === "integer") {
             $order->address_id = $request->address_id ?? 1;
+            $addressId = $request->address_id ?? 1;
+        } else {
+            $address = Address::create([
+                'name' => $request->address_id['name'],
+                'lastName' => $request->address_id['lastName'],
+                'fatherName' => $request->address_id['fatherName'],
+                "phone" => $request->address_id['phone'],
+                "email" => $request->address_id['email'],
+                'user_id' => $userId,
+                "company" => $request->address_id['company'] ?? null,
+                "address_1" => $request->address_id['address_1'],
+                "address_2" => $request->address_id['address_2'],
+                "city" => $request->address_id['city'],
+                "country" => $request->address_id['country'],
+                "region" => $request->address_id['region'],
+                "post" => $request->address_id['post'],
+            ]);
+            $addressId = $address->id;
         }
 
         $order->status = 2;
         $order->save();
-        $address = Address::create([
-            'name' => $request->address_id['name'],
-            'lastName' => $request->address_id['lastName'],
-            'fatherName' => $request->address_id['fatherName'],
-            "phone" => $request->address_id['phone'],
-            "email" => $request->address_id['email'],
-            'user_id' => $userId,
-            "company" => $request->address_id['company'] ?? null,
-            "address_1" => $request->address_id['address_1'],
-            "address_2" => $request->address_id['address_2'],
-            "city" => $request->address_id['city'],
-            "country" => $request->address_id['country'],
-            "region" => $request->address_id['region'],
-            "post" => $request->address_id['post'],
-        ]);
-        $order->address_id = $address->id;
+        $order->address_id = $addressId;
         $order->update();
+
         $productsOrder = new ProductsOrder();
         $productsOrder->product_id = $product->id;
         $productsOrder->order_id = $order->id;
