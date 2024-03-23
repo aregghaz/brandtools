@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SelectCollection;
 use App\Http\Resources\TagsCollection;
+use App\Models\Product;
 use App\Models\Teg;
 use Illuminate\Http\Request;
 
@@ -102,9 +103,16 @@ class TegController extends Controller
     public function getTagsSelect()
     {
         $tags = Teg::all();
-
         return response()->json([
             "data" => new SelectCollection($tags),
+            "status" => 200,
+        ]);
+    }
+    public function addTags(Request $request): \Illuminate\Http\JsonResponse
+    {
+
+        Product::whereIn('id', $request->ids)->update(['teg_id'=> $request->tegId]);
+        return response()->json([
             "status" => 200,
         ]);
     }

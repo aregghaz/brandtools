@@ -37,6 +37,7 @@ class CategoryController extends Controller
         return response()->json([
             "categories" => new SelectCollection($categories),
             'status' => new SelectCollection($this->simpleSelect()),
+            'top' => new SelectCollection($this->simpleSelect()),
             'attributes' => new SelectCollection($attributes),
         ]);
     }
@@ -67,6 +68,7 @@ class CategoryController extends Controller
             'meta_desc' => $data->meta_desc ?? null,
             'meta_key' => $data->meta_key ?? null,
             'status' => 1,
+            'top' => $data->top->id ?? 0,
             'image' => $storageName,
             'banner' => $storageBanner
         ]);
@@ -109,8 +111,15 @@ class CategoryController extends Controller
                     "label" => $category->status === 1 ? 'включено' : 'отключить',
                     "name" => $category->status === 1 ? 'включено' : 'отключить',
                 ],
+                'top' => [
+                    "id" => $category->top,
+                    "value" => $category->top,
+                    "label" => $category->top === 1 ? 'включено' : 'отключить',
+                    "name" => $category->top === 1 ? 'включено' : 'отключить',
+                ],
                 "updated_at" => $category->updated_at,
             ],
+            'top' => new SelectCollection($this->simpleSelect()),
             "categories" => new SelectCollection($categories),
             'status' => new SelectCollection($this->simpleSelect()),
             'attributes' => new SelectCollection($attributes),
@@ -155,6 +164,7 @@ class CategoryController extends Controller
             'meta_title' => $data->meta_title,
             'meta_desc' => $data->meta_desc,
             'meta_key' => $data->meta_key,
+            'top' => $data->top->id ?? 0,
             'status' => (int)$data->status->id,
         ]);
         $category->attributes()->detach();

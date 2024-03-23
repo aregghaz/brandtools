@@ -139,6 +139,7 @@ Route::group([
     Route::resource('tags', TegController::class);
     Route::get('call-back', [CallBackController::class, 'index']);
     Route::get('getTagsSelect', [TegController::class, 'getTagsSelect']);
+    Route::post('getTagsSelect', [TegController::class, 'addTags']);
     Route::get('contacts', [\App\Http\Controllers\ContactController::class, 'index']);
     Route::get('/request-price/{id}', [\App\Http\Controllers\ContactController::class, 'getSingleRequestPrice']);
     Route::put('contacts/{id}', [\App\Http\Controllers\ContactController::class, 'update']);
