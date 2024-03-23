@@ -122,6 +122,7 @@ Route::group([
 //        Route::get('logout', 'AuthController@logout');
     Route::post('/upload-images', [ProductController::class, 'upload']);
     Route::get('/delete-image/{id}', [ProductController::class, 'deleteImage']);
+    Route::get('/getLatestOrders', [App\Http\Controllers\home\OrderController::class, 'getLatestOrders']);
     Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
     Route::post('/products/groupAddTeg', [ProductController::class, 'groupAddTag']);
     Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
@@ -147,6 +148,8 @@ Route::group([
     Route::get('request-price', [\App\Http\Controllers\ContactController::class, 'getAllRequest']);
 
     Route::get('questions', [QuestionController::class, 'index']);
+    Route::resource('orders', App\Http\Controllers\home\OrderController::class);
+    ///  Route::delete('/orders/{id}', [App\Http\Controllers\home\OrderController::class, 'destroy']);
     Route::post('/questions/groupDelete', [QuestionController::class, 'groupDelete']);
 
     Route::delete('request-price/{id}', [\App\Http\Controllers\ContactController::class, 'deleteRequestPrice']);

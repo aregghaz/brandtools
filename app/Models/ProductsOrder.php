@@ -16,4 +16,8 @@ class ProductsOrder extends Model
         'quantity',
         'price',
     ];
+    public function item()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }
