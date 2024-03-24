@@ -5,7 +5,9 @@ namespace App\Http\Controllers\home;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderListAdminCollection;
 use App\Http\Resources\OrdersListCollection;
+use App\Http\Resources\SelectCollection;
 use App\Models\Order;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -65,11 +67,29 @@ class OrderController extends Controller
             'success' => 0
         ]);
     }
-    public function destroy($id){
+
+    public function destroy($id)
+    {
         Order::find($id)->delete();
         return response()->json([
             "status" => 200,
         ]);
 
+    }
+
+    public function changeStatus(Request $request)
+    {
+        Order::whereIn('id', $request->ids)->update(['status'=> $request->statusId]);
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
+    public function getStatusSelect(Request $request)
+    {
+        $status = Status::all();
+        return response()->json([
+            'data'=>new SelectCollection($status),
+            "status" => 200,
+        ]);
     }
 }

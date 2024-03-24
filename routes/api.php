@@ -148,6 +148,9 @@ Route::group([
     Route::get('request-price', [\App\Http\Controllers\ContactController::class, 'getAllRequest']);
 
     Route::get('questions', [QuestionController::class, 'index']);
+    Route::post('change-status', [App\Http\Controllers\home\OrderController::class, 'changeStatus']);
+    Route::get('getStatusSelect', [App\Http\Controllers\home\OrderController::class, 'getStatusSelect']);
+
     Route::resource('orders', App\Http\Controllers\home\OrderController::class);
     ///  Route::delete('/orders/{id}', [App\Http\Controllers\home\OrderController::class, 'destroy']);
     Route::post('/questions/groupDelete', [QuestionController::class, 'groupDelete']);
