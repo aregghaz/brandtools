@@ -31,7 +31,7 @@ class CartController extends Controller
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
-            'image' => $Product->image,
+            'image' => 'ssss',
             'quantity' => $qty,
         ));
         $cart = \Cart::getContent();
