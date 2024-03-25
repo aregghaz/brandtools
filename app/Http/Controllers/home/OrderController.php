@@ -17,9 +17,9 @@ class OrderController extends Controller
         $showMore = $request->get('showMore');
         $queryData = $request->get('query');
         $orders = Order::with('products');
-//        if (isset($queryData)) {
-//            $this->convertQuery($queryData, $orders, 3);
-//        }
+        if (isset($queryData)) {
+            $this->orderQuery($queryData, $orders);
+        }
         $orders = $orders->orderBy('id', 'DESC')->take(15 * $showMore)->get();
         return response()->json(new OrderListAdminCollection($orders));
     }

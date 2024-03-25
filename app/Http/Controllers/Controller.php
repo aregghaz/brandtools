@@ -29,6 +29,18 @@ class Controller extends BaseController
 
         });
     }
+    protected function orderQuery($queryData, $data)
+    {
+
+        return $data->where(function ($query) use ($queryData) {
+            $query->whereHas('products.item', function ($q) use ($queryData) {
+                $q->where('name', 'LIKE', '%' .  $queryData . '%');
+            })->orWhereHas('user', function ($q) use ($queryData) {
+                $q->where('name', 'LIKE', '%' .  $queryData . '%');
+            });
+            $query->orWhere('grant_total', 'LIKE', '%' .  $queryData . '%');
+        });
+    }
 
     public function simpleSelect(): array
     {
