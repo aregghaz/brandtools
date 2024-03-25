@@ -26,6 +26,7 @@ class NoAuthController extends Controller
         \Cart::session($this->uuid)->add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
+            'image' => $Product->image,
             'price' => $Product->price,
             'quantity' => $qty,
         ));

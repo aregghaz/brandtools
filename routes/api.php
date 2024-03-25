@@ -77,7 +77,7 @@ Route::group(['prefix' => 'wishlist'], function () {
     Route::get('delete-wishlist/{productId}', [WishListController::class, 'delete']);
 
 });
-
+Route::get('/test', [\App\Http\Controllers\TestController::class, 'image']);
 
 //
 //Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

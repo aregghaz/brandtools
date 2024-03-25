@@ -313,5 +313,24 @@ class TestController extends Controller
         }
         return true;
     }
+    public function image() {
+        $product = Product::find(123);
+        // Create image instances
+        $dest = imagecreatefromgif(
+            'https://media.geeksforgeeks.org/wp-content/uploads/animateImages.gif');
+        $src = imagecreatefromgif(
+            'https://media.geeksforgeeks.org/wp-content/uploads/slider.gif');
 
+// Copy and merge
+       $img =  imagecopymerge($dest, $src, 10, 10, 0, 0, 500, 200, 75);
+       ///return json()->response($img);
+        ///
+        header('Content-Type: image/gif');
+        imagegif($dest);
+
+        imagedestroy($dest);
+        imagedestroy($src);
+
+
+    }
 }
