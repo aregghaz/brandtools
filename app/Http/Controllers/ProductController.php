@@ -33,7 +33,7 @@ class ProductController extends Controller
 
     public function create(): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::all();
+        $brands = Brand::orderBy('title', 'ASC')->get();
         $categories = Category::all();
         $tags = Teg::all();
         $attributes = Attribute::with('values')->get();
@@ -48,7 +48,7 @@ class ProductController extends Controller
 
     public function show(Product $product): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::all();
+        $brands = Brand::orderBy('title', 'ASC')->get();
         $categories = Category::all();
         $attributes = Attribute::with('values')->get();
         $tags = Teg::all();
