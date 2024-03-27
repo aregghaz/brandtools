@@ -7,6 +7,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CallBackController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FiltrationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -78,6 +79,8 @@ Route::group(['prefix' => 'wishlist'], function () {
 
 });
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'image']);
+Route::get('/yearProfit', [\App\Http\Controllers\DashboardController::class, 'yearProfit']);
+Route::get('/orderCount', [\App\Http\Controllers\DashboardController::class, 'orderCount']);
 
 //
 //Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
@@ -149,7 +152,12 @@ Route::group([
 
     Route::get('questions', [QuestionController::class, 'index']);
     Route::post('change-status', [App\Http\Controllers\home\OrderController::class, 'changeStatus']);
-    Route::get('getStatusSelect', [App\Http\Controllers\home\OrderController::class, 'getStatusSelect']);
+
+
+    Route::get('year-profit', [DashboardController::class, 'yearProfit']);
+    Route::get('order-count', [DashboardController::class, 'orderCount']);
+
+
 
     Route::resource('orders', App\Http\Controllers\home\OrderController::class);
     ///  Route::delete('/orders/{id}', [App\Http\Controllers\home\OrderController::class, 'destroy']);

@@ -179,7 +179,11 @@ class CategoryController extends Controller
     public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
         //$this->deleteCategory($category);
-        return response()->json($category->children);
+      //  return response()->json($category->children);
+        foreach ($category->children as $child){
+            $this->deleteCategory($child);
+        }
+        $this->deleteCategory($category);
         return response()->json([
             'status' => 200
         ]);

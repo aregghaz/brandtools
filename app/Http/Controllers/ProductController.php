@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryGroupCollection;
 use App\Http\Resources\ImagesCollection;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\SelectCollection;
@@ -40,7 +41,7 @@ class ProductController extends Controller
         return response()->json([
             'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
-            'categories' => new SelectCollection($categories),
+            'categories' => new CategoryGroupCollection($categories),
             'attributes' => new SelectCollection($attributes),
             'teg_id' => new SelectCollection($tags),
         ]);
@@ -95,7 +96,7 @@ class ProductController extends Controller
             'images' => new ImagesCollection($product->images),
             'status' => new SelectCollection($this->simpleSelect()),
             'brand_id' => new SelectCollection($brands),
-            'categories' => new SelectCollection($categories),
+            'categories' => new CategoryGroupCollection($categories),
             'attributes' => new SelectCollection($attributes),
             'teg_id' => new SelectCollection($tags),
         ]);
@@ -137,6 +138,10 @@ class ProductController extends Controller
         }
 
         foreach ($data->categories as $categories) {
+            $category = Category::with(['parent' => function ($query) {
+                $query->select('id');
+            }])->find($categories->id);
+            var_dump($category);
             $product->categories()->attach($categories->id);
         }
         return response()->json([
@@ -197,14 +202,34 @@ class ProductController extends Controller
             $product->attributes()->attach($attribute->id, ['value' => $data->$idData]);
         }
         $product->categories()->detach();
+
         foreach ($data->categories as $categories) {
-            $product->categories()->attach($categories->id);
+
+            $category = Category::with('allParents')->find($categories->id);
+            $asd = $this->getSubCategoryIds($category->allParents, $category->parent_id);
+            $subcategoryIds = array_merge($asd, [$category->id]);
+            foreach ($subcategoryIds as $ids) {
+                $product->categories()->attach($ids);
+
+            }
         }
-
-
         return response()->json([
             'status' => 200
         ]);
+    }
+
+    function getSubCategoryIds($childCategories, int $parentId): array
+    {
+        if ($parentId === 0) {
+            return [];
+        }
+        // Get all of the child categories of the parent category.
+        $subcategoryIds = [];
+        foreach ($childCategories as $childCategory) {
+            $subcategoryIds[] = $childCategory->id;
+            $subcategoryIds = array_merge($subcategoryIds, $this->getSubCategoryIds($childCategory->allParents, $childCategory->id,));
+        }
+        return $subcategoryIds;
     }
 
     public function destroy(Product $product)
@@ -267,6 +292,7 @@ class ProductController extends Controller
             'status' => 200,
         ]);
     }
+
     public function groupAddTag(Request $request)
     {
         $tagId = $request->tagId;
