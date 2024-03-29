@@ -15,15 +15,16 @@ class OrderListAdminCollection extends ResourceCollection
      */
     public function toArray(Request $request)
     {
-        return $this->map(function ($product) {
-            $status = Status::find($product->status);
+        return $this->map(function ($order) {
+            $status = Status::find($order->status);
 
             return [
-                'id' => $product->id,
-                'name' => $product->user->name.' '. $product->user->lastName,
+                'id' => $order->id,
+                'orderId' => $order->id,
+                'name' => $order->user->name.' '. $order->user->lastName,
                 'status' => $status->title,
-                'total' => $product->grant_total,
-                'updated' => $product->created_at,
+                'total' => $order->grant_total,
+                'updated' => $order->created_at,
 
             ];
         });

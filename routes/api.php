@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/subscription/{email}', [\App\Http\Controllers\SubscriptionController::class, 'create']);
-Route::get('/singleProduct/{id}', [HomeController::class, 'singleProduct']);
+Route::get('/singleProduct/{slug}', [HomeController::class, 'singleProduct']);
 Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);
 Route::get('/top-products/{limit}', [\App\Http\Controllers\home\ProductController::class, 'getTopProducts']);
 Route::get('/search/{limit}', [\App\Http\Controllers\home\ProductController::class, 'searchProducts']);
@@ -42,7 +42,7 @@ Route::get('/search/{limit}', [\App\Http\Controllers\home\ProductController::cla
 Route::get('/category', [HomeController::class, 'category']);
 Route::get('/top-category/{limit}', [HomeController::class, 'topCategory']);
 Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
-Route::get('/singleCat/{id}/{limit}', [HomeController::class, 'singleCat']);
+Route::get('/singleCat/{slug}/{limit}', [HomeController::class, 'singleCat']);
 
 Route::get('/products-by-catId/{id}/{limit}', [HomeController::class, 'productsCategory']);
 Route::get('/products-by-brand-id/{id}/{limit}', [HomeController::class, 'brandProducts']);

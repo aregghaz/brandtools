@@ -55,11 +55,8 @@ class OrderController extends Controller
 
     public function getLatestOrders()
     {
-        $orders = Order::with('user')
-            ->join('statuses', 'statuses.id', '=', 'orders.status')
-            /// ->where('status', 1)
+        $orders = Order::with('user')->whereIn('status', [1,2])
             ->orderBy('orders.id', 'DESC')
-            ///->select(['orders.id as odId' ,'statuses.title as title','statuses.id as id'])
             ->take(20)
             ->get();
         return response()->json([

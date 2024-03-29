@@ -23,9 +23,9 @@ use Illuminate\Http\Request;
 use DB;
 class HomeController extends Controller
 {
-    public function singleProduct($id): \Illuminate\Http\JsonResponse
+    public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
-        $product = Product::find($id);
+        $product = Product::where('slug',$slug)->limit(1)->get();
 
         return response()->json([
                 'id' => $product->id,
@@ -109,8 +109,12 @@ class HomeController extends Controller
         ]);
     }
 
-    public function singleCat($id, $limit): \Illuminate\Http\JsonResponse
+    public function singleCat($slug, $limit): \Illuminate\Http\JsonResponse
     {
+
+
+        $category = Category::where('slug', $slug)->limit(1)->get();
+        $id = $category->id;
         $productIds = DB::table('category_product')
             ->where('category_id', $id)
             ->pluck('product_id')
