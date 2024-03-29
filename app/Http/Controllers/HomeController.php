@@ -172,9 +172,9 @@ class HomeController extends Controller
         return response()->json(new BrandsCollection($brands));
     }
 
-    public function getSingleBrand($id): \Illuminate\Http\JsonResponse
+    public function getSingleBrand($slug): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::find($id);
+        $brands = Brand::where('slug',$slug)->limit(1)->get();
         return response()->json($brands);
     }
 
@@ -218,9 +218,9 @@ class HomeController extends Controller
 
     }
 
-    public function getSingleNews($id)
+    public function getSingleNews($slug)
     {
-        $news = News::find($id);
+        $news = News::where('slug',$slug)->limit(1)->get();
         return response()->json([
             'id' => $news->id,
             'title' => $news->title,

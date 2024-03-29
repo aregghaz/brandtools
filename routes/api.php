@@ -49,7 +49,7 @@ Route::get('/products-by-brand-id/{id}/{limit}', [HomeController::class, 'brandP
 Route::get('/getTags', [HomeController::class, 'getTags']);
 
 Route::get('/get-brands/{limit}', [HomeController::class, 'getBrand']);
-Route::get('/get-single-brands/{id}', [HomeController::class, 'getSingleBrand']);
+Route::get('/get-single-brands/{slug}', [HomeController::class, 'getSingleBrand']);
 Route::get('/get-single-brands-name', [HomeController::class, 'getSingleBrandByName']);
 
 Route::get('get-banners', [HomeController::class, 'getBanners']);
@@ -66,7 +66,7 @@ Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos'])
 
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
-Route::get('get-single-news/{id}', [HomeController::class, 'getSingleNews']);
+Route::get('get-single-news/{slug}', [HomeController::class, 'getSingleNews']);
 Route::get('getSliders', [HomeController::class, 'getSliders']);
 
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
