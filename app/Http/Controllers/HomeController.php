@@ -25,10 +25,10 @@ class HomeController extends Controller
 {
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
-        $product = Product::where('slug',$slug)->limit(1)->get();
+        $product = Product::where('slug',$slug)->first();
 
         return response()->json([
-            //    'id' => $product->id,
+                'id' => $product->id,
                 'title' => $product->name,
                 'description' => $product->description,
                 'price' => $product->price,
@@ -36,14 +36,14 @@ class HomeController extends Controller
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
-//                'categories' => new SelectCollection($product->categories),
-//                'attributes' => new SelectCollection($product->attributes),
-//                'brand_id' => [
-//                    "name" => $product->brand->title,
-//                    "label" => $product->brand->title,
-//                    "value" => $product->brand->id,
-//                    "id" => $product->brand->id
-//                ],
+                'categories' => new SelectCollection($product->categories),
+                'attributes' => new SelectCollection($product->attributes),
+                'brand_id' => [
+                    "name" => $product->brand->title,
+                    "label" => $product->brand->title,
+                    "value" => $product->brand->id,
+                    "id" => $product->brand->id
+                ],
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
