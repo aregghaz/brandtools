@@ -99,9 +99,9 @@ class HomeController extends Controller
         return $this->getJsonResponse($data);
     }
 
-    public function singleCategory($slug): \Illuminate\Http\JsonResponse
+    public function singleCategory($id): \Illuminate\Http\JsonResponse
     {
-        $category = Category::with('children')->where('slug',$slug)->first();
+        $category = Category::with('children')->find($id);
         return response()->json([
             'id' => $category->id,
             'title' => $category->title,
@@ -113,7 +113,7 @@ class HomeController extends Controller
     {
 
 
-        $category = Category::where('slug', $slug)->limit(1)->get();
+        $category = Category::where('slug', $slug)->first();
         $id = $category->id;
         $productIds = DB::table('category_product')
             ->where('category_id', $id)
