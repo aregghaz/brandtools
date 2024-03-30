@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RequestPriceCollection;
+use App\Mail\RequestPriceMail;
 use App\Models\Contact;
 use App\Models\RequestPrice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -132,7 +134,7 @@ class ContactController extends Controller
             'body' => 'This is the email body of how to send email from laravel 10 with mailtrap.'
         ];
 
-        Mail::to('your_email@gmail.com')->send(new SampleMail($content));
+        Mail::to('your_email@gmail.com')->send(new RequestPriceMail($content));
 
 
         return response()->json([
