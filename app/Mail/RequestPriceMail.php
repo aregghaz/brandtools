@@ -13,11 +13,12 @@ class RequestPriceMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public array $content;
     /**
      * Create a new message instance.
      */
-    public function __construct() {
-
+    public function __construct(array $content) {
+        $this->content = $content;
     }
 
 
@@ -51,4 +52,9 @@ class RequestPriceMail extends Mailable
         return [];
     }
 
+    public function build(): RequestPriceMail
+    {
+        return $this->subject($this->content['subject'])
+            ->view('emails.requestPrice');
+    }
 }
