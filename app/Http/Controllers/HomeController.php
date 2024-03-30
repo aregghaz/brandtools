@@ -36,24 +36,24 @@ class HomeController extends Controller
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
-//                'categories' => new SelectCollection($product->categories),
-//                'attributes' => new SelectCollection($product->attributes),
-//                'brand_id' => [
-//                    "name" => $product->brand->title,
-//                    "label" => $product->brand->title,
-//                    "value" => $product->brand->id,
-//                    "id" => $product->brand->id
-//                ],
+               /// 'categories' => new SelectCollection($product->categories),
+                'attributes' => new SelectCollection($product->attributes),
+                'brand_id' => [
+                    "name" => $product->brand->title,
+                    "label" => $product->brand->title,
+                    "value" => $product->brand->id,
+                    "id" => $product->brand->id
+                ],
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
-//                'images' => new ImagesCollection($product->images),
-//                'status' => [
-//                    "name" => $product->status === 1 ? 'включено' : "отключить",
-//                    "label" => $product->status === 1 ? 'включено' : "отключить",
-//                    "value" => $product->status,
-//                    "id" => $product->status
-//                ],
+                'images' => new ImagesCollection($product->images),
+                'status' => [
+                    "name" => $product->status === 1 ? 'включено' : "отключить",
+                    "label" => $product->status === 1 ? 'включено' : "отключить",
+                    "value" => $product->status,
+                    "id" => $product->status
+                ],
                 'meta_title' => $product->meta_title,
                 'meta_desc' => $product->meta_desc,
                 'meta_key' => $product->meta_key,]
