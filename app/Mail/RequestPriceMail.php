@@ -16,8 +16,8 @@ class RequestPriceMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(array $content) {
-        $this->content = $content;
+    public function __construct() {
+
     }
 
 
