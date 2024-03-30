@@ -36,14 +36,14 @@ class HomeController extends Controller
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
-                'categories' => new SelectCollection($product->categories),
-                'attributes' => new SelectCollection($product->attributes),
-                'brand_id' => [
-                    "name" => $product->brand->title,
-                    "label" => $product->brand->title,
-                    "value" => $product->brand->id,
-                    "id" => $product->brand->id
-                ],
+//                'categories' => new SelectCollection($product->categories),
+//                'attributes' => new SelectCollection($product->attributes),
+//                'brand_id' => [
+//                    "name" => $product->brand->title,
+//                    "label" => $product->brand->title,
+//                    "value" => $product->brand->id,
+//                    "id" => $product->brand->id
+//                ],
                 'sku' => $product->sku,
                 'quantity' => $product->quantity,
                 'image' => $product->image,
