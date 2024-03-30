@@ -114,6 +114,12 @@ class HomeController extends Controller
 
 
         $category = Category::where('slug', $slug)->first();
+        if($category){
+            return response()->json([
+               'message'=>'not found'
+            ]);
+        }
+
         $id = $category->id;
         $productIds = DB::table('category_product')
             ->where('category_id', $id)
