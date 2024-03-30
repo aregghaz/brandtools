@@ -99,9 +99,9 @@ class HomeController extends Controller
         return $this->getJsonResponse($data);
     }
 
-    public function singleCategory($id): \Illuminate\Http\JsonResponse
+    public function singleCategory($slug): \Illuminate\Http\JsonResponse
     {
-        $category = Category::with('children')->find($id);
+        $category = Category::with('children')->where('slug',$slug)->first();
         return response()->json([
             'id' => $category->id,
             'title' => $category->title,

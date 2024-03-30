@@ -41,7 +41,7 @@ Route::get('/search/{limit}', [\App\Http\Controllers\home\ProductController::cla
 
 Route::get('/category', [HomeController::class, 'category']);
 Route::get('/top-category/{limit}', [HomeController::class, 'topCategory']);
-Route::get('/category/{id}', [HomeController::class, 'singleCategory']);
+Route::get('/category/{slug}', [HomeController::class, 'singleCategory']);
 Route::get('/singleCat/{slug}/{limit}', [HomeController::class, 'singleCat']);
 
 Route::get('/products-by-catId/{id}/{limit}', [HomeController::class, 'productsCategory']);
