@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
         $product = Product::where('slug',$slug)->first();
-
+dd($product);
         return response()->json([
                 'id' => $product->id,
                 'title' => $product->name,
