@@ -28,7 +28,7 @@ class HomeController extends Controller
         $product = Product::where('slug',$slug)->limit(1)->get();
 
         return response()->json([
-                'id' => $product->id,
+            //    'id' => $product->id,
                 'title' => $product->name,
                 'description' => $product->description,
                 'price' => $product->price,
@@ -36,7 +36,7 @@ class HomeController extends Controller
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
-                ///'categories' => new SelectCollection($product->categories),
+                'categories' => new SelectCollection($product->categories),
                 'attributes' => new SelectCollection($product->attributes),
                 'brand_id' => [
                     "name" => $product->brand->title,
