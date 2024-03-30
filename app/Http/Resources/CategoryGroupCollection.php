@@ -20,8 +20,8 @@ class CategoryGroupCollection extends ResourceCollection
             $users = $this->getChildren($category);
             return [
                 "label" => $category->title,
-                "value" => $category->id,
-                "options" => $users,
+                "value" => $users[1],
+                "options" => $users[0],
 
             ];
         });
@@ -32,6 +32,7 @@ class CategoryGroupCollection extends ResourceCollection
     {
 
         $cat = [];
+        $ids = [];
         if (count($category->children)) {
 
             for ($i = 0; $i < count($category->children); $i++) {
@@ -39,6 +40,7 @@ class CategoryGroupCollection extends ResourceCollection
                 $object->label = $category->children[$i]->title;
                 $object->value = $category->children[$i]->id;
                 $object->id = $category->children[$i]->id;
+                $ids[] = $category->children[$i]->id;
                 if (isset($category->children[$i]->children) and count($category->children[$i]->children)) {
                     $childrenItem = $category->children[$i];
                     $object->option = $this->getChildren($childrenItem);
@@ -46,6 +48,6 @@ class CategoryGroupCollection extends ResourceCollection
                 $cat[] = $object;
             }
         }
-        return $cat;
+        return [$cat , $ids];
     }
 }

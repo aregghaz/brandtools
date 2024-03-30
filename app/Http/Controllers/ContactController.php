@@ -126,6 +126,15 @@ class ContactController extends Controller
             'address' => $request->address,
             'notes' => $request->notes ?? null
         ]);
+
+        $content = [
+            'subject' => 'This is the mail subject',
+            'body' => 'This is the email body of how to send email from laravel 10 with mailtrap.'
+        ];
+
+        Mail::to('your_email@gmail.com')->send(new SampleMail($content));
+
+
         return response()->json([
             "status" => 200,
         ]);
