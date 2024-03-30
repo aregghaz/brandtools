@@ -134,7 +134,7 @@ class ContactController extends Controller
             'body' => 'This is the email body of how to send email from laravel 10 with mailtrap.'
         ];
 
-        Mail::to('your_email@gmail.com')->send(new RequestPriceMail($content));
+        Mail::to('info@brend-instrument.ru')->send(new RequestPriceMail($content));
 
 
         return response()->json([
