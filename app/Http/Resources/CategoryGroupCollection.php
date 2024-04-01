@@ -20,8 +20,12 @@ class CategoryGroupCollection extends ResourceCollection
             $users = $this->getChildren($category);
             return [
                 "label" => $category->title,
-                "value" => $users[1],
-                "options" => $users[0],
+                "value" => [[
+                    'label'=> $category->title,
+                    'id'=> $category->id,
+                    'value'=> $category->title,
+                ]],
+                "options" => $users,
 
             ];
         });
@@ -48,6 +52,6 @@ class CategoryGroupCollection extends ResourceCollection
                 $cat[] = $object;
             }
         }
-        return [$cat , $ids];
+        return $cat;
     }
 }
