@@ -138,10 +138,7 @@ class ProductController extends Controller
         }
 
         foreach ($data->categories as $categories) {
-            $category = Category::with(['parent' => function ($query) {
-                $query->select('id');
-            }])->find($categories->id);
-            var_dump($category);
+
             $product->categories()->attach($categories->id);
         }
         return response()->json([
@@ -204,14 +201,8 @@ class ProductController extends Controller
         $product->categories()->detach();
 
         foreach ($data->categories as $categories) {
+            $product->categories()->attach($categories->id);
 
-            $category = Category::with('allParents')->find($categories->id);
-            $asd = $this->getSubCategoryIds($category->allParents, $category->parent_id);
-            $subcategoryIds = array_merge($asd, [$category->id]);
-            foreach ($subcategoryIds as $ids) {
-                $product->categories()->attach($ids);
-
-            }
         }
         return response()->json([
             'status' => 200
