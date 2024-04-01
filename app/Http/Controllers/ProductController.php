@@ -27,7 +27,7 @@ class ProductController extends Controller
         if (isset($queryData)) {
             $this->convertQuery($queryData, $products, 1);
         }
-        $products = $products->take(15 * $showMore)->orderBy('id', 'DESC')->get();
+        $products = $products->take(40 * $showMore)->orderBy('id', 'DESC')->get();
 
         return response()->json(new ProductCollection($products));
     }
