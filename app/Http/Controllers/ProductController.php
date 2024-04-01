@@ -297,6 +297,23 @@ class ProductController extends Controller
         ]);
     }
 
+    public function addDiscount(Request $request)
+    {
+        $values = $request->value;
+        $ids = $request->ids;
+       $products =  Product::whereIn('id', $ids)->get();
+       foreach ($products as $product){
+           $product->update([
+               'special_price' =>round($product->price - ($product->price * (int)$values['discount'])/100),
+               'start' => date_create($values['dates'][0])->format('Y-m-d'),
+               'end' => date_create($values['dates'][1])->format('Y-m-d'),
+           ]);
+       }
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
     /**
      * @param Product $product
      * @return void

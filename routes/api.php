@@ -130,6 +130,7 @@ Route::group([
     Route::get('/getLatestOrders', [App\Http\Controllers\home\OrderController::class, 'getLatestOrders']);
     Route::get('/get-images/{id}', [ProductController::class, 'getImages']);
     Route::post('/products/groupAddTeg', [ProductController::class, 'groupAddTag']);
+    Route::post('/products/add-discount', [ProductController::class, 'addDiscount']);
     Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
     Route::post('/categories/groupDelete', [CategoryController::class, 'groupDelete']);
     Route::resource('products', ProductController::class);
