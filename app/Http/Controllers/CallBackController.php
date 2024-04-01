@@ -47,7 +47,7 @@ class CallBackController extends Controller
         ]);
 
         $content = [
-            'subject' => 'Заявка на счет',
+            'subject' => 'Связаться с менеджером',
             'body' => $data
         ];
         Mail::to('info@brend-instrument.ru')->send(new ContactUsMail($content));
