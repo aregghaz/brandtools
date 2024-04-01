@@ -8,7 +8,7 @@
     -->
 </head>
 <body>
-<p>{{ $content['body'] }}</p>
+<p>Заявка на счет</p>
 <p></p>
 <p>Имя: {{ $content['body']['name'] }}</p>
 <p>Фамилия: {{ $content['body']['lastName'] }}</p>

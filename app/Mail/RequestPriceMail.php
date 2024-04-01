@@ -28,7 +28,7 @@ class RequestPriceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Request Price Mail',
+            subject: $this->content['subject'],
         );
     }
 
