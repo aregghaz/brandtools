@@ -115,7 +115,7 @@ class ContactController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
         }
-        RequestPrice::create([
+       $data =  RequestPrice::create([
             'name' => $request->name,
             'lastName' => $request->lastName,
             'phone' => $request->phone,
@@ -130,8 +130,8 @@ class ContactController extends Controller
         ]);
 
         $content = [
-            'subject' => 'This is the mail subject',
-            'body' => 'This is the email body of how to send email from laravel 10 with mailtrap.'
+            'subject' => 'Заявка на счет',
+            'body' => $data
         ];
 
       $asd =  Mail::to('info@brend-instrument.ru')->send(new RequestPriceMail($content));
