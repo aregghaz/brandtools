@@ -9,7 +9,7 @@
     -->
 </head>
 <body>
-<p>есть вопрос</p>
+<p>Связаться с менеджером</p>
 <p></p>
 <p>Имя: {{ $content['body']['email'] }}</p>
 <p>телефон: {{ $content['body']['phone'] }}</p>
