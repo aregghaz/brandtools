@@ -52,9 +52,4 @@ class RequestPriceMail extends Mailable
         return [];
     }
 
-    public function build(): RequestPriceMail
-    {
-        return $this->subject($this->content['subject'])
-            ->view('emails.requestPrice');
-    }
 }

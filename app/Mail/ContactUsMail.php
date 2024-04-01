@@ -38,7 +38,7 @@ class ContactUsMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.requestPrice',
+            view: 'emails.contactManager',
         );
     }
 
@@ -50,11 +50,5 @@ class ContactUsMail extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function build(): ContactUsMail
-    {
-        return $this->subject($this->content['subject'])
-            ->view('emails.contactManager');
     }
 }
