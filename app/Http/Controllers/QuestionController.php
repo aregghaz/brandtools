@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuestionCollection;
+use App\Mail\QuestionMail;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
@@ -39,11 +41,17 @@ class QuestionController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
         }
-        Question::create([
+        $data = Question::create([
             'name' => $request->name,
             'email' => $request->email,
             'notes' => $request->notes ?? null
         ]);
+
+        $content = [
+            'subject' => 'есть вопрос',
+            'body' => $data
+        ];
+        Mail::to('info@brend-instrument.ru')->send(new QuestionMail($content));
         return response()->json([
             "status" => 200,
         ]);

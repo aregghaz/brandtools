@@ -56,9 +56,11 @@ Route::get('get-banners', [HomeController::class, 'getBanners']);
 
 
 Route::get('contacts-us', [\App\Http\Controllers\ContactController::class, 'index']);
+
 Route::post('request-price', [\App\Http\Controllers\ContactController::class, 'requestPrice']);
 Route::post('call-back/add', [CallBackController::class, 'store']);
 Route::post('questions', [QuestionController::class, 'store']);
+
 
 
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);

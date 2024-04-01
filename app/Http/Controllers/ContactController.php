@@ -115,7 +115,7 @@ class ContactController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
         }
-       $data =  RequestPrice::create([
+        $data = RequestPrice::create([
             'name' => $request->name,
             'lastName' => $request->lastName,
             'phone' => $request->phone,
@@ -133,10 +133,7 @@ class ContactController extends Controller
             'subject' => 'Заявка на счет',
             'body' => $data
         ];
-
-      $asd =  Mail::to('info@brend-instrument.ru')->send(new RequestPriceMail($content));
-
-
+        Mail::to('info@brend-instrument.ru')->send(new RequestPriceMail($content));
         return response()->json([
             "status" => 200,
         ]);

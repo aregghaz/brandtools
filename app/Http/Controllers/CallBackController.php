@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CallBackCollection;
+use App\Mail\ContactUsMail;
 use App\Models\CallBack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class CallBackController extends Controller
@@ -32,17 +34,24 @@ class CallBackController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
+            'name' => 'required|string',
             'phone' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
         }
-        CallBack::create([
-            'email'=> $request->email,
+        $data =  CallBack::create([
+            'email'=> $request->name,
             'phone'=> $request->phone,
         ]);
+
+        $content = [
+            'subject' => 'Заявка на счет',
+            'body' => $data
+        ];
+        Mail::to('info@brend-instrument.ru')->send(new ContactUsMail($content));
+
         return response()->json([
             "status" => 200,
         ]);
