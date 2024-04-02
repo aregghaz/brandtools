@@ -25,7 +25,12 @@ class HomeController extends Controller
 {
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
-        $product = Product::where('slug',$slug)->first();
+        if(typeOf($slug) == 'integer'){
+            $product = Product::find($slug);
+        }else{
+            $product = Product::where('slug',$slug)->first();
+        }
+
 
         return response()->json([
                 'id' => $product->id,
