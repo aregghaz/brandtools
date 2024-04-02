@@ -34,7 +34,7 @@ class CallBackController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'email' => 'required|string',
             'phone' => 'required|string',
         ]);
 
@@ -42,7 +42,7 @@ class CallBackController extends Controller
             return response()->json(['success' => 0, 'type' => 'validation_filed', 'error' => $validator->messages()], 422);
         }
         $data =  CallBack::create([
-            'email'=> $request->name,
+            'email'=> $request->email,
             'phone'=> $request->phone,
         ]);
 
