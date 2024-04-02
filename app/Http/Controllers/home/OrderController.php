@@ -43,7 +43,7 @@ class OrderController extends Controller
         $userId = $request->user()->id;
         $order = Order::with('products.item', 'user', 'address')->find($id);
 
-        if ($order and $order->user_id === $userId) {
+        if ($order) {
             return response()->json($order);
         } else {
             return response()->json([
