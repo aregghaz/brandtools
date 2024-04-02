@@ -26,6 +26,7 @@ class HomeController extends Controller
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
 
+        var_dump(is_string($slug),$slug);
         if(is_string($slug)){
             $product = Product::where('slug',$slug)->first();
 
