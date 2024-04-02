@@ -26,12 +26,18 @@ class HomeController extends Controller
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
 
+        var_dump(is_string($slug));
         if(is_string($slug)){
             $product = Product::find($slug);
         }else{
             $product = Product::where('slug',$slug)->first();
         }
 
+        if (!isset($product)){
+            return response()->json([
+                'message'=>'not found'
+            ]);
+        }
 
         return response()->json([
                 'id' => $product->id,
