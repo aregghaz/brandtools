@@ -301,7 +301,7 @@ class ProductController extends Controller
     {
         $values = $request->value;
         $ids = $request->ids;
-       $products =  Product::whereIn('id', $ids)->get();
+       $products =  Product::where('status', 1)->get();
        foreach ($products as $product){
            $product->update([
                'special_price' =>round($product->price - ($product->price * (int)$values['discount'])/100),

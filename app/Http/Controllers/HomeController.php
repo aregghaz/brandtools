@@ -114,7 +114,7 @@ class HomeController extends Controller
 
 
         $category = Category::where('slug', $slug)->first();
-        if($category){
+        if(!isset($category)){
             return response()->json([
                'message'=>'not found'
             ]);
