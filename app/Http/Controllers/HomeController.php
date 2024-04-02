@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
         var_dump(gettype($slug));
-        if(gettype($slug) == 'integer'){
+        if(gettype((int)$slug) == 'integer'){
             $product = Product::find($slug);
         }else{
             $product = Product::where('slug',$slug)->first();
