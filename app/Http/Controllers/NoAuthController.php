@@ -27,6 +27,10 @@ class NoAuthController extends Controller
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'image' => $Product->image,
+             'attributes' => array(
+                 'image' => $Product->image,
+                 'slug'=>$Product->slug,
+                 ),
             'price' => $Product->price,
             'quantity' => $qty,
         ));

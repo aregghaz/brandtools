@@ -31,7 +31,10 @@ class CartController extends Controller
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
-            'attributes' => array('image' => $Product->image),
+            'attributes' => array(
+                'image' => $Product->image,
+                'slug'=>$Product->slug
+            ),
             'associatedModel' => $Product,
             'quantity' => $qty,
         ));

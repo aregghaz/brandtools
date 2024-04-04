@@ -34,6 +34,10 @@ class WishListController extends Controller
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
             'price' => $Product->price,
+              'attributes' => array(
+                'image' => $Product->image,
+                'slug'=>$Product->slug
+            ),
             'quantity' => $qty,
         ));
         $cart = \Cart::getContent();

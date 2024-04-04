@@ -26,8 +26,8 @@ class HomeController extends Controller
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
 
-       // var_dump(is_string($slug),$slug);
-        if(!is_string($slug)){
+  ///     var_dump(is_numeric($slug),$slug);
+        if(!is_numeric($slug)){
             $product = Product::where('slug',$slug)->first();
 
         }else{
@@ -98,7 +98,7 @@ class HomeController extends Controller
 
     public function topCategory(Request $request, $limit): \Illuminate\Http\JsonResponse
     {
-        $category = Category::where('top', 1)->select('id', 'title', 'image')->limit($limit)->get();
+        $category = Category::where('top', 1)->select('id', 'title','slug','image')->limit($limit)->get();
         return response()->json($category);
     }
 
