@@ -165,6 +165,7 @@ Route::group([
     Route::resource('orders', App\Http\Controllers\home\OrderController::class);
     ///  Route::delete('/orders/{id}', [App\Http\Controllers\home\OrderController::class, 'destroy']);
     Route::post('/questions/groupDelete', [QuestionController::class, 'groupDelete']);
+    Route::get('getStatusSelect', [App\Http\Controllers\home\OrderController::class, 'getStatusSelect']);
 
     Route::delete('request-price/{id}', [\App\Http\Controllers\ContactController::class, 'deleteRequestPrice']);
     Route::post('/request-price/groupDelete', [\App\Http\Controllers\ContactController::class, 'priceGroupDelete']);
