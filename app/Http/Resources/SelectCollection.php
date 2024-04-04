@@ -18,7 +18,7 @@ class SelectCollection extends ResourceCollection
 
             return [
                 'id' => $data->id,
-                'label' => $data->slug,
+                'label' => $data->slug || $data->title,
                 'name' => $data->title,
                 "value"=> $data->pivot->value ?? $data->id,
             ];
