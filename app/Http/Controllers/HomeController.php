@@ -193,7 +193,7 @@ class HomeController extends Controller
 
     public function getSingleBrand($slug): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('slug',$slug)->limit(1)->get();
+        $brands = Brand::where('slug',$slug)->first();
         return response()->json($brands);
     }
 
@@ -205,8 +205,13 @@ class HomeController extends Controller
 
     public function brandProducts($id, $limit): \Illuminate\Http\JsonResponse
     {
-        $data = Brand::find($id);
+                if(!is_numeric($id)){
+            $data = Brand::where('slug',$id)->first();
 
+        }else{
+            $data = Brand::find($id);
+        }
+        
         $products = $data->products()->where('status', 1)->paginate($limit);
         return response()->json([
             'perPage' => $limit,
@@ -239,7 +244,14 @@ class HomeController extends Controller
 
     public function getSingleNews($slug)
     {
-        $news = News::where('slug',$slug)->limit(1)->get();
+        
+                if(!is_numeric($slug)){
+            $news  = News::where('slug',$slug)->first();
+
+        }else{
+            $news = News::find($id);
+        }
+      ///->limit(1)->get();
         return response()->json([
             'id' => $news->id,
             'title' => $news->title,
