@@ -150,6 +150,8 @@ class OrderController extends Controller
             'subject' => 'Связаться с менеджером',
             'body' => $order
         ];
+
+        var_dump(Auth::user()->email, $content);
         Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
