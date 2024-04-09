@@ -83,7 +83,7 @@ class OrderController extends Controller
         ];
 
         var_dump(Auth::user()->email, $content);
-        Mail::to(Auth::user()->email)->send(new OrderMail($content));
+       /// Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
             "status" => 200,
@@ -160,7 +160,7 @@ class OrderController extends Controller
         ];
 
         var_dump(Auth::user()->email, $content);
-        Mail::to(Auth::user()->email)->send(new OrderMail($content));
+        ///Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
             "status" => 200,
