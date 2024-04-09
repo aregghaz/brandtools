@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderMail;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
@@ -9,6 +10,7 @@ use App\Models\ProductsOrder;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -36,7 +38,7 @@ class OrderController extends Controller
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
         $order->note = $request->note ?? '';
-     
+
         if (gettype($request->address_id) === "integer") {
             $order->address_id = $request->address_id ?? 1;
             $addressId = $request->address_id ?? 1;
@@ -140,6 +142,15 @@ class OrderController extends Controller
         $productsOrder->quantity = 1;
         $productsOrder->price = $price;
         $productsOrder->save();
+        $order = Order::with('products.item', 'user', 'address')->find($order->id);
+
+
+
+        $content = [
+            'subject' => 'Связаться с менеджером',
+            'body' => $order
+        ];
+        Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
             "status" => 200,
