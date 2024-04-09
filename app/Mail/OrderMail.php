@@ -12,9 +12,8 @@ use Illuminate\Queue\SerializesModels;
 class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    /**
     public array $content;
+    /**
     /**
      * Create a new message instance.
      */

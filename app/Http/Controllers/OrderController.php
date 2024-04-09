@@ -77,13 +77,17 @@ class OrderController extends Controller
             $productsOrder->save();
             \Cart::session($userId)->remove($cart->id);
         }
+
+
+        $orderData = Order::with('products.item', 'user', 'address')->find($order->id);
+
         $content = [
-            'subject' => 'Связаться с менеджером',
+            'subject' => 'Заказ N ' . $order->id,
             'body' => $order
         ];
 
-        var_dump(Auth::user()->email, $content);
-       /// Mail::to(Auth::user()->email)->send(new OrderMail($content));
+
+        Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
             "status" => 200,
@@ -105,9 +109,9 @@ class OrderController extends Controller
         }
 
         if ($product->end < date('Y-m-d')) {
-            $price =round(($product->price* 10)/100);
+            $price = round(($product->price * 10) / 100);
         } else {
-            $price = round(($product->special_price * 10)/100);
+            $price = round(($product->special_price * 10) / 100);
         }
 
         $order = new Order();
@@ -150,17 +154,16 @@ class OrderController extends Controller
         $productsOrder->quantity = 1;
         $productsOrder->price = $price;
         $productsOrder->save();
-        $order = Order::with('products.item', 'user', 'address')->find($order->id);
 
 
+        $orderData = Order::with('products.item', 'user', 'address')->find($order->id);
 
         $content = [
-            'subject' => 'Связаться с менеджером',
-            'body' => $order
+            'subject' => 'Предзаказ N ' . $order->id,
+            'body' => $orderData
         ];
 
-        var_dump(Auth::user()->email, $content);
-        ///Mail::to(Auth::user()->email)->send(new OrderMail($content));
+        Mail::to(Auth::user()->email)->send(new OrderMail($content));
 
         return response()->json([
             "status" => 200,
