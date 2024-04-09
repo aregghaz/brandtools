@@ -16,26 +16,26 @@
 <p>Телефон: {{ $content['body']['phone'] }}</p>
 <p>Компания: {{ $content['body']['company'] }}</p>
 
-@foreach($content['body']['products'] as $product)
-    <p>
-        <p >
-        <?php echo $product['item']['name'] ?>
+{{--@foreach($content['body']['products'] as $product)--}}
+{{--    <p>--}}
+{{--        <p >--}}
+{{--        <?php echo $product['item']['name'] ?>--}}
 
-        </p>
-        <p>
+{{--        </p>--}}
+{{--        <p>--}}
 {{--            <img width={120} src={`${fakeUrl}${item.item.image}`} alt={item.item.name}/>--}}
-        </p>
-        <p>
-            <span >price : </span>
-                <?php echo $product['item']['price'] ?>
+{{--        </p>--}}
+{{--        <p>--}}
+{{--            <span >price : </span>--}}
+{{--                <?php echo $product['item']['price'] ?>--}}
 
-        </p>
-        <p>
-            <span>quantity : </span>
-                <?php echo $product['item']['quantity'] ?>
-        </p>
-    </p>
-@endforeach
+{{--        </p>--}}
+{{--        <p>--}}
+{{--            <span>quantity : </span>--}}
+{{--                <?php echo $product['item']['quantity'] ?>--}}
+{{--        </p>--}}
+{{--    </p>--}}
+{{--@endforeach--}}
 
 {{--<p>Реквизиты </p>--}}
 {{--<p>name: {{ $content['body']['address']['name'] }}</p>--}}
