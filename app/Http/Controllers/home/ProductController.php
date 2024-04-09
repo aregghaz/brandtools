@@ -27,4 +27,15 @@ class ProductController extends Controller
             'products' => new PorductShortCollection($products)
         ]);
     }
+
+    public function groupDeletePrice(Request $request){
+        Product::where('status', 1)->update([
+            "special_price" => 0,
+            'start'=>null,
+            'end'=>null
+        ]);
+        return response()->json([
+            'status' => 200
+        ]);
+    }
 }
