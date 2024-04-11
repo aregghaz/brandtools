@@ -86,7 +86,7 @@ Route::get('/orderCount', [\App\Http\Controllers\DashboardController::class, 'or
 
 //
 //Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
-//Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
+Route::get('/test1/{file}', [\App\Http\Controllers\TestController::class, 'product']);
 //Route::get('/test2', [\App\Http\Controllers\TestController::class, 'attributes']);
 //;
 //Route::get('/test4', [\App\Http\Controllers\TestController::class, 'users']);

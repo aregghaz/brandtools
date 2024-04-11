@@ -84,10 +84,11 @@ class TestController extends Controller
         /* open this for local file testing purposes only*/
         ///Product::truncate();
         /// DB::beginTransaction();
-         $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-       // $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
+         //$xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
         foreach ($xlsx->rows(0) as $index => $data) {
-            if ($index !== 0) {
+            $status = 26;
+            if ($index !== 0 and $data[$status] === 'true') {
                 $product_id = 0;
                 $name = 1;
                 $categoryIds = 2;
@@ -96,13 +97,10 @@ class TestController extends Controller
                 $brand = 12;// searck
                 $image = 13;
                 $price = 15;
-                $status = 26;
                 $description = 28;
                 $meta_title = 29;
                 $meta_desc = 30;
                 $meta_key = 31;
-///dd();
-
                 $brandData = Brand::where('title', $data[$brand])->first();
                 $brandType = 0;
                 if (isset($brandData)) {
@@ -114,12 +112,10 @@ class TestController extends Controller
                     ]);
                     $brandType = $dataCreate->id;
                 }
-
-
                 $images = explode('.JPG', $data[$image]);
-
                 $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
                 @$rawImage = file_get_contents($imageUrl);
+
                 if ($rawImage) {
                     $storageName = "/storage/images/products/" . basename($imageUrl);
                     if (!Storage::exists($storageName)) {
@@ -139,7 +135,8 @@ class TestController extends Controller
                         'meta_desc' => $data[$meta_desc],
                         'meta_key' => $data[$meta_key],
                     ]);
-                } else {
+                }
+                else {
                     $product = Product::create([
                         "name" => $data[$name],
                         "description" => $data[$description],
@@ -165,14 +162,11 @@ class TestController extends Controller
                 $product_id = 0;
                 $attribute_id = 2;
                 $value = 3;
-
                 $product = Product::where('product_id', $data[$product_id])->first();
                 $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
                 if (isset($product) and isset($attr)) {
                     $product->attributes()->attach($attr->id, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
-
                 }
-
             }
         }
         foreach ($xlsx->rows(1) as $index => $data) {
