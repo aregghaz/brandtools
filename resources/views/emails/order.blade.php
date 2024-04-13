@@ -166,6 +166,14 @@
                                 {{--                                    Michigan, 48335--}}
                                 {{--                                </td>--}}
                             </tr>
+                            <tr>
+                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
+                                    {{ $content['body']['notes'] }}
+                                </td>
+                                {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+                                {{--                                    Michigan, 48335--}}
+                                {{--                                </td>--}}
+                            </tr>
                             </tbody>
                         </table>
                     </td>
