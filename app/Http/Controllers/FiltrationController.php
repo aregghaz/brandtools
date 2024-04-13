@@ -14,15 +14,16 @@ class FiltrationController extends Controller
 
         $filt = $request->criteria;
         $ids = [];
+        $sortId = $request->sort_id;
         $values = [];
         $checkPrice = false;
         $priceValue = [];
-        if(isset($filt)){
-            foreach ($filt as  $attribute) {
-                if(key((array)$attribute) !== 9999){
+        if (isset($filt)) {
+            foreach ($filt as $attribute) {
+                if (key((array)$attribute) !== 9999) {
                     $ids[] = key((array)$attribute);
                     $values[] = value((array)$attribute);
-                }else{
+                } else {
                     $checkPrice = true;
                     $priceValue = value((array)$attribute);
                 }
@@ -30,20 +31,25 @@ class FiltrationController extends Controller
         }
 
 
-
-        $products = Product::where('status',1)
+        $products = Product::where('status', 1)
             ->with(['attributes', 'categories' => function ($q) use ($id) {
-            $q->where('categories.id', $id);
-        }]);
-            if($checkPrice){
-                $products = $products->whereBetween('price', [$priceValue[0], $priceValue[1]]);
+                $q->where('categories.id', $id);
+            }]);
+        if ($checkPrice) {
+            $products = $products->whereBetween('price', [value((array)$priceValue)[9999][0], value((array)$priceValue)[9999][1]]);
+        }
+        if (isset($sortId)) {
+            $products = $products->where('teg_id',$sortId );
 
-            }
+        }
 
-        $products = $products->whereHas('attributes', function ($query) use ($ids, $values) {
-            $query->whereIn('attributes.id', $ids);
-            $query->whereIn('value', $values);
-        });
+        if (count($values) > 0) {
+            $products = $products->whereHas('attributes', function ($query) use ($ids, $values) {
+                $query->whereIn('attributes.id', $ids);
+                $query->whereIn('value', $values);
+            });
+
+        }
 
 
         $products = $products->limit($limit)->get();
