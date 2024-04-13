@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Shuchkin\SimpleXLSX;
 
 class TestController extends Controller
@@ -84,8 +85,8 @@ class TestController extends Controller
         /* open this for local file testing purposes only*/
         ///Product::truncate();
         /// DB::beginTransaction();
-         //$xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
+         $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
+       /// $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
         foreach ($xlsx->rows(0) as $index => $data) {
             $status = 26;
             if ($index !== 0 and $data[$status] === 'true') {
@@ -112,14 +113,21 @@ class TestController extends Controller
                     ]);
                     $brandType = $dataCreate->id;
                 }
+//                $images = explode('.JPG', $data[$image]);
+//                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
+//
+
+                $uniqid = Str::random(9);
                 $images = explode('.JPG', $data[$image]);
-                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
+                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] .'-351x265.JPG';
+                //$imageUrl = 'https://brendinstrument.ru/image/' . $data[$image];
+
                 @$rawImage = file_get_contents($imageUrl);
 
                 if ($rawImage) {
-                    $storageName = "/storage/images/products/" . basename($imageUrl);
+                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
                     if (!Storage::exists($storageName)) {
-                        Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
+                        Storage::put("public/images/products/" .$uniqid.'.jpg', $rawImage);
                     }
                     $product = Product::create([
                         "name" => $data[$name],
@@ -175,28 +183,24 @@ class TestController extends Controller
                 $attribute_id = 1;
                 $value = 3;
                 $product = Product::where('product_id', $data[$product_id])->first();
+                var_dump(isset($product) );
+
                 if (isset($product)) {
+                    $uniqid = Str::random(9);
                     $images = explode('.JPG', $data[$attribute_id]);
                     $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-640x480.JPG';
-                    $storageName = "/storage/images/products/" . basename($imageUrl);
-                    if (!Storage::exists($storageName)) {
+                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
+                   // if (!Storage::exists($storageName)) {
                         @$rawImage = file_get_contents($imageUrl);
                         if ($rawImage) {
-                            Storage::put("public/images/products/" . basename($imageUrl), $rawImage);
-
+                            Storage::put("public/images/products/" . $uniqid.'.jpg', $rawImage);
                             ProductImage::create([
                                 "path" => $storageName,
                                 "product_id" => $product->id,
                                 "sort" => 1,
                             ]);
                         }
-                    } else {
-                        ProductImage::create([
-                            "path" => $storageName,
-                            "product_id" => $product->id,
-                            "sort" => 1,
-                        ]);
-                    }
+                  //  }
 
 
                 }

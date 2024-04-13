@@ -15,17 +15,30 @@ class FiltrationController extends Controller
         $filt = $request->criteria;
         $ids = [];
         $values = [];
-        foreach ($filt as $key => $attribute) {
-            $ids[] = key((array)$attribute);
-            $values[] = value((array)$attribute);
+        $checkPrice = false;
+        $priceValue = [];
+        if(isset($filt)){
+            foreach ($filt as  $attribute) {
+                if(key((array)$attribute) !== 9999){
+                    $ids[] = key((array)$attribute);
+                    $values[] = value((array)$attribute);
+                }else{
+                    $checkPrice = true;
+                    $priceValue = value((array)$attribute);
+                }
+            }
         }
+
 
 
         $products = Product::where('status',1)
             ->with(['attributes', 'categories' => function ($q) use ($id) {
             $q->where('categories.id', $id);
         }]);
+            if($checkPrice){
+                $products = $products->whereBetween('price', [$priceValue[0], $priceValue[1]]);
 
+            }
 
         $products = $products->whereHas('attributes', function ($query) use ($ids, $values) {
             $query->whereIn('attributes.id', $ids);

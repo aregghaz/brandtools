@@ -19,24 +19,25 @@ use App\Models\Product;
 use App\Models\Slider;
 use App\Models\Teg;
 use App\Models\Video;
-use Illuminate\Http\Request;
 use DB;
+use Illuminate\Http\Request;
+
 class HomeController extends Controller
 {
     public function singleProduct($slug): \Illuminate\Http\JsonResponse
     {
 
-  ///     var_dump(is_numeric($slug),$slug);
-        if(!is_numeric($slug)){
-            $product = Product::where('slug',$slug)->first();
+        ///     var_dump(is_numeric($slug),$slug);
+        if (!is_numeric($slug)) {
+            $product = Product::where('slug', $slug)->first();
 
-        }else{
+        } else {
             $product = Product::find($slug);
         }
 
-        if (!isset($product)){
+        if (!isset($product)) {
             return response()->json([
-                'message'=>'not found'
+                'message' => 'not found'
             ]);
         }
 
@@ -92,13 +93,13 @@ class HomeController extends Controller
 
     public function category(Request $request): \Illuminate\Http\JsonResponse
     {
-        $category = Category::with('children')->select('id', 'title', 'image','slug','parent_id')->get();
+        $category = Category::with('children')->select('id', 'title', 'image', 'slug', 'parent_id')->get();
         return response()->json(new CategoryShortCollection($category));
     }
 
     public function topCategory(Request $request, $limit): \Illuminate\Http\JsonResponse
     {
-        $category = Category::where('top', 1)->select('id', 'title','slug','image')->limit($limit)->get();
+        $category = Category::where('top', 1)->select('id', 'title', 'slug', 'image')->limit($limit)->get();
         return response()->json($category);
     }
 
@@ -127,9 +128,9 @@ class HomeController extends Controller
 
 
         $category = Category::where('slug', $slug)->first();
-        if(!isset($category)){
+        if (!isset($category)) {
             return response()->json([
-               'message'=>'not found'
+                'message' => 'not found'
             ]);
         }
 
@@ -175,6 +176,8 @@ class HomeController extends Controller
             'attributes.values' => function ($q) use ($productIds) {
                 $q->select(['value', 'attribute_id'])->whereIn("product_id", $productIds)->where('value', '!=', '')->orderBy('value')->distinct('value');
             }])->find($id);
+
+
         return response()->json($category);
 
     }
@@ -193,7 +196,7 @@ class HomeController extends Controller
 
     public function getSingleBrand($slug): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('slug',$slug)->first();
+        $brands = Brand::where('slug', $slug)->first();
         return response()->json($brands);
     }
 
@@ -205,13 +208,13 @@ class HomeController extends Controller
 
     public function brandProducts($id, $limit): \Illuminate\Http\JsonResponse
     {
-                if(!is_numeric($id)){
-            $data = Brand::where('slug',$id)->first();
+        if (!is_numeric($id)) {
+            $data = Brand::where('slug', $id)->first();
 
-        }else{
+        } else {
             $data = Brand::find($id);
         }
-        
+
         $products = $data->products()->where('status', 1)->paginate($limit);
         return response()->json([
             'perPage' => $limit,
@@ -244,14 +247,14 @@ class HomeController extends Controller
 
     public function getSingleNews($slug)
     {
-        
-                if(!is_numeric($slug)){
-            $news  = News::where('slug',$slug)->first();
 
-        }else{
-            $news = News::find($id);
+        if (!is_numeric($slug)) {
+            $news = News::where('slug', $slug)->first();
+
+        } else {
+            $news = News::find($slug);
         }
-      ///->limit(1)->get();
+        ///->limit(1)->get();
         return response()->json([
             'id' => $news->id,
             'title' => $news->title,
