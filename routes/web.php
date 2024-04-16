@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
+use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryFilterController;
@@ -30,3 +31,6 @@ Route::resource('attribute_values', AttributeValueController::class);
 //Route::resource('cart', CartController::class);
 
 Route::get('categories/{category}/filter', [CategoryFilterController::class, 'filter'])->name('categories.filter');
+
+
+Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');

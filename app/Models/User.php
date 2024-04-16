@@ -29,6 +29,7 @@ class User extends Authenticatable
         'company',
         'dob',
         'status',
+        'is_email_verified'
     ];
 
     /**
