@@ -1,4 +1,4 @@
-<h1>Email Verification Mail</h1>
+<h1>Письмо с подтверждением электронной почты</h1>
 
-Please verify your email with bellow link:
-<a href="{{ route('user.verify', $content['body']) }}">Verify Email</a>
+Пожалуйста, подтвердите свой адрес электронной почты по ссылке ниже:
+<a href="{{ route('user.verify', $content['body']) }}">Подтвердить Email</a>
