@@ -4,6 +4,7 @@ namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SelectCollection;
+use App\Mail\RegistrationMail;
 use App\Models\Address;
 use App\Models\User;
 use App\Models\UserVerify;
@@ -113,11 +114,16 @@ class AuthController extends Controller
             'user_id' => $user->id,
             'token' => $token
         ]);
+        $content = [
+            'subject' => 'Письмо с подтверждением электронной почты',
+            'body' => $token
+        ];
+        Mail::to($user->email)->send(new RegistrationMail($content));
 
-        Mail::send('emails.registration', ['token' => $token], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Email Verification Mail');
-        });
+//        Mail::send('emails.registration', ['token' => $token], function($message) use($request){
+//            $message->to($request->email);
+//            $message->subject('Письмо с подтверждением электронной почты');
+//        });
         return response()->json([
             'user' => $user,
             'access_token' => $tokenResult->accessToken,
