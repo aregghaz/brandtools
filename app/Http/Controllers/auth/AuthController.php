@@ -114,7 +114,7 @@ class AuthController extends Controller
             'token' => $token
         ]);
 
-        Mail::send('email.registration', ['token' => $token], function($message) use($request){
+        Mail::send('emails.registration', ['token' => $token], function($message) use($request){
             $message->to($request->email);
             $message->subject('Email Verification Mail');
         });
