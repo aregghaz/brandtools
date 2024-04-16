@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
@@ -249,6 +250,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect()->route('login')->with('message', $message);
+        return Redirect::to('https://www.brend-instrument.ru/');
+
     }
 }

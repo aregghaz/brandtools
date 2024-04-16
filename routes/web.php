@@ -21,16 +21,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, "index"]);
-// routes/web.php
-
-Route::resource('categories', CategoryController::class);
-Route::resource('attributes', AttributeController::class);
-////Route::resource('products', ProductController::class);
-Route::resource('attribute_values', AttributeValueController::class);
-//Route::resource('cart', CartController::class);
-
-Route::get('categories/{category}/filter', [CategoryFilterController::class, 'filter'])->name('categories.filter');
+//Route::get('/', [HomeController::class, "index"]);
+//// routes/web.php
+//
+//Route::resource('categories', CategoryController::class);
+//Route::resource('attributes', AttributeController::class);
+//////Route::resource('products', ProductController::class);
+//Route::resource('attribute_values', AttributeValueController::class);
+////Route::resource('cart', CartController::class);
+//
+//Route::get('categories/{category}/filter', [CategoryFilterController::class, 'filter'])->name('categories.filter');
 
 
 Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');
