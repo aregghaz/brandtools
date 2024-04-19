@@ -191,7 +191,7 @@ class CategoryController extends Controller
 
     public function groupDelete(Request $request)
     {
-        $categories = Category::whereIn('id', $request->ids)->with('images')->get();
+        $categories = Category::whereIn('id', $request->ids)->get();
         foreach ($categories as $category) {
             $this->deleteCategory($category);
         }
