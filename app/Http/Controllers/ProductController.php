@@ -68,12 +68,12 @@ class ProductController extends Controller
                 ],
                 'categories' => new SelectCollection($product->categories),
                 'attributes' => new SelectCollection($product->attributes),
-                'brand_id' => [
+                'brand_id' => isset($product->brand) ? [
                     "name" => $product->brand->title,
                     "label" => $product->brand->title,
                     "value" => $product->brand->id,
                     "id" => $product->brand->id
-                ],
+                ] : null,
                 'teg_id' => [
                     "name" => $product->teg ? $product->teg->title : null,
                     "label" => $product->teg ? $product->teg->title : null,
@@ -120,7 +120,7 @@ class ProductController extends Controller
             'end' => isset($data->range) && $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
-            'brand_id' => $data->brand_id->id || null,
+          'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
             'image' => $storageName,
@@ -180,10 +180,10 @@ class ProductController extends Controller
             'description' => $data->description,
             'price' => $data->price,
             'special_price' => $data->special_price,
-            'start' => $data->range[0] ? date_create($data->range[0])->format('Y-m-d') : null,
-            'end' => $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
+            'start' => (!is_string($data->range) and $data->range[0]) ? date_create($data->range[0])->format('Y-m-d') : null,
+            'end' => (!is_string($data->range) and $data->range[1]) ? date_create($data->range[1])->format('Y-m-d') : null,
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
-            'brand_id' => $data->brand_id->id || null,
+            'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
             'status' => $data->status->id || null,

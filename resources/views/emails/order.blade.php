@@ -86,8 +86,7 @@
                             {{--                            </tr>--}}
                             <tr>
                                 <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 25px;">
-                                    <strong>Order Number:</strong> {{ $content['body']['id'] }} | <strong>Order
-                                        Date:</strong> {{ $content['body']['created_at'] }}
+                                    <strong>Номер заказа:</strong> {{ $content['body']['id'] }} | <strong>Время заказа:</strong> {{ $content['body']['created_at'] }}
                                 </td>
                             </tr>
                             </tbody>
@@ -104,7 +103,7 @@
                             <tbody>
                             <tr>
                                 <td style="width: 55%; font-size: 16px; font-weight: bold; color: #666666; padding-bottom: 5px;">
-                                    Delivery Adderss
+                                    Личные данные
                                 </td>
                                 {{--                                <td style="width: 45%; font-size: 16px; font-weight: bold; color: #666666; padding-bottom: 5px;">--}}
                                 {{--                                    Billing Address--}}
@@ -222,23 +221,23 @@
                             <tr>
                                 <td rowspan="5" style="width: 55%;"></td>
                                 <td style="font-size: 14px; line-height: 18px; color: #666666;">
-                                    Sub-Total:
+                                   Итого:
                                 </td>
                                 <td style="font-size: 14px; line-height: 18px; color: #666666; width: 130px; text-align: right;">
                                     {{ $content['body']['grant_total']}} ₽
                                 </td>
                             </tr>
-                            <tr>
-                                <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px; border-bottom: 1px solid #eeeeee;">
-                                    Shipping Fee:
-                                </td>
-                                <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px; border-bottom: 1px solid #eeeeee; text-align: right;">
-                                    0  ₽
-                                </td>
-                            </tr>
+                            <!--<tr>-->
+                            <!--    <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px; border-bottom: 1px solid #eeeeee;">-->
+                            <!--        Shipping Fee:-->
+                            <!--    </td>-->
+                            <!--    <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px; border-bottom: 1px solid #eeeeee; text-align: right;">-->
+                            <!--        0  ₽-->
+                            <!--    </td>-->
+                            <!--</tr>-->
                             <tr>
                                 <td style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px;">
-                                    Order Total
+                                  Общая сумма
                                 </td>
                                 <td style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px; text-align: right;">
                                     {{ $content['body']['grant_total']}} ₽
