@@ -21,7 +21,7 @@ class OrderController extends Controller
         if(isset($request->uuId)){
             $userId = $request->uuId;
         }else{
-
+            $userId = Auth::user()->id;
         }
 
         \Cart::session($userId);
@@ -103,11 +103,7 @@ class OrderController extends Controller
 
     public function preOrder($id, Request $request)
     {
-        if(isset($request->uuId)){
-            $userId = $request->uuId;
-        }else{
-            $userId = Auth::user()->id;
-        }
+        $userId = Auth::user()->id;
         $product = Product::find($id);
         $price = 0;
         $addressId = 1;
