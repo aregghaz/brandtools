@@ -21,12 +21,13 @@ class OrderController extends Controller
         if(isset($request->uuId)){
             $userId = $request->uuId;
         }else{
-            $userId = Auth::user()->id;
+
         }
 
         \Cart::session($userId);
         $carts = \Cart::getContent();
         $total = 0;
+        $userId = Auth::user()->id;
         $addressId = 0;
         if (!count($carts)) {
             return response()->json([
