@@ -25,6 +25,7 @@ class PorductShortCollection extends ResourceCollection
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
                 "image" => $product->image,
+                "brand" => $product->brand,
                 ];
         });
     }
