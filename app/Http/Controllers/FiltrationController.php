@@ -17,15 +17,19 @@ class FiltrationController extends Controller
         $sortId = $request->sort_id;
         $values = [];
         $checkPrice = false;
+        $checkBrand = false;
+        $brandId = 0;
         $priceValue = [];
         if (isset($filt)) {
             foreach ($filt as $attribute) {
-                if (key((array)$attribute) !== 9999) {
+                if (key((array)$attribute) !== 9999 and key((array)$attribute) !== 99999  ) {
                     $ids[] = key((array)$attribute);
                     $values[] = value((array)$attribute);
-                } else {
+                } else if(key((array)$attribute) == 9999) {
                     $checkPrice = true;
                     $priceValue = value((array)$attribute);
+                } else if(key((array)$attribute) == 99999) {
+                    $checkBrand = true;
                 }
             }
         }
@@ -37,6 +41,9 @@ class FiltrationController extends Controller
             }]);
         if ($checkPrice) {
             $products = $products->whereBetween('price', [value((array)$priceValue)[9999][0], value((array)$priceValue)[9999][1]]);
+        }
+        if ($checkBrand and $brandId !== 0) {
+            $products = $products->where('brand_id', $brandId);
         }
         if (isset($sortId)) {
             $products = $products->where('teg_id',$sortId );

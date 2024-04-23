@@ -141,6 +141,9 @@ class HomeController extends Controller
             ->where('category_id', $id)
             ->pluck('product_id')
             ->toArray();
+    $brandId = Product::whereIn('id', $productIds) ->pluck('brand_id')
+          ->toArray();
+        $brands = Brand::whereIn('id', $brandId)->get();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
 //            ->pluck('attribute_id')
@@ -180,7 +183,10 @@ class HomeController extends Controller
             }])->find($id);
 
 
-        return response()->json($category);
+        return response()->json([
+           "brands"=> new BrandsCollection($brands),
+           "category" => $category
+        ]);
 
     }
 
