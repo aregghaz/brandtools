@@ -30,6 +30,7 @@ class FiltrationController extends Controller
                     $priceValue = value((array)$attribute);
                 } else if(key((array)$attribute) == 99999) {
                     $checkBrand = true;
+                    $brandId = value((array)$attribute);
                 }
             }
         }
