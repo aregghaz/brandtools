@@ -123,6 +123,8 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
+    Route::get('/subscription', [\App\Http\Controllers\SubscriptionController::class, 'index']);
+
 //        Route::post('editData', 'UserController@editdata');
 //        Route::get('logout', 'AuthController@logout');
     Route::post('/upload-images', [ProductController::class, 'upload']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SubscriptionCollection;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,10 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+       $data = Subscription::all();
+        return response()->json(new SubscriptionCollection($data));
+
+
     }
 
     /**
