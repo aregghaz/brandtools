@@ -27,10 +27,17 @@ class CartController extends Controller
                 "message" => 'product not found'
             ]);
         }
+        $price = 0;
+        if($Product->end > date('Y-m-d') and $Product->special_price > 0){
+            $price = $Product->special_price;
+        }else{
+            $price = $Product->price;
+        }
+     
         \Cart::session(Auth::user()->id)->add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
-            'price' => $Product->price,
+            'price' => $price,
             'attributes' => array(
                 'image' => $Product->image,
                 'slug'=>$Product->slug

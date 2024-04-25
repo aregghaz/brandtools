@@ -37,9 +37,9 @@ class FiltrationController extends Controller
 
 
         $products = Product::where('status', 1)
-            ->with(['attributes', 'categories' => function ($q) use ($id) {
+            ->with(['attributes'])->whereHas('categories', function ($q) use ($id) {
                 $q->where('categories.id', $id);
-            }]);
+            });
         if ($checkPrice) {
             $products = $products->whereBetween('price', [value((array)$priceValue)[9999][0], value((array)$priceValue)[9999][1]]);
         }

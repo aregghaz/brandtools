@@ -23,6 +23,13 @@ class NoAuthController extends Controller
         }else{
             $this->uuid = $request->uuid;
         }
+        
+          $price = 0;
+        if($Product->end > date('Y-m-d') and $Product->special_price > 0){
+            $price = $Product->special_price;
+        }else{
+            $price = $Product->price;
+        }
         \Cart::session($this->uuid)->add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
@@ -31,7 +38,7 @@ class NoAuthController extends Controller
                  'image' => $Product->image,
                  'slug'=>$Product->slug,
                  ),
-            'price' => $Product->price,
+            'price' => $price,
             'quantity' => $qty,
         ));
 

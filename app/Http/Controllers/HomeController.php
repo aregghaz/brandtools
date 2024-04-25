@@ -141,7 +141,7 @@ class HomeController extends Controller
             ->where('category_id', $id)
             ->pluck('product_id')
             ->toArray();
-    $brandId = Product::whereIn('id', $productIds) ->pluck('brand_id')
+    $brandId = Product::whereIn('id', $productIds)->where('status',1) ->pluck('brand_id')
           ->toArray();
         $brands = Brand::whereIn('id', $brandId)->get();
 //        $attrIds = DB::table('categories_attribute')
