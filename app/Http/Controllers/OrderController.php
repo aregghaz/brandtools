@@ -113,12 +113,9 @@ class OrderController extends Controller
                 'success' => 0
             ]);
         }
+        $price = round(($product->price * 10) / 100);
 
-        if ($product->end < date('Y-m-d')) {
-            $price = round(($product->price * 10) / 100);
-        } else {
-            $price = round(($product->special_price * 10) / 100);
-        }
+
 
         $order = new Order();
         $order->total = $price;
