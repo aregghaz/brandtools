@@ -157,12 +157,7 @@ class AuthController extends Controller
             'email' => 'string|email',
             'phone' => 'string',
             'fatherName' => 'required|string',
-            'address_1' => 'required|string',
-            'address_2' => 'required|string',
             'city' => 'required|string',
-            'country' => 'required|string',
-            'region' => 'required|string',
-            'post' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -188,13 +183,7 @@ class AuthController extends Controller
                 "phone" => $request->phone,
                 "email" => $request->email,
                 'user_id'=>$id,
-                "company" => $request->company ?? null,
-                "address_1" => $request->address_1,
-                "address_2" => $request->address_2,
                 "city" => $request->city,
-                "country" => $request->country,
-                "region" => $request->region,
-                "post" => $request->post,
             ]);
         }else{
            Address::create([
@@ -204,13 +193,7 @@ class AuthController extends Controller
                 "phone" => $request->phone,
                 "email" => $request->email,
                 'user_id'=>$id,
-                "company" => $request->company ?? null,
-                "address_1" => $request->address_1,
-                "address_2" => $request->address_2,
                 "city" => $request->city,
-                "country" => $request->country,
-                "region" => $request->region,
-                "post" => $request->post,
             ]);
 
         }
