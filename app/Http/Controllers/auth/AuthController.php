@@ -174,7 +174,7 @@ class AuthController extends Controller
             'lastName' => $request->lastName,
             'fatherName' => $request->fatherName,
             "phone" => $request->phone,
-            "email" => $request->email,
+//            "email" => $request->email,
             "dob" => $request->dob,
             "company" => $request->company ?? null,
         ]);
