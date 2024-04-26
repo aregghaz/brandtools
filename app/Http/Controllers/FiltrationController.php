@@ -44,7 +44,10 @@ class FiltrationController extends Controller
             $products = $products->whereBetween('price', [value((array)$priceValue)[9999][0], value((array)$priceValue)[9999][1]]);
         }
         if ($checkBrand and $brandId !== 0) {
-            $products = $products->where('brand_id', $brandId);
+            $products = $products->whereHas('brand', function ($query) use ($brandId) {
+                $query->where('title', $brandId);
+
+            });
         }
         if (isset($sortId)) {
             $products = $products->where('teg_id',$sortId );

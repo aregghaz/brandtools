@@ -20,6 +20,7 @@ class CategoryShortCollection extends ResourceCollection
                 'id' => $category->id,
                 'title' => $category->title,
                 'image' => $category->image,
+                'icon' => $category->icon,
                 'slug' => $category->slug,
                 'children' => new CategoryShortCollection($category->children)
             ];

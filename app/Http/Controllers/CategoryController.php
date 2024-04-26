@@ -60,6 +60,11 @@ class CategoryController extends Controller
             $storagePath = Storage::put("public/images/category", $file);
             $storageName = "/storage/images/category/" . basename($storagePath);
         }
+        if ($request->hasFile('icon')) {
+            $file = $request->file('icon');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+        }
         $category = Category::create([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
@@ -97,6 +102,7 @@ class CategoryController extends Controller
                 'meta_desc' => $category->meta_desc,
                 'meta_key' => $category->meta_key,
                 'image' => url($category->image),
+                'icon' => url($category->icon),
                 'banner' => url($category->banner),
                 'attributes' => new SelectCollection($category->attributes),
                 'categories' => $category->parent ? [
@@ -155,6 +161,16 @@ class CategoryController extends Controller
             $storageName = "/storage/images/category/" . basename($storagePath);
             $category->update([
                 'banner' => $storageName,
+            ]);
+        }
+        if ($request->hasFile('icon')) {
+            $imageFile = explode('/', $category->icon);
+            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
+            $file = $request->file('icon');
+            $storagePath = Storage::put("public/images/category", $file);
+            $storageName = "/storage/images/category/" . basename($storagePath);
+            $category->update([
+                'icon' => $storageName,
             ]);
         }
         $category->update([

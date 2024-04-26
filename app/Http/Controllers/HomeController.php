@@ -204,13 +204,29 @@ class HomeController extends Controller
 
     public function getSingleBrand($slug): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('slug', $slug)->first();
+
+        ///     var_dump(is_numeric($slug),$slug);
+        if (!is_numeric($slug)) {
+            $brands = Brand::where('slug', $slug)->first();
+
+        } else {
+            $brands = Brand::find($slug);
+        }
+        $brands =$brands->first();
         return response()->json($brands);
     }
 
     public function getSingleBrandByName(Request $request): \Illuminate\Http\JsonResponse
     {
-        $brands = Brand::where('title', "LIKE", $request->name . "%")->get();
+       /// var_dump(!is_numeric($request->name[0]),'asdsa');
+        if (is_numeric($request->name[0])) {
+
+            $brands = Brand::where("title", "REGEXP", '^[0-9]')->get();
+
+        } else {
+            $brands = Brand::where('title', "LIKE", $request->name . "%")->get();
+        }
+        ///$brands = Brand::where('title', "LIKE", $request->name . "%")->get();
         return response()->json($brands);
     }
 
