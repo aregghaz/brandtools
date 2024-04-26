@@ -154,8 +154,8 @@ class AuthController extends Controller
     {
         ///dd($id);
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'phone' => 'required|string',
+            'email' => 'string|email',
+            'phone' => 'string',
             'fatherName' => 'required|string',
             'address_1' => 'required|string',
             'address_2' => 'required|string',
