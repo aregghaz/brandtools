@@ -55,9 +55,10 @@ class OrderController extends Controller
 
     public function getLatestOrders()
     {
-        $orders = Order::with('user')->whereIn('status', [1,2])
+        $orders = Order::with('user')
+            ///->whereIn('status', [1,2])
             ->orderBy('orders.id', 'DESC')
-            ->take(20)
+            ->take(10)
             ->get();
         return response()->json([
             'orders' => new OrderListAdminCollection($orders),

@@ -17,8 +17,17 @@ class Controller extends BaseController
             if ($type !== 3) {
                 $query->orWhere('slug', 'LIKE', '%' . $queryData . '%');
             }
+//            if ($type === 1) {
+//                ///var_dump($queryData,'11');
+//                $query->orWhereHas('categories', function ($q) use ($queryData) {
+//                    $q->where('title', 'LIKE', '%' . $queryData. '%');
+//
+//                });
+//            }
+
         });
     }
+
     protected function convertUserQuery($queryData, $data)
     {
         return $data->where(function ($query) use ($queryData) {
@@ -29,16 +38,17 @@ class Controller extends BaseController
 
         });
     }
+
     protected function orderQuery($queryData, $data)
     {
 
         return $data->where(function ($query) use ($queryData) {
             $query->whereHas('products.item', function ($q) use ($queryData) {
-                $q->where('name', 'LIKE', '%' .  $queryData . '%');
+                $q->where('name', 'LIKE', '%' . $queryData . '%');
             })->orWhereHas('user', function ($q) use ($queryData) {
-                $q->where('name', 'LIKE', '%' .  $queryData . '%');
+                $q->where('name', 'LIKE', '%' . $queryData . '%');
             });
-            $query->orWhere('grant_total', 'LIKE', '%' .  $queryData . '%');
+            $query->orWhere('grant_total', 'LIKE', '%' . $queryData . '%');
         });
     }
 
