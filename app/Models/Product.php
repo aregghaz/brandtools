@@ -24,6 +24,7 @@ class Product extends Model
         'brand_id',
         'product_id',
         'sku',
+        'stock',
         'quantity',
         'image',
         'status',

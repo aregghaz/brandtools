@@ -23,6 +23,7 @@ class ProductCollection extends ResourceCollection
                 'id' => $data->id,
                 "image" => $data->image,
                 'name' => $data->name,
+                'stock' => $data->stock,
                 'price' => $data->price,
                 "special_price" => $data->special_price,
                 "slug" => $data->slug,

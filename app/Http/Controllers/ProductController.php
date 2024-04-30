@@ -60,8 +60,8 @@ class ProductController extends Controller
                 'title' => $product->name,
                 'description' => $product->description,
                 'price' => $product->price,
+                'stock' => $product->stock,
                 'special_price' => $product->special_price,
-
                 'range' => [
                     $product->start,
                     $product->end,
@@ -120,9 +120,10 @@ class ProductController extends Controller
             'end' => isset($data->range) && $data->range[1] ? date_create($data->range[1])->format('Y-m-d') : null,
 //            'slug',
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
-          'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
+            'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
             'quantity' => $data->quantity,
+            'stock' => $data->stock ?? '',
             'image' => $storageName,
             'status' => 1,
             'meta_title' => $data->meta_title ?? '',
@@ -185,6 +186,7 @@ class ProductController extends Controller
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
+            'stock' => $data->stock ?? '',
             'quantity' => $data->quantity,
             'status' => $data->status->id || null,
             'meta_title' => $data->meta_title,
@@ -301,14 +303,14 @@ class ProductController extends Controller
     {
         $values = $request->value;
         $ids = $request->ids;
-       $products =  Product::where('status', 1)->get();
-       foreach ($products as $product){
-           $product->update([
-               'special_price' =>round($product->price - ($product->price * (int)$values['discount'])/100),
-               'start' => date_create($values['dates'][0])->format('Y-m-d'),
-               'end' => date_create($values['dates'][1])->format('Y-m-d'),
-           ]);
-       }
+        $products = Product::where('status', 1)->get();
+        foreach ($products as $product) {
+            $product->update([
+                'special_price' => round($product->price - ($product->price * (int)$values['discount']) / 100),
+                'start' => date_create($values['dates'][0])->format('Y-m-d'),
+                'end' => date_create($values['dates'][1])->format('Y-m-d'),
+            ]);
+        }
         return response()->json([
             'status' => 200,
         ]);
