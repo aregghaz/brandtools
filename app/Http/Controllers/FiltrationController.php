@@ -45,7 +45,7 @@ class FiltrationController extends Controller
         }
         if ($checkBrand and $brandId !== 0) {
             $products = $products->whereHas('brand', function ($query) use ($brandId) {
-                $query->where('title', $brandId);
+                $query->whereIn('title', $brandId);
 
             });
         }
