@@ -105,6 +105,11 @@ class HomeController extends Controller
         $category = Category::where('top', 1)->select('id', 'title', 'slug', 'image')->limit($limit)->get();
         return response()->json($category);
     }
+    public function topBrands(Request $request, $limit): \Illuminate\Http\JsonResponse
+    {
+        $brand = Brand::where('top', 1)->select('id', 'title', 'slug', 'image')->limit($limit)->get();
+        return response()->json($brand);
+    }
 
     public function productsCategory($id, $limit, Request $request): \Illuminate\Http\JsonResponse
     {

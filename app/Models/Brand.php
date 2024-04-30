@@ -18,6 +18,7 @@ class Brand extends Model
         'meta_desc',
         'meta_key',
         'image',
+        'top',
         ];
     public function sluggable(): array
     {

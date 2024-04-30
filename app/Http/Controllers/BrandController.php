@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BrandCollection;
+use App\Http\Resources\SelectCollection;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -27,9 +28,11 @@ class BrandController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(): \Illuminate\Http\JsonResponse
     {
-
+        return response()->json([
+            'top' => new SelectCollection($this->simpleSelect()),
+        ]);
     }
 
     /**
@@ -54,6 +57,7 @@ class BrandController extends Controller
             'image' => $storageName,
             'description' => $data->description,
             'meta_title' => $data->meta_title,
+            'top' => $data->top->id ?? 0,
             'meta_desc' => $data->meta_desc ?? '',
             'meta_key' => $data->meta_key ?? '',
         ]);
@@ -68,6 +72,7 @@ class BrandController extends Controller
     public function show(Brand $brand)
     {
         return response()->json([
+            'top' => new SelectCollection($this->simpleSelect()),
             "data" => [
                 'id' => $brand->id,
                 'title' => $brand->title,
@@ -75,6 +80,12 @@ class BrandController extends Controller
                 'meta_title' => $brand->meta_title,
                 'meta_desc' => $brand->meta_desc,
                 'meta_key' => $brand->meta_key,
+                'top' => [
+                    "id" => $brand->top,
+                    "value" => $brand->top,
+                    "label" => $brand->top === 1 ? 'включено' : 'отключить',
+                    "name" => $brand->top === 1 ? 'включено' : 'отключить',
+                ],
             ]
         ]);
     }
@@ -113,6 +124,7 @@ class BrandController extends Controller
             'meta_title' => $data->meta_title,
             'meta_desc' => $data->meta_desc,
             'meta_key' => $data->meta_key,
+            'top' => $data->top->id ?? 0,
         ]);
         return response()->json([
             "status" => 200,
