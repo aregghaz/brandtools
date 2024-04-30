@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\OrderMail;
 use App\Models\Address;
+use App\Models\Book;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductsOrder;
@@ -114,9 +115,6 @@ class OrderController extends Controller
             ]);
         }
         $price = round(($product->price * 10) / 100);
-
-
-
         $order = new Order();
         $order->total = $price;
         $order->user_id = $userId;
@@ -150,7 +148,6 @@ class OrderController extends Controller
         $order->save();
         $order->address_id = $addressId;
         $order->update();
-
         $productsOrder = new ProductsOrder();
         $productsOrder->product_id = $product->id;
         $productsOrder->order_id = $order->id;
@@ -158,6 +155,10 @@ class OrderController extends Controller
         $productsOrder->price = $price;
         $productsOrder->save();
 
+        $book = new Book();
+        $book->user_id = $userId;
+        $book->product_id = $product->id;
+        $book->save();
 
         $orderData = Order::with('products.item', 'user', 'address')->find($order->id);
 
