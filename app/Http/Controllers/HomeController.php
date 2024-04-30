@@ -50,6 +50,7 @@ class HomeController extends Controller
                 'start' => $product->start,
                 'end' => $product->end,
                 'teg_id' => $product->teg_id,
+                'book' => $product->book,
                 'categories' => new SelectCollection($product->categories),
                 'attributes' => new SelectCollection($product->attributes),
                 'brand_id' => [
