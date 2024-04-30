@@ -21,7 +21,7 @@ class OrderListAdminCollection extends ResourceCollection
             return [
                 'id' => $order->id,
                 'orderId' => $order->id,
-                'name' => $order->user->name.' '. $order->user->lastName,
+                'name' =>  $order->user->lastName. ' '.$order->user->name .' '.$order->user->fatherName,
                 'status' => $status->title,
                 'status_id' => $order->status,
                 'total' => $order->grant_total,
