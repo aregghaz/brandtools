@@ -67,6 +67,7 @@ Route::post('questions', [QuestionController::class, 'store']);
 Route::get('get-videos/{limit}', [HomeController::class, 'getVideos']);
 Route::get('get-single-videos/{id}', [HomeController::class, 'getSingleVideos']);
 
+Route::resource('products', ProductController::class);
 
 Route::get('get-news/{limit}', [HomeController::class, 'getNews']);
 Route::get('get-single-news/{slug}', [HomeController::class, 'getSingleNews']);
@@ -136,7 +137,7 @@ Route::group([
     Route::post('/products/add-discount', [ProductController::class, 'addDiscount']);
     Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
     Route::post('/categories/groupDelete', [CategoryController::class, 'groupDelete']);
-    Route::resource('products', ProductController::class);
+//    Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);
     Route::resource('brands', BrandController::class);
