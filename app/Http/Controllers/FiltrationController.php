@@ -20,6 +20,7 @@ class FiltrationController extends Controller
         $checkBrand = false;
         $brandId = 0;
         $priceValue = [];
+        $brandsValue = [];
         if (isset($filt)) {
             foreach ($filt as $attribute) {
                 if (key((array)$attribute) !== 9999 and key((array)$attribute) !== 99999  ) {
@@ -30,7 +31,7 @@ class FiltrationController extends Controller
                     $priceValue = value((array)$attribute);
                 } else if(key((array)$attribute) == 99999) {
                     $checkBrand = true;
-                    $brandId = value((array)$attribute);
+                    $brandsValue[] = value((array)$attribute);
                 }
             }
         }
@@ -44,8 +45,8 @@ class FiltrationController extends Controller
             $products = $products->whereBetween('price', [value((array)$priceValue)[9999][0], value((array)$priceValue)[9999][1]]);
         }
         if ($checkBrand and $brandId !== 0) {
-            $products = $products->whereHas('brand', function ($query) use ($brandId) {
-                $query->whereIn('title', $brandId);
+            $products = $products->whereHas('brand', function ($query) use ($brandsValue) {
+                $query->whereIn('title', $brandsValue);
 
             });
         }
