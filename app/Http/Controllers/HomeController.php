@@ -75,6 +75,12 @@ class HomeController extends Controller
         );
     }
 
+    public function getSlugs()
+    {
+        $data = Product::select('slug')->where('status', 1)->get();
+        return response()->json($data);
+    }
+
     public function getByTeg($limit, Request $request): \Illuminate\Http\JsonResponse
     {
 
@@ -95,7 +101,7 @@ class HomeController extends Controller
     public function category(Request $request): \Illuminate\Http\JsonResponse
     {
 
-        $category = Category::with('children')->where('parent_id', null)->select('id', 'title', 'icon', 'image','slug','parent_id')->get();
+        $category = Category::with('children')->where('parent_id', null)->select('id', 'title', 'icon', 'image', 'slug', 'parent_id')->get();
 
         return response()->json(new CategoryShortCollection($category));
     }
@@ -105,6 +111,7 @@ class HomeController extends Controller
         $category = Category::where('top', 1)->select('id', 'title', 'slug', 'image')->limit($limit)->get();
         return response()->json($category);
     }
+
     public function topBrands(Request $request, $limit): \Illuminate\Http\JsonResponse
     {
         $brand = Brand::where('top', 1)->select('id', 'title', 'slug', 'image')->limit($limit)->get();
@@ -147,8 +154,8 @@ class HomeController extends Controller
             ->where('category_id', $id)
             ->pluck('product_id')
             ->toArray();
-    $brandId = Product::whereIn('id', $productIds)->where('status',1) ->pluck('brand_id')
-          ->toArray();
+        $brandId = Product::whereIn('id', $productIds)->where('status', 1)->pluck('brand_id')
+            ->toArray();
         $brands = Brand::whereIn('id', $brandId)->get();
 //        $attrIds = DB::table('categories_attribute')
 //            ->where('categories_id', $id)
@@ -190,8 +197,8 @@ class HomeController extends Controller
 
 
         return response()->json([
-           "brands"=> new BrandsCollection($brands),
-           "category" => $category
+            "brands" => new BrandsCollection($brands),
+            "category" => $category
         ]);
 
     }
@@ -218,13 +225,13 @@ class HomeController extends Controller
         } else {
             $brands = Brand::find($slug);
         }
-        $brands =$brands->first();
+        $brands = $brands->first();
         return response()->json($brands);
     }
 
     public function getSingleBrandByName(Request $request): \Illuminate\Http\JsonResponse
     {
-       /// var_dump(!is_numeric($request->name[0]),'asdsa');
+        /// var_dump(!is_numeric($request->name[0]),'asdsa');
         if (is_numeric($request->name[0])) {
 
             $brands = Brand::where("title", "REGEXP", '^[0-9]')->get();
