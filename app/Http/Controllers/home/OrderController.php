@@ -41,7 +41,7 @@ class OrderController extends Controller
     {
 
         $userId = $request->user()->id;
-        $order = Order::with('products.item', 'user', 'address')->find($id);
+        $order = Order::with('products.item', 'user')->find($id);
 
         if ($order) {
             return response()->json($order);
