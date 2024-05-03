@@ -17,6 +17,7 @@ class Order extends Model
         'address_id',
         'note',
         'status',
+        'city',
         'created_at',
     ];
     public function address()

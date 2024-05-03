@@ -111,7 +111,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666;">
-                                    {{ $content['body']['address']['name'] }}  {{ $content['body']['address']['lastName'] }}
+                                    {{ $content['body']['user']['name'] }}  {{ $content['body']['user']['lastName'] }} {{ $content['body']['user']['fatherName'] }}
                                 </td>
                                 {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666;">--}}
                                 {{--                                    James C Painter--}}
@@ -119,7 +119,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666;">
-                                    {{ $content['body']['address']['phone'] }}
+                                    {{ $content['body']['user']['phone'] }}
                                 </td>
                                 {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666;">--}}
                                 {{--                                    3939  Charles Street, Farmington Hills--}}
@@ -127,39 +127,39 @@
                             </tr>
                             <tr>
                                 <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
-                                    {{ $content['body']['address']['email'] }}
+                                    {{ $content['body']['user']['email'] }}
                                 </td>
                                 {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
                                 {{--                                    Michigan, 48335--}}
                                 {{--                                </td>--}}
                             </tr>
+{{--                            <tr>--}}
+{{--                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                    {{ $content['body']['user']['company'] }}--}}
+{{--                                </td>--}}
+{{--                                --}}{{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                --}}{{--                                    Michigan, 48335--}}
+{{--                                --}}{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                    {{ $content['body']['address']['address_1'] }}--}}
+{{--                                </td>--}}
+{{--                                --}}{{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                --}}{{--                                    Michigan, 48335--}}
+{{--                                --}}{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                    {{ $content['body']['address']['address_2'] }}--}}
+{{--                                </td>--}}
+{{--                                --}}{{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
+{{--                                --}}{{--                                    Michigan, 48335--}}
+{{--                                --}}{{--                                </td>--}}
+{{--                            </tr>--}}
                             <tr>
                                 <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
-                                    {{ $content['body']['address']['company'] }}
-                                </td>
-                                {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
-                                {{--                                    Michigan, 48335--}}
-                                {{--                                </td>--}}
-                            </tr>
-                            <tr>
-                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
-                                    {{ $content['body']['address']['address_1'] }}
-                                </td>
-                                {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
-                                {{--                                    Michigan, 48335--}}
-                                {{--                                </td>--}}
-                            </tr>
-                            <tr>
-                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
-                                    {{ $content['body']['address']['address_2'] }}
-                                </td>
-                                {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
-                                {{--                                    Michigan, 48335--}}
-                                {{--                                </td>--}}
-                            </tr>
-                            <tr>
-                                <td style="width: 55%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">
-                                    {{ $content['body']['address']['region'] }} {{ $content['body']['address']['city'] }} {{ $content['body']['address']['country'] }}
+                                   {{ $content['body']['city'] }}
                                 </td>
                                 {{--                                <td style="width: 45%; font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 10px;">--}}
                                 {{--                                    Michigan, 48335--}}
