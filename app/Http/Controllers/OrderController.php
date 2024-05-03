@@ -43,8 +43,8 @@ class OrderController extends Controller
         $order->user_id = $userId;
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
-        $order->note = $request->note ?? '';
-        $order->city = $request->city ?? 'MOskva';
+        $order->note = $request->note ?? null;
+        $order->city = $request->city ?? 'Moskva';
 
 //        if (gettype($request->address_id) === "integer") {
 //            $order->address_id = $request->address_id ?? 1;
@@ -101,7 +101,7 @@ class OrderController extends Controller
     }
 
 
-    public function preOrder($id, Request $request)
+    public function preOrder($id)
     {
         $userId = Auth::user()->id;
         $product = Product::find($id);
@@ -119,8 +119,8 @@ class OrderController extends Controller
         $order->user_id = $userId;
         $order->delivery = 0;
         $order->grant_total = 0;
-        $order->note = $request->note ?? null;
-        $order->city = $request->city ?? null;
+//        $order->note = $request->note ?? null;
+//        $order->city = $request->city ?? 'Moskva';
 //        dd(gettype($request->address_id));
 //        if (gettype($request->address_id) === "integer") {
 //            $order->address_id = $request->address_id ?? 1;

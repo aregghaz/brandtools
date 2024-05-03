@@ -63,7 +63,6 @@ class AuthController extends Controller
                 "phone" => $request->user()->phone,
                 "email" => $request->user()->email,
                 "subscribed" => $request->user()->subscribed === 0 ? "отключить" : "включено",
-                'address'=> $request->user()->address
             ],
         ]);
     }
@@ -169,34 +168,35 @@ class AuthController extends Controller
             'lastName' => $request->lastName,
             'fatherName' => $request->fatherName,
             "phone" => $request->phone,
+            "city" => $request->city,
 //            "email" => $request->email,
             "dob" => $request->dob,
             "company" => $request->company ?? null,
         ]);
-        $check = Address::where('user_id', $id)->get();
+//        $check = Address::where('user_id', $id)->get();
 
-        if(count($check)> 0){
-            $check[0]->update([
-                'name' => $request->name,
-                'lastName' => $request->lastName,
-                'fatherName' => $request->fatherName ,
-                "phone" => $request->phone,
-                "email" => $request->email,
-                'user_id'=>$id,
-                "city" => $request->city,
-            ]);
-        }else{
-           Address::create([
-                'name' => $request->name,
-                'lastName' => $request->lastName,
-                'fatherName' => $request->fatherName,
-                "phone" => $request->phone,
-                "email" => $request->email,
-                'user_id'=>$id,
-                "city" => $request->city,
-            ]);
-
-        }
+//        if(count($check)> 0){
+//            $check[0]->update([
+//                'name' => $request->name,
+//                'lastName' => $request->lastName,
+//                'fatherName' => $request->fatherName ,
+//                "phone" => $request->phone,
+//                "email" => $request->email,
+//                'user_id'=>$id,
+//                "city" => $request->city,
+//            ]);
+//        }else{
+//           Address::create([
+//                'name' => $request->name,
+//                'lastName' => $request->lastName,
+//                'fatherName' => $request->fatherName,
+//                "phone" => $request->phone,
+//                "email" => $request->email,
+//                'user_id'=>$id,
+//                "city" => $request->city,
+//            ]);
+//
+//        }
 
         return response()->json([
             "status" => 200,
@@ -233,7 +233,7 @@ class AuthController extends Controller
             }
         }
 
-        return Redirect::to('https://www.brend-instrument.ru/');
+        return Redirect::to('https://www.brendinstrument.ru/');
 
     }
 }

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'password',
         'subscribed',
         'company',
+        'city',
         'dob',
         'status',
         'is_email_verified'
