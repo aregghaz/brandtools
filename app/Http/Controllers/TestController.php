@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attribute;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Shuchkin\SimpleXLSX;
 
 class TestController extends Controller
@@ -85,8 +82,8 @@ class TestController extends Controller
         /* open this for local file testing purposes only*/
         ///Product::truncate();
         /// DB::beginTransaction();
-         $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
-       /// $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
+        $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/product$file.xlsx");
+        /// $xlsx = SimpleXLSX::parse(base_path() . "/public/uploads/pr1.xlsx");
         foreach ($xlsx->rows(0) as $index => $data) {
             $status = 26;
             if ($index !== 0 and $data[$status] === 'true') {
@@ -103,17 +100,12 @@ class TestController extends Controller
                 $meta_title = 29;
                 $meta_desc = 30;
                 $meta_key = 31;
-               ///// $brandData = Brand::where('title', $data[$brand])->first();
+                ///// $brandData = Brand::where('title', $data[$brand])->first();
                 $brandType = 0;
 
                 $product = Product::where('product_id', $data[$product_id])->update([
-                    'stock'=>$data[$stock]
+                    'stock' => $data[$stock] ?? null
                 ]);
-
-
-
-
-
 
 
                 /////Brend insert
@@ -220,7 +212,7 @@ class TestController extends Controller
 //
 //
 //                }
-           }
+            }
         }
         return true;
     }
@@ -327,7 +319,9 @@ class TestController extends Controller
         }
         return true;
     }
-    public function image() {
+
+    public function image()
+    {
         $product = Product::find(123);
         // Create image instances
         $dest = imagecreatefromgif(
@@ -336,8 +330,8 @@ class TestController extends Controller
             'https://media.geeksforgeeks.org/wp-content/uploads/slider.gif');
 
 // Copy and merge
-       $img =  imagecopymerge($dest, $src, 10, 10, 0, 0, 500, 200, 75);
-       ///return json()->response($img);
+        $img = imagecopymerge($dest, $src, 10, 10, 0, 0, 500, 200, 75);
+        ///return json()->response($img);
         ///
         header('Content-Type: image/gif');
         imagegif($dest);
