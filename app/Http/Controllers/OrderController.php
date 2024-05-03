@@ -44,7 +44,7 @@ class OrderController extends Controller
         $order->delivery = $request->delivery ?? 0;
         $order->grant_total = $total + ($request->delivery ?? 0);
         $order->note = $request->note ?? '';
-        $order->city = $request->city ?? '';
+        $order->city = $request->city ?? 'MOskva';
 
 //        if (gettype($request->address_id) === "integer") {
 //            $order->address_id = $request->address_id ?? 1;
