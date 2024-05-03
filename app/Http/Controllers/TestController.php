@@ -94,6 +94,7 @@ class TestController extends Controller
                 $name = 1;
                 $categoryIds = 2;
                 $sku = 3;
+                $stock = 9;
                 $quantity = 10;
                 $brand = 12;// searck
                 $image = 13;
@@ -102,109 +103,124 @@ class TestController extends Controller
                 $meta_title = 29;
                 $meta_desc = 30;
                 $meta_key = 31;
-                $brandData = Brand::where('title', $data[$brand])->first();
+               ///// $brandData = Brand::where('title', $data[$brand])->first();
                 $brandType = 0;
-                if (isset($brandData)) {
-                    $brandType = $brandData->id;
-                } else {
-                    $dataCreate = Brand::create([
-                        'title' => $data[$brand],
-                        'slug' => $data[$brand],
-                    ]);
-                    $brandType = $dataCreate->id;
-                }
+
+                $product = Product::where('product_id', $data[$product_id])->update([
+                    'stock'=>$data[$stock]
+                ]);
+
+
+
+
+
+
+
+                /////Brend insert
+                ///
+                ///
+                ///
+//                if (isset($brandData)) {
+//                    $brandType = $brandData->id;
+//                } else {
+//                    $dataCreate = Brand::create([
+//                        'title' => $data[$brand],
+//                        'slug' => $data[$brand],
+//                    ]);
+//                    $brandType = $dataCreate->id;
+//                }
 //                $images = explode('.JPG', $data[$image]);
 //                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-351x265.JPG';
 //
 
-                $uniqid = Str::random(9);
-                $images = explode('.JPG', $data[$image]);
-                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] .'-351x265.JPG';
-                //$imageUrl = 'https://brendinstrument.ru/image/' . $data[$image];
-
-                @$rawImage = file_get_contents($imageUrl);
-
-                if ($rawImage) {
-                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
-                    if (!Storage::exists($storageName)) {
-                        Storage::put("public/images/products/" .$uniqid.'.jpg', $rawImage);
-                    }
-                    $product = Product::create([
-                        "name" => $data[$name],
-                        "description" => $data[$description],
-                        "price" => $data[$price],
-                        "brand_id" => $brandType,
-                        'product_id' => $data[$product_id],
-                        'sku' => $data[$sku],
-                        'quantity' => $data[$quantity],
-                        'status' => 1,
-                        'image' => $storageName,
-                        'meta_title' => $data[$meta_title],
-                        'meta_desc' => $data[$meta_desc],
-                        'meta_key' => $data[$meta_key],
-                    ]);
-                }
-                else {
-                    $product = Product::create([
-                        "name" => $data[$name],
-                        "description" => $data[$description],
-                        "price" => $data[$price],
-                        "brand_id" => $brandType,
-                        'product_id' => $data[$product_id],
-                        'sku' => $data[$sku],
-                        'quantity' => $data[$quantity],
-                        'status' => 0,
-                        'image' => null,
-                        'meta_title' => $data[$meta_title],
-                        'meta_desc' => $data[$meta_desc],
-                        'meta_key' => $data[$meta_key],
-                    ]);
-                }
-                $explodeData = explode(',', $data[$categoryIds]);
-                $categ = Category::whereIn('category_id', $explodeData)->pluck('id');
-                $product->categories()->sync($categ);
-            }
-        }
-        foreach ($xlsx->rows(7) as $index => $data) {
-            if ($index !== 0) {
-                $product_id = 0;
-                $attribute_id = 2;
-                $value = 3;
-                $product = Product::where('product_id', $data[$product_id])->first();
-                $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
-                if (isset($product) and isset($attr)) {
-                    $product->attributes()->attach($attr->id, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
-                }
-            }
-        }
-        foreach ($xlsx->rows(1) as $index => $data) {
-            if ($index !== 0) {
-                $product_id = 0;
-                $attribute_id = 1;
-                $value = 3;
-                $product = Product::where('product_id', $data[$product_id])->first();
-                var_dump(isset($product) );
-
-                if (isset($product)) {
-                    $uniqid = Str::random(9);
-                    $images = explode('.JPG', $data[$attribute_id]);
-                    $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-640x480.JPG';
-                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
-                   // if (!Storage::exists($storageName)) {
-                        @$rawImage = file_get_contents($imageUrl);
-                        if ($rawImage) {
-                            Storage::put("public/images/products/" . $uniqid.'.jpg', $rawImage);
-                            ProductImage::create([
-                                "path" => $storageName,
-                                "product_id" => $product->id,
-                                "sort" => 1,
-                            ]);
-                        }
-                  //  }
-
-
-                }
-            }
+//                $uniqid = Str::random(9);
+//                $images = explode('.JPG', $data[$image]);
+//                $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] .'-351x265.JPG';
+//                //$imageUrl = 'https://brendinstrument.ru/image/' . $data[$image];
+//
+//                @$rawImage = file_get_contents($imageUrl);
+//
+//                if ($rawImage) {
+//                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
+//                    if (!Storage::exists($storageName)) {
+//                        Storage::put("public/images/products/" .$uniqid.'.jpg', $rawImage);
+//                    }
+//                    $product = Product::create([
+//                        "name" => $data[$name],
+//                        "description" => $data[$description],
+//                        "price" => $data[$price],
+//                        "brand_id" => $brandType,
+//                        'product_id' => $data[$product_id],
+//                        'sku' => $data[$sku],
+//                        'quantity' => $data[$quantity],
+//                        'status' => 1,
+//                        'image' => $storageName,
+//                        'meta_title' => $data[$meta_title],
+//                        'meta_desc' => $data[$meta_desc],
+//                        'meta_key' => $data[$meta_key],
+//                    ]);
+//                }
+//                else {
+//                    $product = Product::create([
+//                        "name" => $data[$name],
+//                        "description" => $data[$description],
+//                        "price" => $data[$price],
+//                        "brand_id" => $brandType,
+//                        'product_id' => $data[$product_id],
+//                        'sku' => $data[$sku],
+//                        'quantity' => $data[$quantity],
+//                        'status' => 0,
+//                        'image' => null,
+//                        'meta_title' => $data[$meta_title],
+//                        'meta_desc' => $data[$meta_desc],
+//                        'meta_key' => $data[$meta_key],
+//                    ]);
+//                }
+//                $explodeData = explode(',', $data[$categoryIds]);
+//                $categ = Category::whereIn('category_id', $explodeData)->pluck('id');
+//                $product->categories()->sync($categ);
+//            }
+//        }
+//        foreach ($xlsx->rows(7) as $index => $data) {
+//            if ($index !== 0) {
+//                $product_id = 0;
+//                $attribute_id = 2;
+//                $value = 3;
+//                $product = Product::where('product_id', $data[$product_id])->first();
+//                $attr = Attribute::where('attribute_id', $data[$attribute_id])->first();
+//                if (isset($product) and isset($attr)) {
+//                    $product->attributes()->attach($attr->id, ['value' => trim(preg_replace('/\s\s+/', '', $data[$value]))]);
+//                }
+//            }
+//        }
+//        foreach ($xlsx->rows(1) as $index => $data) {
+//            if ($index !== 0) {
+//                $product_id = 0;
+//                $attribute_id = 1;
+//                $value = 3;
+//                $product = Product::where('product_id', $data[$product_id])->first();
+//                var_dump(isset($product) );
+//
+//                if (isset($product)) {
+//                    $uniqid = Str::random(9);
+//                    $images = explode('.JPG', $data[$attribute_id]);
+//                    $imageUrl = 'https://brendinstrument.ru/image/cache/' . $images[0] . '-640x480.JPG';
+//                    $storageName = "/storage/images/products/" .$uniqid.'.jpg';
+//                   // if (!Storage::exists($storageName)) {
+//                        @$rawImage = file_get_contents($imageUrl);
+//                        if ($rawImage) {
+//                            Storage::put("public/images/products/" . $uniqid.'.jpg', $rawImage);
+//                            ProductImage::create([
+//                                "path" => $storageName,
+//                                "product_id" => $product->id,
+//                                "sort" => 1,
+//                            ]);
+//                        }
+//                  //  }
+//
+//
+//                }
+           }
         }
         return true;
     }
