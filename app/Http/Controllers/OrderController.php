@@ -120,7 +120,7 @@ class OrderController extends Controller
         $order->delivery = 0;
         $order->grant_total = 0;
 //        $order->note = $request->note ?? null;
-//        $order->city = $request->city ?? 'Moskva';
+        $order->city = Auth::user()->city ?? 'Moskva';
 //        dd(gettype($request->address_id));
 //        if (gettype($request->address_id) === "integer") {
 //            $order->address_id = $request->address_id ?? 1;
