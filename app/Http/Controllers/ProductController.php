@@ -14,7 +14,6 @@ use App\Models\ProductImage;
 use App\Models\Teg;
 use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -27,9 +26,9 @@ class ProductController extends Controller
         $categories = Category::all();
         $products = Product::with('teg', 'brand', 'categories');
 
-        if(isset($catId) and $catId !== "undefined"){
-            $products = $products->whereHas('categories', function ($q) use ($catId){
-                $q->where('categories.id',$catId);
+        if (isset($catId) and $catId !== "undefined") {
+            $products = $products->whereHas('categories', function ($q) use ($catId) {
+                $q->where('categories.id', $catId);
             });
         }
         if (isset($queryData)) {
@@ -136,7 +135,7 @@ class ProductController extends Controller
 //            'sku',
             'quantity' => $data->quantity,
             'stock' => $data->stock ?? '',
-            'image' => '/storage/'.explode("storage", $data->image)[1],
+            'image' => '/storage/' . explode("storage", $data->image)[1],
             'status' => 1,
             'meta_title' => $data->meta_title ?? '',
             'meta_desc' => $data->meta_desc ?? '',
@@ -168,26 +167,9 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-//        $data = $request->validate([
-//            'name' => 'required|string',
-//            'description' => 'nullable|string',
-//            'categories' => 'required|array',
-//            'attributes' => 'nullable|array',
-//            'attributes.*.id' => 'required|exists:attributes,id',
-//            'attributes.*.value' => 'required',
-//        ]);
+
         $data = json_decode($request->value);
-//
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $product->image);
-//            Storage::delete("public/images/products/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/products", $file);
-//            $storageName = "/storage/images/products/" . basename($storagePath);
-//            $product->update([
-//                'image' => $storageName,
-//            ]);
-//        }
+
         $product->update([
             'name' => $data->title,
             'description' => $data->description,
@@ -197,8 +179,7 @@ class ProductController extends Controller
             'end' => (!is_string($data->range) and $data->range[1]) ? date_create($data->range[1])->format('Y-m-d') : null,
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
-//            'sku',
-            'image' => '/storage/'.explode("storage", $data->image)[1],
+            'image' => '/storage/' . explode("storage", $data->image)[1],
             'stock' => $data->stock ?? '',
             'quantity' => $data->quantity,
             'status' => $data->status->id || null,
@@ -252,10 +233,8 @@ class ProductController extends Controller
         $id = $request->id;
         foreach ($request->images as $index => $image) {
             $file = $image['img'];
-            $storagePath = Storage::put("public/images/products", $file);
-            $storageName = "/storage/images/products/" . basename($storagePath);
             ProductImage::create([
-                "path" => $storageName,
+                "path" => '/storage/' . explode("storage", $file)[1],
                 "product_id" => (int)$id,
                 "sort" => $index,
             ]);
@@ -270,8 +249,8 @@ class ProductController extends Controller
     public function deleteImage($id, Request $request)
     {
         $productImage = ProductImage::find($id);
-        $imageFile = explode('/', $productImage->path);
-        Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+//        $imageFile = explode('/', $productImage->path);
+//     ///   Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
         $productImage->delete();
         return response()->json([
             'status' => 200
@@ -293,7 +272,6 @@ class ProductController extends Controller
         foreach ($products as $product) {
             $this->deleteProduct($product);
         }
-
         return response()->json([
             'status' => 200,
         ]);
@@ -306,7 +284,6 @@ class ProductController extends Controller
         foreach ($products as $product) {
             $product->update('teg_id', $tagId);
         }
-
         return response()->json([
             'status' => 200,
         ]);
@@ -335,14 +312,6 @@ class ProductController extends Controller
      */
     public function deleteProduct(Product $product): void
     {
-       // $imageFile = explode('/', $product->image);
-      ///  Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
-//        if (count($product->images) > 0) {
-//            foreach ($product->images as $images) {
-//                $imageFile = explode('/', $images->path);
-//                Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
-//            }
-//        }
         $product->images()->delete();
         $product->categories()->detach();
         $product->attributes()->detach();
