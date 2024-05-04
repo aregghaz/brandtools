@@ -34,3 +34,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');
+
+
+Route::post('/flmngr', function () {
+
+    \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
+        array(
+            'dirFiles' => base_path() . '/public/storage'
+        )
+    );
+
+})->middleware('throttle:240,1');;

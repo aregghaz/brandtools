@@ -34,16 +34,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/flmngr', function () {
-
-    \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
-        array(
-            'dirFiles' => base_path() . '/public/storage'
-        )
-    );
-
-})->middleware('throttle:240,1');;
-
 
 Route::get('/subscription/{email}', [\App\Http\Controllers\SubscriptionController::class, 'create']);
 Route::get('/singleProduct/{slug}', [HomeController::class, 'singleProduct']);
