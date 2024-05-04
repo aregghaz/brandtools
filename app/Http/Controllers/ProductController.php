@@ -23,13 +23,24 @@ class ProductController extends Controller
     {
         $showMore = $request->get('showMore');
         $queryData = $request->get('query');
+        $catId = $request->get('catId');
+        $categories = Category::all();
         $products = Product::with('teg', 'brand', 'categories');
+
+        if(isset($catId) and $catId !== "undefined"){
+            $products = $products->whereHas('categories', function ($q) use ($catId){
+                $q->where('categories.id',$catId);
+            });
+        }
         if (isset($queryData)) {
             $this->convertQuery($queryData, $products, 1);
         }
         $products = $products->take(40 * $showMore)->orderBy('id', 'DESC')->get();
 
-        return response()->json(new ProductCollection($products));
+        return response()->json([
+            'data' => new ProductCollection($products),
+            'categories' => new CategoryGroupCollection($categories),
+        ]);
     }
 
     public function create(): \Illuminate\Http\JsonResponse
