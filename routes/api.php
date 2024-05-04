@@ -33,6 +33,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::post('/flmngr', function () {
+
+    \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
+        array(
+            'dirFiles' => base_path() . '/public/storage'
+        )
+    );
+
+});
+
+
 Route::get('/subscription/{email}', [\App\Http\Controllers\SubscriptionController::class, 'create']);
 Route::get('/singleProduct/{slug}', [HomeController::class, 'singleProduct']);
 Route::post('/productsByTeg/{limit}', [HomeController::class, 'getByTeg']);

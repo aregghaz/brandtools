@@ -6,6 +6,7 @@
         "php": "^8.1",
         "cviebrock/eloquent-sluggable": "^10.0",
         "darryldecode/cart": "^4.2",
+        "edsdk/flmngr-server-php": "^1.6",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.10",
