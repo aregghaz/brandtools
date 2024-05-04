@@ -176,17 +176,17 @@ class ProductController extends Controller
 //            'attributes.*.value' => 'required',
 //        ]);
         $data = json_decode($request->value);
-
-        if ($request->hasFile('image')) {
-            $imageFile = explode('/', $product->image);
-            Storage::delete("public/images/products/" . $imageFile[count($imageFile) - 1]);
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/products", $file);
-            $storageName = "/storage/images/products/" . basename($storagePath);
-            $product->update([
-                'image' => $storageName,
-            ]);
-        }
+//
+//        if ($request->hasFile('image')) {
+//            $imageFile = explode('/', $product->image);
+//            Storage::delete("public/images/products/" . $imageFile[count($imageFile) - 1]);
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/products", $file);
+//            $storageName = "/storage/images/products/" . basename($storagePath);
+//            $product->update([
+//                'image' => $storageName,
+//            ]);
+//        }
         $product->update([
             'name' => $data->title,
             'description' => $data->description,
@@ -197,6 +197,7 @@ class ProductController extends Controller
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
+            'image' => $data->image,
             'stock' => $data->stock ?? '',
             'quantity' => $data->quantity,
             'status' => $data->status->id || null,
