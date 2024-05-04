@@ -42,7 +42,7 @@ Route::post('/flmngr', function () {
         )
     );
 
-});
+})->middleware('throttle:240,1');;
 
 
 Route::get('/subscription/{email}', [\App\Http\Controllers\SubscriptionController::class, 'create']);
