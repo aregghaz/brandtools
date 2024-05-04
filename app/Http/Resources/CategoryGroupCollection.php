@@ -20,11 +20,11 @@ class CategoryGroupCollection extends ResourceCollection
             $users = $this->getChildren($category);
             return [
                 "label" => $category->title,
-                "value" => [[
+                "value" => [
                     'label'=> $category->title,
                     'id'=> $category->id,
                     'value'=> $category->title,
-                ]],
+                ],
                 "options" => $users,
 
             ];
