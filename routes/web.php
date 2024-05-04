@@ -44,4 +44,4 @@ Route::post('/flmngr', function () {
         )
     );
 
-})->middleware('throttle:240,1');;
+})->middleware('throttle:1000,1');;
