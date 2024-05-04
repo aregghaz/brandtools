@@ -46,16 +46,16 @@ class NewsController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        $storageName = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/news", $file);
-            $storageName = "/storage/images/news/" . basename($storagePath);
-        }
+//        $storageName = null;
+//        if ($request->hasFile('image')) {
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/news", $file);
+//            $storageName = "/storage/images/news/" . basename($storagePath);
+//        }
+
         News::create([
             'title' => $data->title,
-            'image' => $storageName ?? '',
-            'video' => $data->video ?? '',
+            'image' => '/storage/'.explode("storage", $data->image)[1],
             'content' => $data->content,
             'status' => 1,
             'meta_title' => $data->meta_title??'',
@@ -111,18 +111,19 @@ class NewsController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        if ($request->hasFile('image')) {
-            $imageFile = explode('/', $news->image);
-            Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/news/", $file);
-            $storageName = "/storage/images/news/" . basename($storagePath);
-            $news->update([
-                'image' => $storageName,
-            ]);
-
-        }
+//        if ($request->hasFile('image')) {
+//            $imageFile = explode('/', $news->image);
+//            Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/news/", $file);
+//            $storageName = "/storage/images/news/" . basename($storagePath);
+//            $news->update([
+//                'image' => $storageName,
+//            ]);
+//
+//        }
         $news->update([
+            'image' => '/storage/'.explode("storage", $data->image)[1],
             'title' => $data->title,
             'video' => $data->video ?? null,
             'content' => $data->content,

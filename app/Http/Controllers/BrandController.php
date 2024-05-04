@@ -47,14 +47,14 @@ class BrandController extends Controller
         $data = json_decode($request->value);
 
         $storageName = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/brands", $file);
-            $storageName = "/storage/images/brands/" . basename($storagePath);
-        }
+//        if ($request->hasFile('image')) {
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/brands", $file);
+//            $storageName = "/storage/images/brands/" . basename($storagePath);
+//        }
         $brand = Brand::create([
             'title' => $data->title,
-            'image' => $storageName,
+            'image' => '/storage/'.explode("storage", $data->image)[1],
             'description' => $data->description,
             'meta_title' => $data->meta_title,
             'top' => $data->top->id ?? 0,
@@ -108,18 +108,19 @@ class BrandController extends Controller
         ]);
         $data = json_decode($request->value);
         $storageName = null;
-        if ($request->hasFile('image')) {
-            $imageFile = explode('/', $brand->image);
-            Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/brands", $file);
-            $storageName = "/storage/images/brands/" . basename($storagePath);
-            $brand->update([
-                'image' => $storageName,
-            ]);
-        }
+//        if ($request->hasFile('image')) {
+//            $imageFile = explode('/', $brand->image);
+//            Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/brands", $file);
+//            $storageName = "/storage/images/brands/" . basename($storagePath);
+//            $brand->update([
+//                'image' => $storageName,
+//            ]);
+//        }
         $brand->update([
             'title' => $data->title,
+            'image' => '/storage/'.explode("storage", $data->image)[1],
             'description' => $data->description,
             'meta_title' => $data->meta_title,
             'meta_desc' => $data->meta_desc,
@@ -138,7 +139,7 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $imageFile = explode('/', $brand->image);
-        Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
+      ///  Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
         $brand->delete();
         return response()->json([
             "status" => 200,

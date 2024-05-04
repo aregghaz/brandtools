@@ -36,13 +36,13 @@ class SliderController extends Controller
         ]);
         $data = json_decode($request->value);
         $storageName = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/sliders", $file);
-            $storageName = "/storage/images/sliders/" . basename($storagePath);
-        }
+//        if ($request->hasFile('image')) {
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/sliders", $file);
+//            $storageName = "/storage/images/sliders/" . basename($storagePath);
+//        }
         Slider::create([
-            'image' => $storageName,
+            'image' => '/storage/'.explode("storage", $data->image)[1],
             'position' => $data->position->id ?? 1,
             'status' => 1,
         ]);
@@ -89,18 +89,20 @@ class SliderController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        $storageName = null;
-        if ($request->hasFile('image')) {
-            $imageFile = explode('/', $slider->image);
-            Storage::delete("public/images/sliders/" . $imageFile[count($imageFile) - 1]);
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/sliders/", $file);
-            $storageName = "/storage/images/sliders/" . basename($storagePath);
-            $slider->update([
-                'image' => $storageName,
-            ]);
-        }
+//        $storageName = null;
+//        if ($request->hasFile('image')) {
+//            $imageFile = explode('/', $slider->image);
+//            Storage::delete("public/images/sliders/" . $imageFile[count($imageFile) - 1]);
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/sliders/", $file);
+//            $storageName = "/storage/images/sliders/" . basename($storagePath);
+//            $slider->update([
+//                'image' => $storageName,
+//            ]);
+//        }
         $slider->update([
+            'image' => '/storage/'.explode("storage", $data->image)[1],
+
             "position"=>$data->position,
             "status"=>$data->status->id,
         ]);

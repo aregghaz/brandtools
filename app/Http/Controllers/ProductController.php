@@ -335,14 +335,15 @@ class ProductController extends Controller
      */
     public function deleteProduct(Product $product): void
     {
-        $imageFile = explode('/', $product->image);
-        Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
-        if (count($product->images) > 0) {
-            foreach ($product->images as $images) {
-                $imageFile = explode('/', $images->path);
-                Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
-            }
-        }
+       // $imageFile = explode('/', $product->image);
+      ///  Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+//        if (count($product->images) > 0) {
+//            foreach ($product->images as $images) {
+//                $imageFile = explode('/', $images->path);
+//                Storage::delete("/public/images/products/" . $imageFile[count($imageFile) - 1]);
+//            }
+//        }
+        $product->images()->delete();
         $product->categories()->detach();
         $product->attributes()->detach();
         $product->delete();
