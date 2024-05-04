@@ -116,12 +116,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->value);
-        $storageName = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $storagePath = Storage::put("public/images/products", $file);
-            $storageName = "/storage/images/products/" . basename($storagePath);
-        }
+//        $storageName = null;
+//        if ($request->hasFile('image')) {
+//            $file = $request->file('image');
+//            $storagePath = Storage::put("public/images/products", $file);
+//            $storageName = "/storage/images/products/" . basename($storagePath);
+//        }
+
         $product = Product::create([
             'name' => $data->title,
             'description' => $data->description ?? null,
@@ -135,7 +136,7 @@ class ProductController extends Controller
 //            'sku',
             'quantity' => $data->quantity,
             'stock' => $data->stock ?? '',
-            'image' => $storageName,
+            'image' => explode("storage", $data->image)[1],
             'status' => 1,
             'meta_title' => $data->meta_title ?? '',
             'meta_desc' => $data->meta_desc ?? '',
@@ -197,7 +198,7 @@ class ProductController extends Controller
             'teg_id' => isset($data->teg_id) ? $data->teg_id->id : null,
             'brand_id' => isset($data->brand_id->id) ? $data->brand_id->id : null,
 //            'sku',
-            'image' => $data->image,
+            'image' => explode("storage", $data->image)[1],
             'stock' => $data->stock ?? '',
             'quantity' => $data->quantity,
             'status' => $data->status->id || null,
