@@ -14,10 +14,10 @@ class ProductCollection extends ResourceCollection
     public function toArray(Request $request)
     {
         return $this->map(function ($data) {
-            $categoryName = '';
-            foreach ($data->categories as $item){
-                $categoryName .= $item->title .", " . $categoryName;
-            }
+//            $categoryName = '';
+//            foreach ($data->categories as $item){
+//                $categoryName .= $item->title .", " . $categoryName;
+//            }
            // $images = explode('.JPG' ,$data->image);
             return [
                 'id' => $data->id,
@@ -29,7 +29,7 @@ class ProductCollection extends ResourceCollection
                 "slug" => $data->slug,
                 "teg" => $data->teg ? $data->teg->title : '--',
                 "brand" => $data->brand->title ?? '--',
-                "categories" =>$categoryName,
+                ///"categories" =>$categoryName,
                 "updated" => $data->updated_at,
             ];
         });
