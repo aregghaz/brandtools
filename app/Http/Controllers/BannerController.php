@@ -53,7 +53,7 @@ class BannerController extends Controller
         return response()->json([
             'data' => [
                 'id' => $banner->id,
-                'image' => $banner->image,
+                'image' => url($banner->image),
                 'position' => [
                     "id" => $banner->position,
                     "value" => $banner->position,
@@ -83,16 +83,7 @@ class BannerController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $banner->image);
-//            Storage::delete("public/images/banners/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/banners", $file);
-//            $storageName = "/storage/images/banners/" . basename($storagePath);
-//            $banner->update([
-//                'image' => $storageName,
-//            ]);
-//        }
+
         $banner->update([
             'image' => '/storage/'.explode("storage", $data->image)[1],
             'position' => $data->position->id,

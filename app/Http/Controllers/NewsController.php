@@ -46,13 +46,6 @@ class NewsController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        $storageName = null;
-//        if ($request->hasFile('image')) {
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/news", $file);
-//            $storageName = "/storage/images/news/" . basename($storagePath);
-//        }
-
         News::create([
             'title' => $data->title,
             'image' => '/storage/'.explode("storage", $data->image)[1],
@@ -78,7 +71,7 @@ class NewsController extends Controller
                 'id' => $news->id,
                 'title' => $news->title,
                 'content' => $news->content,
-                'image' => $news->image,
+                'image' => url($news->image),
                 'status' => [
                     "id" => $news->status,
                     "value" => $news->status,
@@ -111,17 +104,6 @@ class NewsController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $news->image);
-//            Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/news/", $file);
-//            $storageName = "/storage/images/news/" . basename($storagePath);
-//            $news->update([
-//                'image' => $storageName,
-//            ]);
-//
-//        }
         $news->update([
             'image' => '/storage/'.explode("storage", $data->image)[1],
             'title' => $data->title,
@@ -142,8 +124,6 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        $imageFile = explode('/', $news->image);
-        Storage::delete("public/images/news/" . $imageFile[count($imageFile) - 1]);
         $news->delete();
         return response()->json([
             "status" => 200,

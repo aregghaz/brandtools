@@ -77,6 +77,7 @@ class BrandController extends Controller
                 'id' => $brand->id,
                 'title' => $brand->title,
                 'description' => $brand->description,
+                'image' => url($brand->image),
                 'meta_title' => $brand->meta_title,
                 'meta_desc' => $brand->meta_desc,
                 'meta_key' => $brand->meta_key,
@@ -107,17 +108,6 @@ class BrandController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        $storageName = null;
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $brand->image);
-//            Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/brands", $file);
-//            $storageName = "/storage/images/brands/" . basename($storagePath);
-//            $brand->update([
-//                'image' => $storageName,
-//            ]);
-//        }
         $brand->update([
             'title' => $data->title,
             'image' => '/storage/'.explode("storage", $data->image)[1],
@@ -138,8 +128,6 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        $imageFile = explode('/', $brand->image);
-      ///  Storage::delete("public/images/brands/" . $imageFile[count($imageFile) - 1]);
         $brand->delete();
         return response()->json([
             "status" => 200,

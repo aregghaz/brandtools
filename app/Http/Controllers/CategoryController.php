@@ -48,23 +48,7 @@ class CategoryController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        $storageName = null;
-//        if ($request->hasFile('image')) {
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//        }
-//        $storageBanner = null;
-//        if ($request->hasFile('banner')) {
-//            $file = $request->file('banner');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//        }
-//        if ($request->hasFile('icon')) {
-//            $file = $request->file('icon');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//        }
+
         $category = Category::create([
             'title' => $data->title,
 
@@ -146,36 +130,6 @@ class CategoryController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $category->image);
-//            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//            $category->update([
-//                'image' => $storageName,
-//            ]);
-//        }
-//        if ($request->hasFile('banner')) {
-//            $imageFile = explode('/', $category->banner);
-//            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('banner');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//            $category->update([
-//                'banner' => $storageName,
-//            ]);
-//        }
-//        if ($request->hasFile('icon')) {
-//            $imageFile = explode('/', $category->icon);
-//            Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('icon');
-//            $storagePath = Storage::put("public/images/category", $file);
-//            $storageName = "/storage/images/category/" . basename($storagePath);
-//            $category->update([
-//                'icon' => $storageName,
-//            ]);
-//        }
         $category->update([
             'title' => $data->title,
             'parent_id' => isset($data->categories) ? $data->categories->id : null,
@@ -225,10 +179,6 @@ class CategoryController extends Controller
 
     public function deleteCategory(Category $category): bool
     {
-        $imageFile = explode('/', $category->image);
-       // Storage::delete("/public/images/category/" . $imageFile[count($imageFile) - 1]);
-        $imageFile = explode('/', $category->banner);
-     ///   Storage::delete("public/images/category/" . $imageFile[count($imageFile) - 1]);
         $category->attributes()->detach();
         $category->delete();
         return true;

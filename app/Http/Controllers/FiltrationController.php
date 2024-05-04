@@ -47,14 +47,11 @@ class FiltrationController extends Controller
         if ($checkBrand and $brandId !== 0) {
             $products = $products->whereHas('brand', function ($query) use ($brandsValue) {
                 $query->whereIn('title', $brandsValue);
-
             });
         }
         if (isset($sortId)) {
             $products = $products->where('teg_id',$sortId );
-
         }
-
         if (count($values) > 0) {
             $products = $products->whereHas('attributes', function ($query) use ($ids, $values) {
                 $query->whereIn('attributes.id', $ids);

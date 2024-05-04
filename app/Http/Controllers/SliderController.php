@@ -35,14 +35,9 @@ class SliderController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-        $storageName = null;
-//        if ($request->hasFile('image')) {
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/sliders", $file);
-//            $storageName = "/storage/images/sliders/" . basename($storagePath);
-//        }
+
         Slider::create([
-            'image' => '/storage/'.explode("storage", $data->image)[1],
+            'image' => '/storage/' . explode("storage", $data->image)[1],
             'position' => $data->position->id ?? 1,
             'status' => 1,
         ]);
@@ -58,10 +53,10 @@ class SliderController extends Controller
     {
         return response()->json([
             'status' => new SelectCollection($this->simpleSelect()),
-            'data'=>[
-                'id'=>$slider->id,
-                'image'=>$slider->image,
-                'position'=>$slider->position,
+            'data' => [
+                'id' => $slider->id,
+                'image' => url($slider->image),
+                'position' => $slider->position,
                 'status' => [
                     "id" => $slider->status,
                     "value" => $slider->status,
@@ -89,22 +84,11 @@ class SliderController extends Controller
             'value' => 'required',
         ]);
         $data = json_decode($request->value);
-//        $storageName = null;
-//        if ($request->hasFile('image')) {
-//            $imageFile = explode('/', $slider->image);
-//            Storage::delete("public/images/sliders/" . $imageFile[count($imageFile) - 1]);
-//            $file = $request->file('image');
-//            $storagePath = Storage::put("public/images/sliders/", $file);
-//            $storageName = "/storage/images/sliders/" . basename($storagePath);
-//            $slider->update([
-//                'image' => $storageName,
-//            ]);
-//        }
-        $slider->update([
-            'image' => '/storage/'.explode("storage", $data->image)[1],
 
-            "position"=>$data->position,
-            "status"=>$data->status->id,
+        $slider->update([
+            'image' => '/storage/' . explode("storage", $data->image)[1],
+            "position" => $data->position,
+            "status" => $data->status->id,
         ]);
         return response()->json([
             "status" => 200,
@@ -116,8 +100,6 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
-        $imageFile = explode('/', $slider->image);
-        Storage::delete("public/images/sliders/" . $imageFile[count($imageFile) - 1]);
         $slider->delete();
         return response()->json([
             "status" => 200,
