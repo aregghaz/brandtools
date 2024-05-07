@@ -38,6 +38,9 @@ class WishListController extends Controller
                 'image' => $Product->image,
                 'slug'=>$Product->slug
             ),
+            'conditions' => array(
+                'quantity' => $Product->quantity,
+            ),
             'quantity' => $qty,
         ));
         $cart = \Cart::getContent();

@@ -33,7 +33,7 @@ class CartController extends Controller
         }else{
             $price = $Product->price;
         }
-     
+
         \Cart::session(Auth::user()->id)->add(array(
             'id' => $Product->id, // inique row ID
             'name' => $Product->name,
@@ -41,6 +41,9 @@ class CartController extends Controller
             'attributes' => array(
                 'image' => $Product->image,
                 'slug'=>$Product->slug
+            ),
+            'conditions' => array(
+                'quantity' => $Product->quantity,
             ),
             'associatedModel' => $Product,
             'quantity' => $qty,
