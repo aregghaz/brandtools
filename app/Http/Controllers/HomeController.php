@@ -34,7 +34,9 @@ class HomeController extends Controller
         } else {
             $product = Product::find($slug);
         }
+        ///$product = $product->with('Book', function($q){
 
+///        });
         if (!isset($product)) {
             return response()->json([
                 'message' => 'not found'
