@@ -21,6 +21,7 @@ class PorductShortCollection extends ResourceCollection
                 'description' => $product->description,
                 'price' => $product->price,
                 'book' => $product->book,
+                'quantity' => $product->quantity,
                 'special_price' => $product->special_price,
                 'start' => $product->start,
                 'end' => $product->end,
