@@ -62,6 +62,7 @@ class AuthController extends Controller
                 'fatherName' => $request->user()->fatherName,
                 "phone" => $request->user()->phone,
                 "email" => $request->user()->email,
+                "city" => $request->user()->city,
                 "subscribed" => $request->user()->subscribed === 0 ? "отключить" : "включено",
             ],
         ]);
