@@ -121,5 +121,13 @@ class UserController extends Controller
             "status" => 200,
         ]);
     }
+    public function groupDelete(Request $request)
+    {
+        var_dump($request->ids);
+        $user = User::whereIn('id', $request->ids)->delete();
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
 
 }

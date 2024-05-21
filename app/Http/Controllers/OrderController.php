@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductsOrder;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -104,6 +105,12 @@ class OrderController extends Controller
     public function preOrder($id)
     {
         $userId = Auth::user()->id;
+        $book = Book::where(['user_id' =>$userId, 'product_id'=>$id,'created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString()])->first();
+        if($book){
+            return response()->json([
+                "status" => 400,
+            ]);
+        }
         $product = Product::find($id);
         $price = 0;
         $addressId = 1;
@@ -249,4 +256,18 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function groupDelete(Request $request)
+    {
+        $orders = Order::whereIn('id', $request->ids)->with('products')->get();
+        foreach ($orders as $order) {
+            $order->products()->delete();
+            $order->delete();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
 }

@@ -139,6 +139,9 @@ Route::group([
     Route::post('/products/add-discount', [ProductController::class, 'addDiscount']);
     Route::post('/products/groupDelete', [ProductController::class, 'groupDelete']);
     Route::post('/categories/groupDelete', [CategoryController::class, 'groupDelete']);
+    Route::post('/users/groupDelete', [UserController::class, 'groupDelete']);
+    Route::post('/orders/groupDelete', [OrderController::class, 'groupDelete']);
+    Route::post('/brands/groupDelete', [BrandController::class, 'groupDelete']);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('attributes', AttributeController::class);

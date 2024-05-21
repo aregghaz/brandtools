@@ -133,4 +133,11 @@ class BrandController extends Controller
             "status" => 200,
         ]);
     }
+    public function groupDelete(Request $request)
+    {
+        $brands = Brand::whereIn('id', $request->ids)->delete();
+        return response()->json([
+            "status" => 200,
+        ]);
+    }
 }
