@@ -109,6 +109,8 @@ class OrderController extends Controller
         if($book){
             return response()->json([
                 "status" => 400,
+                "message" => "already booked this item",
+                "book" => $book
             ]);
         }
         $product = Product::find($id);
