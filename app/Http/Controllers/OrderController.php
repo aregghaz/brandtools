@@ -105,7 +105,7 @@ class OrderController extends Controller
     public function preOrder($id)
     {
         $userId = Auth::user()->id;
-        $book = Book::where(['user_id' =>$userId, 'product_id'=>$id,'created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString()])->first();
+        $book = Book::where(['user_id' =>$userId, 'product_id'=>$id])->where('created_at', '>=', Carbon::now()->subHours(24)->toDateTimeString())->first();
         if($book){
             return response()->json([
                 "status" => 400,
