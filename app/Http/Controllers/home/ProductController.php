@@ -24,10 +24,12 @@ class ProductController extends Controller
         $data = explode(' ' ,$request['query']);
 
         $products = Product::where('status', 1)
-
-            ->whereIn('name', 'LIKE', '%' . $data . '%')
-            ->orWhereIn('slug', 'LIKE', '%' . $data . '%')
-
+            ->Where(function ($query) use($data) {
+                for ($i = 0; $i < count($data); $i++){
+                    $query->orwhere('name', 'LIKE', '%' . $data . '%');
+                    $query->orwhere('slug', 'LIKE', '%' . $data . '%');
+                }
+            })
             ->limit($limit)->get();
         return response()->json([
             'products' => new PorductShortCollection($products)
