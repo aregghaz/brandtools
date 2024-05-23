@@ -26,8 +26,8 @@ class ProductController extends Controller
         $products = Product::where('status', 1)
             ->Where(function ($query) use($data) {
                 for ($i = 0; $i < count($data); $i++){
-                    $query->orwhere('name', 'LIKE', '%' . $data . '%');
-                    $query->orwhere('slug', 'LIKE', '%' . $data . '%');
+                    $query->orwhere('name', 'LIKE', '%' . $data[$i] . '%');
+                    $query->orwhere('slug', 'LIKE', '%' . $data[$i] . '%');
                 }
             })
             ->limit($limit)->get();
