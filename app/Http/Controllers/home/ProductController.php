@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function searchProducts(Request $request, $limit): \Illuminate\Http\JsonResponse
     {
 
-        $products = Product::where('status', 1)->whereLike('name', $request['query'] )->orWhere('slug', 'LIKE', '%' . $request['query'] . '%')->limit($limit)->get();
+        $products = Product::where('status', 1)->whereLike(['name', 'slug'], $request['query'] )->limit($limit)->get();
         return response()->json([
             'products' => new PorductShortCollection($products)
         ]);
