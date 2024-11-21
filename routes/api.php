@@ -78,7 +78,7 @@ Route::get('getSliders', [HomeController::class, 'getSliders']);
 Route::get('/categoryTree', [CategoryController::class, 'categoryTree']);
 Route::post('/filtration/{id}/{limit}', [FiltrationController::class, 'index']);
 Route::group(['prefix' => 'wishlist'], function () {
-    Route::get('add-wishlist/{productId}/{qty}', [WishListController::class, 'index'])->name('add-cart');
+    Route::get('add-wishlist/{productId}/{qty}', [WishListController::class, 'index'])->name('add-wishlist');
     Route::get('get-wishlist/{limit}', [WishListController::class, 'getCart'])->name('getCart');
     Route::get('wishlist-update/{productId}/{qty}', [WishListController::class, 'update'])->name('update');
     Route::get('delete-wishlist/{productId}', [WishListController::class, 'delete']);
